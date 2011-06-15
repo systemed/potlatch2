@@ -64,7 +64,7 @@
 	  <!-- Tag viewer -->
 	  <potlatch2:TagViewer width="25%" height="100%" id="tagViewer"/>
 
-      <mx:Canvas width="75%" height="100%">
+      <mx:Canvas id="map_container" width="75%" height="100%">
         <mx:Canvas id="map_area" resize="onResizeMap()"
             top="0" left="0" width="100%" height="100%" dragEnter="dragEnterHandler(event);" dragDrop="dragDropHandler(event);">
         </mx:Canvas>
@@ -117,6 +117,7 @@
 		public var yahoo:Yahoo;
 		public var trackLoader:TrackLoader;
 		public var toolbox:Toolbox;
+		public var tutorial:Tutorial;
         public var bugLoader:BugLoader;
         public var bikeShopLoader:BikeShopLoader;
 
@@ -210,7 +211,7 @@
 			conn.addEventListener(AttentionEvent.ATTENTION, onAttention);
 			conn.addEventListener(AttentionEvent.ALERT, onAlert);
 			// >>>> REFACTOR: shouldn't be trying to find out stylesheet from here
-			theMap.addLayer(conn,params['styleurl'] ? params['styleurl'] : 'stylesheets/potlatch.css',false);
+			theMap.addLayer(conn,params['styleurl'] ? params['styleurl'] : 'stylesheets/potlatch.css',false,true);
 
             // Auto-load vector backgrounds from config
             theMap.addEventListener(MapEvent.INITIALISED, function(e:Event):void { VectorBackgrounds.instance().init(theMap); });
@@ -251,12 +252,6 @@
 			// mouse-position listener for co-ordinate display
             theMap.addEventListener(MapEvent.MOUSE_MOVE, mouseoverHandler);
 
-			// position toolbox
-			toolbox=Toolbox(PopUpManager.createPopUp(this,Toolbox,false));
-			toolbox.init(theController);
-			toolbox.x=stage.stageWidth-toolbox.width-5;
-			toolbox.y=stage.stageHeight-toolbox.height-5;
-
 			// add debug field
 			var t:TextField=new TextField();
 			t.width=500; t.height=150; t.border=true;
@@ -266,11 +261,24 @@
             t.visible = loaderInfo.parameters["show_debug"] == 'true';
 			Globals.vars.root=theMap;	// just for the addDebug function
 
-            theController = new EditController(theMap, tagViewer, toolbox);
+			// create controller
+            theController = new EditController(theMap, tagViewer);
             theController.setActive();
 			theController.addEventListener(AttentionEvent.ATTENTION, onAttention);
 			theController.addEventListener(AttentionEvent.ALERT, onAlert);
             
+			// position toolbox
+			toolbox=Toolbox(PopUpManager.createPopUp(this,Toolbox,false));
+			toolbox.init(theController);
+			toolbox.x=stage.stageWidth-toolbox.width-5;
+			toolbox.y=stage.stageHeight-toolbox.height-5;
+
+			// position tutorial
+			tutorial=Tutorial(PopUpManager.createPopUp(this,Tutorial,false));
+			tutorial.init(theController);
+			tutorial.x=map_container.x+10;
+			tutorial.y=stage.stageHeight-tutorial.height-10;
+
             // set the access token from saved cookie
             var tokenObject:SharedObject = SharedObject.getLocal("access_token");
             conn.setAccessToken(tokenObject.data["oauth_token"], tokenObject.data["oauth_token_secret"]);

@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Panel
+	xmlns:mx="http://www.adobe.com/2006/mxml"
+	xmlns:potlatch2="net.systemeD.potlatch2.*"
+	height="100" width="400" layout="absolute"
+	styleName="theToolBox">
+
+	<mx:Image data="@Embed('../../../../embedded/close_small.png')"
+		includeInLayout="false" id="toolboxClose" click="toggle();" 
+		y="-6" x="384" />
+
+
+	<mx:Script><![CDATA[
+
+		import flash.events.Event;
+		import flash.events.MouseEvent;
+		import net.systemeD.halcyon.connection.*;
+		import net.systemeD.halcyon.connection.actions.*;
+		import net.systemeD.potlatch2.controller.*;
+		import net.systemeD.potlatch2.tools.*;
+		import net.systemeD.potlatch2.EditController;
+
+		private var controller:EditController;
+
+		public function init(controller:EditController):void {
+			this.controller=controller;
+			trace(controller);
+			controller.addEventListener(ControllerEvent.ENTER_STATE,stateListener);
+			controller.addEventListener(ControllerEvent.EXIT_STATE,stateListener);
+		}
+
+		private function stateListener(event:ControllerEvent):void {
+			trace(event);
+		}
+		
+		public function toggle():void {
+			this.visible=!this.visible;
+		}
+
+	]]>
+</mx:Script>	
+</mx:Panel>

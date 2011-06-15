@@ -21,7 +21,6 @@ package net.systemeD.potlatch2 {
 
         private var _map:Map;
         public var tagViewer:TagViewer;
-		private var toolbox:Toolbox;
 
         /** The current ControllerState */
         public var state:ControllerState;
@@ -40,13 +39,11 @@ package net.systemeD.potlatch2 {
 		[Embed(source="../../../embedded/pen_so.png")] 		public var pen_so:Class;
 		[Embed(source="../../../embedded/pen_plus.png")] 	public var pen_plus:Class;
 		
-        /** Constructor function: needs the map information, a panel to edit tags with, and the toolbox to manipulate ways with. */
-        public function EditController(map:Map, tagViewer:TagViewer, toolbox:Toolbox) {
+        /** Constructor function: needs the map information, and a panel to edit tags with. */
+        public function EditController(map:Map, tagViewer:TagViewer) {
             this._map = map;
             setState(new NoSelection());
             this.tagViewer = tagViewer;
-			this.toolbox = toolbox;
-			this.toolbox.init(this);
             this.maximiseFunction = Globals.vars.flashvars["maximise_function"];
             this.minimiseFunction = Globals.vars.flashvars["minimise_function"];
             this.moveFunction     = Globals.vars.flashvars["move_function"];
@@ -80,12 +77,12 @@ package net.systemeD.potlatch2 {
         * @param layer Optionally pass the layer of the currently selected entity, eg for BugLayers
         */
 		public function updateSelectionUI(layer:MapPaint = null):void {
-			tagViewer.setEntity(state.selection, layer);
-			toolbox.updateSelectionUI();
+			tagViewer.setEntity(state.selection, layer);	// FIXME: should be done by events instead
+			dispatchEvent(new ControllerEvent(ControllerEvent.SELECTION, state));
 		}
 
 		public function updateSelectionUIWithoutTagChange():void {
-			toolbox.updateSelectionUI();
+			dispatchEvent(new ControllerEvent(ControllerEvent.SELECTION, state));
 		}
         
         private function keyDownHandler(event:KeyboardEvent):void {
@@ -152,12 +149,15 @@ package net.systemeD.potlatch2 {
             if ( newState == state )
                 return;
                 
-            if ( state != null )
+            if ( state != null ) {
+            	dispatchEvent(new ControllerEvent(ControllerEvent.EXIT_STATE, state));
                 state.exitState(newState);
+            }
             newState.setController(this);
             newState.setPreviousState(state);
             state = newState;
             state.enterState();
+            dispatchEvent(new ControllerEvent(ControllerEvent.ENTER_STATE, state));
         }
 
 		/** Given what is currently selected (or not), find the matching ControllerState. */
