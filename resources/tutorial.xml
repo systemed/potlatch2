@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<tutorial>
+	<slide>
+		<headline>Welcome to Potlatch 2!</headline>
+		<text>We'll show you how to make changes to OpenStreetMap's free map of the world. To get started, click the 'Next' button.</text>
+	</slide>
+	<slide>
+		<headline>Putting a point on the map</headline>
+		<text>Let's start with the single easiest change you can make: putting a new point on the map. You'll see a big panel of icons on the left of the window. Find one - a shop, maybe, or a restaurant - and drag it onto the map.</text>
+		<require action="enter" state="SelectedPOINode"/>
+	</slide>
+	<slide>
+		<headline>Putting a point on the map</headline>
+		<text>Great stuff. Now let's give it a name. Click in the 'name' box on the left, then type its name and press Enter.</text>
+	</slide>
+</tutorial>
