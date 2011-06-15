@@ -2,37 +2,79 @@
 <mx:Panel
 	xmlns:mx="http://www.adobe.com/2006/mxml"
 	xmlns:potlatch2="net.systemeD.potlatch2.*"
-	height="100" width="400" layout="absolute"
+	height="150" width="400" layout="absolute"
 	styleName="theToolBox">
 
 	<mx:Image data="@Embed('../../../../embedded/close_small.png')"
 		includeInLayout="false" id="toolboxClose" click="toggle();" 
 		y="-6" x="384" />
-
+	<mx:VBox>
+		<mx:Text id="headlineText" />
+		<mx:Text id="tutorialText" width="390" height="100%" />
+		<mx:Button id="nextButton" label="Next" click="nextSlide()" enabled="false" />
+	</mx:VBox>
 
 	<mx:Script><![CDATA[
 
+		import flash.net.*;
 		import flash.events.Event;
-		import flash.events.MouseEvent;
-		import net.systemeD.halcyon.connection.*;
-		import net.systemeD.halcyon.connection.actions.*;
 		import net.systemeD.potlatch2.controller.*;
-		import net.systemeD.potlatch2.tools.*;
 		import net.systemeD.potlatch2.EditController;
+		import net.systemeD.halcyon.DebugURLRequest;
 
 		private var controller:EditController;
+		private var xml:XML;
+		private var slide:uint;
+		private var requireAction:String='';
+		private var requireState:String='';
+
+		/** Initialise tutorial window, and load XML */
 
 		public function init(controller:EditController):void {
 			this.controller=controller;
-			trace(controller);
 			controller.addEventListener(ControllerEvent.ENTER_STATE,stateListener);
 			controller.addEventListener(ControllerEvent.EXIT_STATE,stateListener);
+
+			var request:DebugURLRequest = new DebugURLRequest("tutorial.xml");
+			var loader:URLLoader = new URLLoader();
+	        loader.addEventListener(Event.COMPLETE, onTutorialLoad);
+	        loader.load(request.request);
 		}
 
-		private function stateListener(event:ControllerEvent):void {
-			trace(event);
+		private function onTutorialLoad(event:Event):void {
+			xml = new XML(URLLoader(event.target).data);
+			slide=0;
+			showSlide();
+		}
+
+		private function showSlide():void {
+			var slide:XML=xml.slide[slide];
+			headlineText.text=slide.headline;
+			tutorialText.text=slide.text;
+			if (slide.hasOwnProperty('require')) {
+				nextButton.enabled=false;
+				requireAction=slide.require.@action;
+				requireState=slide.require.@state;
+			} else {
+				nextButton.enabled=true;
+			}
 		}
 		
+		private function nextSlide():void {
+			slide++; showSlide();
+		}
+
+		/** Respond to change in ControllerState, and react if it's what we're waiting for */
+
+		private function stateListener(event:ControllerEvent):void {
+			if (event.type==requireAction && event.state.toString()==requireState) {
+				// ** do something encouraging here like putting a tick in the box or playing the Hallelujah chorus
+				nextButton.enabled=true;
+			}
+		}
+		
+		/** Make tutorial window visible/invisible */
+
 		public function toggle():void {
 			this.visible=!this.visible;
 		}
