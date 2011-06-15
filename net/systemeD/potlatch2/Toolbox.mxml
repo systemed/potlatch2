@@ -110,6 +110,7 @@
 
 		public function init(controller:EditController):void {
 			this.controller=controller;
+			controller.addEventListener(ControllerEvent.SELECTION, selectionListener);
 			/* check if the toolbox was explictly turned off in a previous session */
 			if( SharedObject.getLocal("user_state").data['toolbox_visible'] == false) {
 			  this.visible = false;
@@ -119,6 +120,10 @@
 		override protected function createChildren():void {
 			super.createChildren();
 			super.titleBar.addEventListener(MouseEvent.MOUSE_DOWN,handleDown);
+		}
+
+		private function selectionListener(e:Event):void {
+			updateSelectionUI();
 		}
 
 		public function updateSelectionUI():void {
