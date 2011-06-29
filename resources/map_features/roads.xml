@@ -201,7 +201,7 @@
       <choice value="alley" text="Alleyway/laneway"/>
       <choice value="parking_aisle" text="Parking aisle" description="The path that cars drive on through a parking lot."/>
       <choice value="driveway" text="Driveway"/>
-      <choice value="drive-through" text="Drive-through" description="For drive-through restaurants, bottle shops etc."/>
+      <choice value="drive_through" text="Drive-through" description="For drive-through restaurants, bottle shops etc."/>
       <choice value="emergency_access" text="Emergency access" description="For firefighters and other emergency services."/>
     </input>
     <inputSet ref="common"/>
