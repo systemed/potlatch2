@@ -261,6 +261,7 @@
     <compileLocale locale="fr_FR" />
     <compileLocale locale="de_DE" />
     <compileLocale locale="pl_PL" />
+    <compileLocale locale="ja_JP" />
   </target>
 
 
@@ -271,6 +272,7 @@
     <deployLocale locale="fr_FR" />
     <deployLocale locale="de_DE" />
     <deployLocale locale="pl_PL" />
+    <deployLocale locale="ja_JP" />
   </target>
 
 </project>
