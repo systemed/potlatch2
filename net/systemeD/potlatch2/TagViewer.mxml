@@ -750,7 +750,7 @@
 
       public function loadFeatures():void {
           mapFeatures = MapFeatures.getInstance();
-          stack.removeChild(membersVBox); // remove by default, will be added if relation
+      //    stack.removeChild(membersVBox); // remove by default, will be added if relation
       }
 
       /** Open up a new browser page, showing the help page as defined in Map Features XML file .*/
