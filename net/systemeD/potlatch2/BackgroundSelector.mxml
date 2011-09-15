@@ -17,8 +17,8 @@
 	</mx:HBox>
 
 	<mx:HBox>
-	<mx:Button label="Edit..." click="Application.application.bgButton.close(); new BackgroundDialog().init('Background imagery',background,Imagery.instance());" />
-	<mx:Button label="Vector file..." click="Application.application.bgButton.close(); new VectorSourceDialog().init();" />
+	<mx:Button id="editLabel" label="Edit..." click="Application.application.bgButton.close(); new BackgroundDialog().init('Background imagery',background,Imagery.instance());" />
+	<mx:Button id="vectorLabel" label="Vector file..." click="Application.application.bgButton.close(); new VectorSourceDialog().init();" />
 	</mx:HBox>
 
 	<mx:Script><![CDATA[
