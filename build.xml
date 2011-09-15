@@ -87,6 +87,8 @@
       <arg line="-package net.systemeD.potlatch2.utils 'Data loading utilities'" />
       
       <arg line="-left-frameset-width 300" />
+      <arg line="-locale=$(locales.list)" />
+      <arg line="-allow-source-path-overlap true" />
     </exec>
   </target>
 
@@ -207,7 +209,7 @@
 
   <!-- Deploy compiled Localization Resource Bundles and resources. -->
   <macrodef name="deployLocale" description="Deploying the compiled swfs">
-    <attribute name="locale" default="en_GB"/>
+    <attribute name="locale" default="$(locales.default)"/>
     <sequential>
       <echo>Copying @{locale}.swf to deploy directory...</echo>
 
@@ -219,7 +221,7 @@
 
   <!-- Compiles Localization Resource Bundle. -->
   <macrodef name="compileLocale" description="Compiles the Resource package for the given locale">
-    <attribute name="locale" default="en_GB"/>
+    <attribute name="locale" default="$(locales.default)"/>
     <sequential>
 
       <!--
