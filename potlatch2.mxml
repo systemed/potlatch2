@@ -113,7 +113,7 @@
         import mx.managers.DragManager;
         import mx.core.DragSource;
         import mx.controls.Alert;
-        import com.mindspace.l10n.events.LocaleEvent;
+        import org.babelfx.events.LocaleEvent;
 
         public var theMap:Map;
         public var theController:EditController;

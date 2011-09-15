@@ -2,12 +2,12 @@
 <LocaleMap enableLog="false"
     xmlns:mx="http://www.adobe.com/2006/mxml"
     xmlns:factory="mx.core.*"
-    xmlns="library://ns.babelfx.org/l10n/flex/" >
+    xmlns="http://l10n.babelfx.org/" >
 
   <!-- Support for Locale ResourceBundle changes -->
   <mx:Script>
     <![CDATA[
-      import com.mindspace.l10n.commands.ExternalLocaleCommand;
+      import org.babelfx.commands.ExternalLocaleCommand;
       import mx.resources.ResourceManager;
       import mx.resources.IResourceManager;
 
@@ -17,19 +17,9 @@
 
       private function onLocaleChanged(event:Event):void {
           var rMngr : IResourceManager = ResourceManager.getInstance();
-          var sri : SmartResourceInjector = event.target as SmartResourceInjector;
-          var options : Array = [
-                                  { label : rMngr.getString('p2_main','main.gps_data') },
-                                  { label : rMngr.getString('p2_main','main.my_tracks') },
-                                  { label : rMngr.getString('p2_main','main.clear_gps') }
-                                ];
-
-          // Iterate all view instances and inject new dataProvider
-          for each (var inst:potlatch2 in sri.targetInstances) {
-              if (inst == null) continue;
-              inst.gpsButton.dataProvider = options;
-          }
+          var sri : ResourceInjector = event.target as ResourceInjector;
       }
+
     ]]>
   </mx:Script>
 
@@ -42,42 +32,43 @@
   </commandFactory>
 
   <!--
-  SmartResourceInjectors for targeted class instantiations. Instead of dependency injection of UI instances,
-  we use SRI(s) here to remove any need to know view hierarchy relationships... we simply want a reference
+  ResourceInjectors(at v2) for targeted class instantiations. Instead of dependency injection of UI instances,
+  we use RI(s) here to remove any need to know view hierarchy relationships... we simply want a reference
   to the UI instance when ready.
   -->
 
-  <SmartResourceInjector bundleName="help_dialog" target="{HelpDialog}">
-    <ResourceProxy property="gettingStarted.text" key="help.gettingStarted" />
-    <ResourceProxy property="welcome.label" key="help.welcome" />
-  </SmartResourceInjector>
+  <ResourceInjector bundleName="help_dialog" target="{HelpDialog}">
+    <ResourceSetter property="gettingStarted.text" key="help.gettingStarted" />
+    <ResourceSetter property="welcome.label" key="help.welcome" />
+  </ResourceInjector>
 
-  <SmartResourceInjector bundleName="p2_main" target="{potlatch2}" localeChange="onLocaleChanged(event)">
-    <ResourceProxy property="bgButton.label" key="main.background" />
-    <ResourceProxy property="styleButton.label" key="main.map_style" />
-    <ResourceProxy property="undo.label" key="main.undo" />
-    <ResourceProxy property="redo.label" key="main.redo" />
-    <ResourceProxy property="helpButton.label" key="main.help" />
-    <ResourceProxy property="optionsButton.label" key="main.options" />
-    <ResourceProxy property="saveButton.label" key="main.save" />
-  </SmartResourceInjector>
+  <ResourceInjector bundleName="p2_main" target="{potlatch2}">
+    <ResourceSetter property="bgButton.label" key="main.background" />
+    <ResourceSetter property="styleButton.label" key="main.map_style" />
+    <ResourceSetter property="undo.label" key="main.undo" />
+    <ResourceSetter property="redo.label" key="main.redo" />
+    <ResourceSetter property="helpButton.label" key="main.help" />
+    <ResourceSetter property="optionsButton.label" key="main.options" />
+    <ResourceSetter property="saveButton.label" key="main.save" />
+    <ResourceSetter property="gpsButton.label" key="main.gps_data" />
+  </ResourceInjector>
 
-  <SmartResourceInjector bundleName="p2_main" target="{TagViewer}">
-    <ResourceProxy property="dndPrompt" key="tag_viewer.dndprompt" />
-  </SmartResourceInjector>
+  <ResourceInjector bundleName="p2_main" target="{TagViewer}">
+    <ResourceSetter property="dndPrompt" key="tag_viewer.dndprompt" />
+  </ResourceInjector>
 
-  <SmartResourceInjector bundleName="p2_main" target="{Toolbox}">
-    <ResourceProxy property="deleteNode" key="toolbox.delete_node" />
-    <ResourceProxy property="deleteWay" key="toolbox.delete_way" />
-    <ResourceProxy property="deleteArea" key="toolbox.delete_area" />
-    <ResourceProxy property="deleteItem" key="toolbox.delete_item" />
-    <ResourceProxy property="reverseButton.toolTip" key="toolbox.reverse_direction" />
-    <ResourceProxy property="splitButton.toolTip" key="toolbox.split_way" />
-    <ResourceProxy property="mergeButton.toolTip" key="toolbox.merge_ways" />
-    <ResourceProxy property="straightenButton.toolTip" key="toolbox.straighten_way" />
-    <ResourceProxy property="circulariseButton.toolTip" key="toolbox.make_circular" />
-    <ResourceProxy property="quadrilateraliseButton.toolTip" key="toolbox.make_right_angled" />
-    <ResourceProxy property="parralleliseButton.toolTip" key="toolbox.create_parrallel_way" />
-  </SmartResourceInjector>
+  <ResourceInjector bundleName="p2_main" target="{Toolbox}">
+    <ResourceSetter property="deleteNode" key="toolbox.delete_node" />
+    <ResourceSetter property="deleteWay" key="toolbox.delete_way" />
+    <ResourceSetter property="deleteArea" key="toolbox.delete_area" />
+    <ResourceSetter property="deleteItem" key="toolbox.delete_item" />
+    <ResourceSetter property="reverseButton.toolTip" key="toolbox.reverse_direction" />
+    <ResourceSetter property="splitButton.toolTip" key="toolbox.split_way" />
+    <ResourceSetter property="mergeButton.toolTip" key="toolbox.merge_ways" />
+    <ResourceSetter property="straightenButton.toolTip" key="toolbox.straighten_way" />
+    <ResourceSetter property="circulariseButton.toolTip" key="toolbox.make_circular" />
+    <ResourceSetter property="quadrilateraliseButton.toolTip" key="toolbox.make_right_angled" />
+    <ResourceSetter property="parralleliseButton.toolTip" key="toolbox.create_parrallel_way" />
+  </ResourceInjector>
 
 </LocaleMap>
