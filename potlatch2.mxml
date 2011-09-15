@@ -133,14 +133,18 @@
 		private function startInit():void {
             /* For reasons that I don't yet understand, the en_US locale is the default and doesn't work at all. */
             /* Change this to another locale (e.g. fr_FR) to see the differences. */
-            if (loaderInfo.parameters['locale']) {
-              dispatchEvent(new LocaleEvent(LocaleEvent.LOAD_LOCALE,loaderInfo.parameters['locale']));
-            }
 
 			// Load font and don't do anything until that's done
 			var loader:Loader = new Loader();
 			loader.contentLoaderInfo.addEventListener(Event.COMPLETE, continueInit);
-			loader.load(new URLRequest("FontLibrary.swf"));
+			loader.load(new URLRequest("FontLibrary.swf"));  
+
+            if (loaderInfo.parameters['locale']) {
+                var uselocale:String = loaderInfo.parameters['locale'];
+                dispatchEvent(new LocaleEvent(LocaleEvent.LOAD_LOCALE,uselocale));
+                dispatchEvent(new LocaleEvent(LocaleEvent.LOAD_LOCALE, 'en_US'));
+                resourceManager.localeChain = [uselocale,'en_US'];
+            }
 		}
 		
 		private function continueInit(r:Event):void {
