@@ -13,8 +13,7 @@ ASDOC=${FLEX_HOME}/bin/asdoc
 # points to the project's libs directory
 LIBS_DIR =${basedir}/lib
 
-locales.list=en_US,en_GB,de_DE,fr_FR,pl_PL,ja_JP
-locales.default=ja_JP
+locales.default=en_GB
 
 test.application.name = HalcyonTestRunner
 
