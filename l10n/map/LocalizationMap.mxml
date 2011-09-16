@@ -27,10 +27,19 @@
       private function onLocaleChanged(event:Event):void {
           var rMngr : IResourceManager = ResourceManager.getInstance();
           var sri : ResourceInjector = event.target as ResourceInjector;
-      }
-
+          var options : Array = [
+                                 { label : rMngr.getString('p2_main','main.gps_data') },
+                                 { label : rMngr.getString('p2_main','main.my_tracks') },
+                                 { label : rMngr.getString('p2_main','main.clear_gps') }
+                               ];
+         // Iterate all view instances and inject new dataProvider
+         for each (var inst:potlatch2 in sri.targetInstances) {
+             if (inst == null) continue;
+             inst.gpsButton.dataProvider = options;
+         }
+    }
     ]]>
-  </mx:Script>
+  </mx:Script>      
 
   <commandFactory>
     <factory:ClassFactory generator="{ExternalLocaleCommand}">
@@ -83,7 +92,7 @@
     <ResourceSetter property="keyboardShortcuts.label" key="help.keyboardShortcuts" />
   </ResourceInjector>
 
-  <ResourceInjector bundleName="p2_main" target="{potlatch2}">
+  <ResourceInjector bundleName="p2_main" target="{potlatch2}" localeChange="onLocaleChanged(event);">
     <ResourceSetter property="bgButton.label" key="main.background" />
     <ResourceSetter property="styleButton.label" key="main.map_style" />
     <ResourceSetter property="undo.label" key="main.undo" />
@@ -91,9 +100,10 @@
     <ResourceSetter property="helpButton.label" key="main.help" />
     <ResourceSetter property="optionsButton.label" key="main.options" />
     <ResourceSetter property="saveButton.label" key="main.save" />
-    <ResourceSetter property="gpsButton.label" key="main.gps_data" />
+    <ResourceSetter property="gpsButton.label" key="main.gpsButton" />
+  <!--      <ResourceSetter property="gpsData.label" key="main.gps_data" />
     <ResourceSetter property="myTrack.label" key="main.my_track" />
-    <ResourceSetter property="clearGps.label" key="main.clear_gps" />
+    <ResourceSetter property="clearGps.label" key="main.clear_gps" /> -->
   </ResourceInjector>
   
   <ResourceInjector bundleName="p2_main" target="{OAuthPanel}">
