@@ -101,9 +101,11 @@
     <ResourceSetter property="optionsButton.label" key="main.options" />
     <ResourceSetter property="saveButton.label" key="main.save" />
     <ResourceSetter property="gpsButton.label" key="main.gpsButton" />
-  <!--      <ResourceSetter property="gpsData.label" key="main.gps_data" />
+  <!--   These are setted on onLocaleChanged()
+    <ResourceSetter property="gpsData.label" key="main.gps_data" />
     <ResourceSetter property="myTrack.label" key="main.my_track" />
-    <ResourceSetter property="clearGps.label" key="main.clear_gps" /> -->
+    <ResourceSetter property="clearGps.label" key="main.clear_gps" />
+    -->
   </ResourceInjector>
   
   <ResourceInjector bundleName="p2_main" target="{OAuthPanel}">
