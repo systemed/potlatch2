@@ -17,6 +17,7 @@ Many icons used in halcyon/potlatch2 are based on the awesome CC0-licensed SJJB 
 * Flash debug player - http://www.adobe.com/support/flashplayer/downloads.html
 * Basically you might as well just sell your soul to Adobe
 * Ant
+* Java 1.6 
 
 ***Do not use FlexSDK <= 3.3 or > 4***. There are compatibility errors with version 4, and 3.3
 and earlier have this bug: http://bugs.adobe.com/jira/browse/SDK-16705 which is a major issue for the

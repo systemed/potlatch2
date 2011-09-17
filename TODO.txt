@@ -71,7 +71,10 @@
 * Doesn't look like a button
 
 == l10n ==
-* Fix the en_US / default locale problem
+* Localize messages as many languages as possible. 
+  To add langs, you copy files from en_US to id_ID (for example, as your lang_COUNTRY code),
+  and edit *.properties file. That's all. Compiler will automatically find your contributions.
+* Automate updates of message properties and LocalizationMap file refrected from source,  as same function as msgmerge as in gettext utility.
 
 == other ==
 * Simplify.as shouldn't add an action to the global undo stack, since it's called from e.g. importing into other layers
