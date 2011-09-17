@@ -212,7 +212,7 @@
 
   <!-- Deploy compiled Localization Resource Bundles and resources. -->
   <macrodef name="deployLocale" description="Deploying the compiled swfs">
-    <attribute name="locale" default="$(locales.default)"/>
+    <attribute name="locale" default="en_GB"/>
     <sequential>
       <echo>Copying @{locale}.swf to deploy directory...</echo>
 
@@ -224,7 +224,7 @@
 
   <!-- Compiles Localization Resource Bundle. -->
   <macrodef name="compileLocale" description="Compiles the Resource package for the given locale">
-    <attribute name="locale" default="$(locales.default)"/>
+    <attribute name="locale" default="en_GB"/>
     <sequential>
 
       <!--
