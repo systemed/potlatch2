@@ -453,6 +453,14 @@ Quick documentation:
         <font size="12pt">${name}</font>
       </icon>
     </input>
+    <input type="route" name="Mountainbike Routes" description="A signposted route for mountainbikes." category="Cycle" priority="lowest">
+      <match k="type" v="route"/>
+      <match k="route" v="mtb"/>
+      <icon image="features/route__mtb.png" background="#cd935a" foreground="white">
+        <font size="14pt"><b>${ref}</b></font><br/>
+        <font size="12pt">${name}</font>
+      </icon>
+    </input>
   </inputSet>
 
   <inputSet id="bicycle-permission">
