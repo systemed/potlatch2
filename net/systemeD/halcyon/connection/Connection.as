@@ -13,6 +13,7 @@ package net.systemeD.halcyon.connection {
 
 		public var name:String;
 		public var statusFetcher:StatusFetcher;
+		public var inlineStatus:Boolean = false;
         protected var apiBaseURL:String;
         protected var policyURL:String;
         protected var params:Object;
@@ -580,6 +581,9 @@ package net.systemeD.halcyon.connection {
 
         // these are functions that the Connection implementation is expected to
         // provide. This class has some generic helpers for the implementation.
+        /**
+        * Load data for the bounding box given. Usually called in response to pan / zoom requests
+        */
 		public function loadBbox(left:Number, right:Number,
 								top:Number, bottom:Number):void {
 	    }

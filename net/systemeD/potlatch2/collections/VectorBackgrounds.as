@@ -39,8 +39,26 @@ package net.systemeD.potlatch2.collections {
 					Security.loadPolicyFile(String(set.policyfile));
 				}
 
+                // Check for any bounds for the vector layer. Obviously won't kick in during subsequent panning
+                var validBbox:Boolean = false;
+                if (set.@minlon && String(set.@minlon) != '') {
+                    if (((_map.edge_l>set.@minlon && _map.edge_l<set.@maxlon) ||
+                         (_map.edge_r>set.@minlon && _map.edge_r<set.@maxlon) ||
+                         (_map.edge_l<set.@minlon && _map.edge_r>set.@maxlon)) &&
+                        ((_map.edge_b>set.@minlat && _map.edge_b<set.@maxlat) ||
+                         (_map.edge_t>set.@minlat && _map.edge_t<set.@maxlat) ||
+                         (_map.edge_b<set.@minlat && _map.edge_t>set.@maxlat))) {
+                        validBbox = true;
+                    } else {
+                        validBbox = false; // out of bounds
+                    }
+                } else {
+                    validBbox = true; // global set
+                }
+
 				if (set.@disabled == "true") {
-				} else {
+                    // Don't do anything with it. The "disabled" attribute allows examples to appear in the config file
+				} else if (validBbox) {
 
 					var name:String = (set.name == undefined) ? null : String(set.name);
 					var loader:String = set.loader;
@@ -64,10 +82,10 @@ package net.systemeD.potlatch2.collections {
 										dispatchEvent(new Event("layers_changed"));
 									}, false);
 								} else {
-								trace("configured but not loaded isn't supported yet");
+								trace("VectorBackgrounds: configured but not loaded isn't supported yet");
 								}
 							} else {
-								trace("AutoVectorBackground: no url for GPXImporter");
+								trace("VectorBackgrounds: no url for GPXImporter");
 							}
 							break;
 
@@ -79,7 +97,7 @@ package net.systemeD.potlatch2.collections {
 									bugLoader.load();
 								}
 							} else {
-								trace("AutoVectorBackground: error with BugLoader");
+								trace("VectorBackgrounds: error with BugLoader");
 							}
 							break;
 
@@ -91,24 +109,24 @@ package net.systemeD.potlatch2.collections {
 									bikeShopLoader.load();
 								}
 							} else {
-								trace("AutoVectorBackground: no url for BikeShopLoader");
+								trace("VectorBackgrounds: no url for BikeShopLoader");
 							}
 							break;
 
 						case "SnapshotLoader":
 							if (set.url) {
 								name ||= 'Snapshot Server'
-								var snapshotLoader:SnapshotLoader = new SnapshotLoader(_map, String(set.url), name);
+								var snapshotLoader:SnapshotLoader = new SnapshotLoader(_map, String(set.url), name, String(set.style));
 								if (set.@loaded == "true") {
 									snapshotLoader.load();
 								}
 							} else {
-								trace("VectorBackground: no url for SnapshotLoader");
+								trace("VectorBackgrounds: no url for SnapshotLoader");
 							}
 							break;
 
 						default:
-							trace("AutoVectorBackground: unknown loader");
+							trace("VectorBackgrounds: unknown loader: " + loader);
 					}
 				}
 			});
