@@ -8,6 +8,7 @@ package net.systemeD.halcyon.connection {
     import net.systemeD.halcyon.MapEvent;
     import net.systemeD.halcyon.connection.actions.*;
     import net.systemeD.halcyon.Globals;
+    import net.systemeD.quadtree.QuadTree;
 
 	public class Connection extends EventDispatcher {
 
@@ -95,6 +96,9 @@ package net.systemeD.halcyon.connection {
         private var nodePositions:Object = {};
         protected var traces_loaded:Boolean = false;
 		private var loadedBboxes:Array = [];
+		
+		private var nodemap:QuadTree=new QuadTree( {x:-180, y:-90, width:360, height:180}, true );
+		private var waymap:QuadTree =new QuadTree( {x:-180, y:-90, width:360, height:180}, false);
 
 		/** maximum number of ways to keep in memory before purging */
 		protected const MAXWAYS:uint=3000;
