@@ -2,9 +2,12 @@ package net.systemeD.quadtree {
 
 	public class BoundsNode extends Node {
 		
+		/* A list of those children that cross boundaries. (Unfortunately this 
+		   means that those that cross the central boundaries are retrieved by
+		   everything below: see http://www.mikechambers.com/html5/javascript/QuadTree/examples/retrieve_bounds.html ) */
 		private var _stuckChildren:Array=[];
 
-		/* We use this to collect and conctenate items being retrieved. This way
+		/* We use this to collect and concatenate items being retrieved. This way
 		   we don't have to continuously create new Array instances.
 		   Note, when returned from QuadTree.retrieve, we then copy the array. */
 		private var _out:Array=[];
@@ -38,6 +41,16 @@ package net.systemeD.quadtree {
 			}
 		}
 		
+		override public function remove(item:Object):Boolean {
+			for (var i:uint=0; i<_stuckChildren.length; i++) {
+				if (_stuckChildren[i].key==item.key) {
+					_stuckChildren.splice(i,1);
+					return true;
+				}
+			}
+			return super(item);
+		}
+		
 		public function getChildren():Array {
 			return children.concat(_stuckChildren);
 		}
@@ -57,8 +70,8 @@ package net.systemeD.quadtree {
 			super.clear();
 		}
 
-		override protected function newInstance(object:Object, depth:uint):Node {
-			return new BoundsNode(object,depth);
+		override protected function newInstance(object:Object, depth:uint, maxDepth:uint, maxChildren:Number):Node {
+			return new BoundsNode(object,depth,maxDepth,maxChildren);
 		}
 	}
 }

@@ -42,9 +42,22 @@ package net.systemeD.quadtree {
 		
 		public function retrieve(item:Object):Array {
 			if (nodes.length) {
-				return nodes.findIndex(item).retrieve(item);
+				return nodes[findIndex(item)].retrieve(item);
 			}
 			return children;
+		}
+
+		public function remove(item:Object):Boolean {
+			if (nodes.length) {
+				return nodes[findIndex(item)].remove(item);
+			}
+			for (var i:uint=0; i<children.length; i++) {
+				if (children[i].key==item.key) {
+					children.splice(i,1);
+					return true;
+				}
+			}
+			return false;
 		}
 
 		protected function findIndex(item:Object):Number {
@@ -71,10 +84,10 @@ package net.systemeD.quadtree {
 			var bx_b_w_h:Number = bx + b_w_h;
 			var by_b_h_h:Number = by + b_h_h;
 
-			nodes[TOP_LEFT    ] = newInstance({ x:bx      , y:by      , width:b_w_h, height:b_h_h }, depth);
-			nodes[TOP_RIGHT   ] = newInstance({ x:bx_b_w_h, y:by      , width:b_w_h, height:b_h_h }, depth);
-			nodes[BOTTOM_LEFT ] = newInstance({ x:bx      , y:by_b_h_h, width:b_w_h, height:b_h_h }, depth);
-			nodes[BOTTOM_RIGHT] = newInstance({ x:bx_b_w_h, y:by_b_h_h, width:b_w_h, height:b_h_h }, depth);
+			nodes[TOP_LEFT    ] = newInstance({ x:bx      , y:by      , width:b_w_h, height:b_h_h }, depth, _maxDepth, _maxChildren);
+			nodes[TOP_RIGHT   ] = newInstance({ x:bx_b_w_h, y:by      , width:b_w_h, height:b_h_h }, depth, _maxDepth, _maxChildren);
+			nodes[BOTTOM_LEFT ] = newInstance({ x:bx      , y:by_b_h_h, width:b_w_h, height:b_h_h }, depth, _maxDepth, _maxChildren);
+			nodes[BOTTOM_RIGHT] = newInstance({ x:bx_b_w_h, y:by_b_h_h, width:b_w_h, height:b_h_h }, depth, _maxDepth, _maxChildren);
 		}
 
 		public function clear():void {
@@ -83,8 +96,8 @@ package net.systemeD.quadtree {
 			nodes.length=0;
 		}
 		
-		protected function newInstance(object:Object, depth:uint):Node {
-			return new Node(object,depth);
+		protected function newInstance(object:Object, depth:uint, maxDepth:uint, maxChildren:Number):Node {
+			return new Node(object,depth,maxDepth,maxChildren);
 		}
 	}
 }

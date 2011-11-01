@@ -20,8 +20,12 @@ package net.systemeD.quadtree {
 			root=node;
 		}
 
-		public function insert(item:*):void {
+		public function insert(item:Object):void {
 			root.insert(item);
+		}
+		
+		public function remove(item:Object):Boolean {
+			return root.remove(item);
 		}
 
 		public function clear():void {

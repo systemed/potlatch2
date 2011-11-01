@@ -341,7 +341,7 @@ package net.systemeD.halcyon.connection {
             var create:XML = <create version="0.6"/>
             for each( var id:Number in getIDs() ) {
                 var entity:Entity = get(id);
-                if ( id >= 0 || entity.deleted )
+                if ( id >= 0 || entity.isDeleted() )
                     continue;
                     
                 var xml:XML = serialise(entity);
@@ -357,7 +357,7 @@ package net.systemeD.halcyon.connection {
             for each( var id:Number in getIDs() ) {
                 var entity:Entity = get(id);
                 // creates are already included
-                if ( id < 0 || !entity.deleted || entity.parentsLoaded==ifUnused)
+                if ( id < 0 || !entity.isDeleted() || entity.parentsLoaded==ifUnused)
                     continue;
                     
                 var xml:XML = serialise(entity);
@@ -372,7 +372,7 @@ package net.systemeD.halcyon.connection {
             for each( var id:Number in getIDs() ) {
                 var entity:Entity = get(id);
                 // creates and deletes are already included
-                if ( id < 0 || entity.deleted || !entity.isDirty )
+                if ( id < 0 || entity.isDeleted() || !entity.isDirty )
                     continue;
                     
                 var xml:XML = serialise(entity);

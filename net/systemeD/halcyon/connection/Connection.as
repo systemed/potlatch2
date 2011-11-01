@@ -97,8 +97,8 @@ package net.systemeD.halcyon.connection {
         protected var traces_loaded:Boolean = false;
 		private var loadedBboxes:Array = [];
 		
-		private var nodemap:QuadTree=new QuadTree( {x:-180, y:-90, width:360, height:180}, true );
-		private var waymap:QuadTree =new QuadTree( {x:-180, y:-90, width:360, height:180}, false);
+		private var nodeMap:QuadTree=new QuadTree( {x:-180, y:-90, width:360, height:180}, true );
+		private var wayMap:QuadTree =new QuadTree( {x:-180, y:-90, width:360, height:180}, false);
 
 		/** maximum number of ways to keep in memory before purging */
 		protected const MAXWAYS:uint=3000;
@@ -138,10 +138,14 @@ package net.systemeD.halcyon.connection {
 
 		protected function renumberNode(oldID:Number, newID:Number, version:uint):void {
 			var node:Node=nodes[oldID];
+			removeFromNodeMap(node);
 			if (oldID!=newID) { removeDupe(node); }
 			node.renumber(newID, version);
+			addToNodeMap(node);
 			if (oldID==newID) return;					// if only a version change, return
+
 			nodes[newID]=node;
+			addToNodeMap(node);
 			addDupe(node);
 			if (node.loaded) { sendEvent(new EntityRenumberedEvent(NODE_RENUMBERED, node, oldID),false); }
 			delete nodes[oldID];
@@ -149,8 +153,11 @@ package net.systemeD.halcyon.connection {
 
 		protected function renumberWay(oldID:Number, newID:Number, version:uint):void {
 			var way:Way=ways[oldID];
+			removeFromWayMap(way);
 			way.renumber(newID, version);
+			addToWayMap(way);
 			if (oldID==newID) return;
+			
 			ways[newID]=way;
 			if (way.loaded) { sendEvent(new EntityRenumberedEvent(WAY_RENUMBERED, way, oldID),false); }
 			delete ways[oldID];
@@ -209,6 +216,21 @@ package net.systemeD.halcyon.connection {
 				case 'relation': return getRelation(id);
 				default:         return null;
 			}
+		}
+
+		// Update quadtree
+		
+		public function addToNodeMap(node:Node):void {
+			nodeMap.insert({x:node.lon, y:node.lat, key:node});
+		}
+		public function removeFromNodeMap(node:Node):void {
+			nodeMap.remove({x:node.lon, y:node.lat, key:node});
+		}
+		public function addToWayMap(way:Way):void {
+			nodeMap.insert({x:way.left, y:way.bottom, width:way.right-way.left, height:way.top-way.bottom, key:way});
+		}
+		public function removeFromWayMap(way:Way):void {
+			nodeMap.remove({x:way.left, y:way.bottom, width:way.right-way.left, height:way.top-way.bottom, key:way});
 		}
 
 		// Remove data from Connection
@@ -328,9 +350,9 @@ package net.systemeD.halcyon.connection {
 
 		public function getAllLoadedEntities():Array {
 			var list:Array = []; var entity:Entity;
-			for each (entity in relations) { if (entity.loaded && !entity.deleted) list.push(entity); }
-			for each (entity in ways     ) { if (entity.loaded && !entity.deleted) list.push(entity); }
-			for each (entity in nodes    ) { if (entity.loaded && !entity.deleted) list.push(entity); }
+			for each (entity in relations) { if (entity.loaded && !entity.isDeleted()) list.push(entity); }
+			for each (entity in ways     ) { if (entity.loaded && !entity.isDeleted()) list.push(entity); }
+			for each (entity in nodes    ) { if (entity.loaded && !entity.isDeleted()) list.push(entity); }
 			return list;
 		}
 
@@ -340,7 +362,7 @@ package net.systemeD.halcyon.connection {
             var list:Array = [];
             for each (var relation:Relation in relations) {
                 var ok: Boolean = true;
-				if (relation.deleted) { continue; }
+				if (relation.isDeleted()) { continue; }
 				for (var k:String in match) {
 					var v:String = relation.getTagsHash()[k];
 					if (!v || match[k].indexOf(v) < 0) { 

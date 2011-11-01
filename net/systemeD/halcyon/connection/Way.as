@@ -16,6 +16,7 @@ package net.systemeD.halcyon.connection {
             this.nodes = nodes;
 			for each (var node:Node in nodes) { node.addParent(this); }
 			calculateBbox();
+			connection.addToWayMap(this);
         }
 
 		public function update(version:uint, tags:Object, loaded:Boolean, parentsLoaded:Boolean, nodes:Array, uid:Number = NaN, timestamp:String = null):void {
@@ -26,17 +27,36 @@ package net.systemeD.halcyon.connection {
 			calculateBbox();
 		}
 		
+		override public function setDeletedState(isDeleted:Boolean):void {
+			connection.removeFromWayMap(this);
+			deleted = isDeleted;
+			if (!deleted) connection.addToWayMap(this);
+		}
+
         public function get length():uint {
             return nodes.length;
         }
 
-		private function calculateBbox():void {
-			edge_l=999999; edge_r=-999999;
-			edge_b=999999; edge_t=-999999;
-			for each (var node:Node in nodes) { expandBbox(node); }
-		}
+        public function get left():Number   { return edge_l; }
+        public function get right():Number  { return edge_r; }
+        public function get top():Number    { return edge_t; }
+        public function get bottom():Number { return edge_b; }
 
 		public function expandBbox(node:Node):void {
+			connection.removeFromWayMap(this);
+			updateBboxFromNode(node);
+			connection.addToWayMap(this);
+		}
+
+		private function calculateBbox():void {
+			connection.removeFromWayMap(this);
+			edge_l=999999; edge_r=-999999;
+			edge_b=999999; edge_t=-999999;
+			for each (var node:Node in nodes) { updateBboxFromNode(node); }
+			connection.addToWayMap(this);
+		}
+
+		private function updateBboxFromNode(node:Node):void {
 			edge_l=Math.min(edge_l,node.lon);
 			edge_r=Math.max(edge_r,node.lon);
 			edge_b=Math.min(edge_b,node.lat);
@@ -253,6 +273,7 @@ package net.systemeD.halcyon.connection {
 		}
 
 		public override function nullify():void {
+			connection.removeFromWayMap(this);
 			nullifyEntity();
 			nodes=[];
 			edge_l=edge_r=edge_t=edge_b=NaN;

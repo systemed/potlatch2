@@ -21,7 +21,7 @@ package net.systemeD.halcyon.connection {
 		public var status:String;
         /** Lock against purging when off-screen */
         public var locked:Boolean = false;
-        public var deleted:Boolean = false;
+        protected var deleted:Boolean = false;
         /** Have all its parents (ie, relations that contain this object as a member, ways that contain this node) been loaded into memory */
         public var parentsLoaded:Boolean = true;
 
@@ -219,15 +219,7 @@ package net.systemeD.halcyon.connection {
         /** Mark entity as deleted. */
         public function setDeletedState(isDeleted:Boolean):void {
             deleted = isDeleted;
-            if (this is Node) {
-                var n:Node = Node(this);
-                if (isDeleted) {
-                    connection.removeDupe(n);
-                } else {
-                    connection.addDupe(n);
-                }
-            }
-        }
+		}
 
         /** Whether entity is "empty" - to be overridden by subclass. */
         internal function isEmpty():Boolean {

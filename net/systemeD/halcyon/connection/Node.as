@@ -12,10 +12,22 @@ package net.systemeD.halcyon.connection {
             this._lat = lat;
             this._latproj = lat2latp(lat);
             this._lon = lon;
+			connection.addToNodeMap(this);
         }
 
 		public function update(version:uint, tags:Object, loaded:Boolean, parentsLoaded:Boolean, lat:Number, lon:Number, uid:Number = NaN, timestamp:String = null):void {
 			updateEntityProperties(version,tags,loaded,parentsLoaded,uid,timestamp); setLatLonImmediate(lat,lon);
+		}
+		
+		override public function setDeletedState(isDeleted:Boolean):void {
+			connection.removeFromNodeMap(this);
+			deleted = isDeleted;
+			if (deleted) {
+				connection.removeDupe(this);
+			} else {
+				connection.addDupe(this);
+				connection.addToNodeMap(this);
+			}
 		}
 
         public function get lat():Number {
@@ -32,9 +44,11 @@ package net.systemeD.halcyon.connection {
 
         private function setLatLonImmediate(lat:Number, lon:Number):void {
             connection.removeDupe(this);
+			connection.removeFromNodeMap(this);
             this._lat = lat;
             this._latproj = lat2latp(lat);
             this._lon = lon;
+			connection.addToNodeMap(this);
             connection.addDupe(this);
 			for each (var way:Way in this.parentWays) {
 				way.expandBbox(this);

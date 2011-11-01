@@ -51,7 +51,7 @@ package net.systemeD.halcyon {
 
         override public function doRedraw():Boolean {
             if (!paint.ready) { return false; }
-            if (entity.deleted) { return false; }
+            if (entity.isDeleted()) { return false; }
 
             var tags:Object = entity.getTagsCopy();
             setStateClass('poi', !entity.hasParentWays);

@@ -31,7 +31,7 @@ package net.systemeD.halcyon.connection.actions {
 				   entity.dispatchEvent(new WayNodeEvent(Connection.WAY_NODE_REMOVED, removedNode, way, index));
 				}
 			}
-			way.deleted = nodeList.length == 0;
+			way.setDeletedState(nodeList.length == 0);
 			markDirty();
 			return SUCCESS;
 		}
@@ -44,7 +44,7 @@ package net.systemeD.halcyon.connection.actions {
 					entity.dispatchEvent(new WayNodeEvent(Connection.WAY_NODE_ADDED, removed[i], way, index));
 				}
 			}
-			way.deleted = nodeList.length == 0;
+			way.setDeletedState(nodeList.length == 0);
 			markClean();
 			return SUCCESS;
         }

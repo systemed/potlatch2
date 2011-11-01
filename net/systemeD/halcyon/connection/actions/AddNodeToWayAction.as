@@ -21,7 +21,7 @@ package net.systemeD.halcyon.connection.actions {
             var way:Way = entity as Way;
 
 			// undelete way if it was deleted before (only happens on redo)
-			if (way.deleted) {
+			if (way.isDeleted()) {
 				way.setDeletedState(false);
 				if (!firstNode.hasParentWays) firstNode.connection.unregisterPOI(firstNode);
 				firstNode.addParent(way);
