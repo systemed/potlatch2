@@ -6,8 +6,7 @@ package net.systemeD.potlatch2.controller {
 	
 	import net.systemeD.halcyon.MapPaint;
 	import net.systemeD.halcyon.connection.*;
-	import net.systemeD.potlatch2.tools.Quadrilateralise;
-	import net.systemeD.potlatch2.tools.Simplify;
+	import net.systemeD.potlatch2.tools.*;
 
     /** Behaviour that takes place while a way is selected includes: adding a node to the way, straightening/reshaping the way, dragging it. */
     public class SelectedWay extends ControllerState {
@@ -78,6 +77,7 @@ package net.systemeD.potlatch2.controller {
 			}
 			if (!layer.isBackground) {
 				switch (event.keyCode) {
+					case 77:  /* M */		MagicWand.fromDetection(firstSelected as Way, MainUndoStack.getGlobalStack().addAction); return this;
 					case 80:  /* P */       return new SelectedParallelWay(firstSelected as Way); 
 					case 81:  /* Q */       Quadrilateralise.quadrilateralise(firstSelected as Way, MainUndoStack.getGlobalStack().addAction); return this;
 					case 86:  /* V */       Way(firstSelected).reverseNodes(MainUndoStack.getGlobalStack().addAction); return this;
