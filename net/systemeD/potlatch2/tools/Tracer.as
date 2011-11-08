@@ -5,7 +5,6 @@ package net.systemeD.potlatch2.tools {
 
 	/**	Automatically trace vectors from a tiled background.
 		Still to do:
-		- do something if there are no junctions at all, just one isolated way
 		- don't hardcode tolerances
 		- pick up coloursets (including 'ignorable' colours for streetnames) from imagery.xml
 		- automatically join adjacent ways with a similar bearing
@@ -52,11 +51,18 @@ package net.systemeD.potlatch2.tools {
 
 			// mark the junctions
 			stack=[];
+			var deadEnd:TracerPoint;
 			for (var x:Number=xmin; x<=xmax; x++) {
 				for (var y:Number=ymin; y<=ymax; y++) {
 					if (!pixelExists(x,y)) continue;
-					if (connections(x,y).length>2) { pixels[x][y].junction=true; stack.push(pixels[x][y]); }
+					var conns:Array=connections(x,y);
+					if (conns.length>2) { pixels[x][y].junction=true; stack.push(pixels[x][y]); }
+					else if (conns.length==1) { deadEnd=pixels[x][y]; }
 				}
+			}
+			// if no junctions but just one isolated dead-end, use that
+			if (stack.length==0 && deadEnd) {
+				stack.push(deadEnd); deadEnd.junction=true;
 			}
 
 			// slim junctions so we don't have two next to each other unnecessarily
