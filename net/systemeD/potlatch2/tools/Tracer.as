@@ -5,10 +5,10 @@ package net.systemeD.potlatch2.tools {
 
 	/**	Automatically trace vectors from a tiled background.
 		Still to do:
-		- don't hardcode tolerances
 		- pick up coloursets (including 'ignorable' colours for streetnames) from imagery.xml
 		- automatically join adjacent ways with a similar bearing
 		- show some progress display
+		- split into chunks so it can be run asynchronously
 		- don't break utterly if you try and trace a non-road thing
 		- be zoom-level sensitive (currently works best at OSSV 16)
 		- crop to viewport only (optionally?)
@@ -23,6 +23,12 @@ package net.systemeD.potlatch2.tools {
 		private var pixels:Object={};	// hash of pixels by x,y
 		private var xmin:Number=Number.POSITIVE_INFINITY, xmax:Number=Number.NEGATIVE_INFINITY;
 		private var ymin:Number=Number.POSITIVE_INFINITY, ymax:Number=Number.NEGATIVE_INFINITY;
+
+		private static const COLOUR_TOLERANCE:uint=15;
+		private static const MINIMUM_PATH_LENGTH:uint=4;
+		private static const MINIMUM_DEAD_END_LENGTH:uint=10;
+		private static const SIMPLIFY_TOLERANCE:Number=3;
+		private static const DUPE_TOLERANCE:uint=2;
 
 		private static var neighbourhoods:Array=[
 			0,0,0,1,0,0,1,3,0,0,3,1,1,0,1,3,0,0,0,0,0,0,0,0,2,0,2,0,3,0,3,3,
@@ -123,7 +129,7 @@ package net.systemeD.potlatch2.tools {
 
 			var lab:Object=TracerPoint.lab(rgb);
 			var diff:Number=p.difference(lab.l,lab.a,lab.b);
-			if (diff<15) {
+			if (diff<COLOUR_TOLERANCE) {
 				newp=new TracerPoint(newx,newy,false,lab.l,lab.a,lab.b);
 				stack.push(newp); addToPixels(newp);
 // map.tileset.setPixel(newx,newy,0);
@@ -285,7 +291,7 @@ package net.systemeD.potlatch2.tools {
 					var way:Array=[];
 					r=p;
 					do { way.push(r); r=getMD(parents,r); } while(r);
-					if (way.length<4) continue;
+					if (way.length<MINIMUM_PATH_LENGTH) continue;
 					if (way[0].x>way[way.length-1].x) way.reverse();
 					ways.push(way);
 				}
@@ -309,11 +315,11 @@ package net.systemeD.potlatch2.tools {
 			var xa:Number, xb:Number;
 			var ya:Number, yb:Number;
 			var l:Number, d:Number, i:uint;
-			var tolerance:Number=3;
+			var tolerance:Number=SIMPLIFY_TOLERANCE;
 			var furthest:uint, furthdist:Number, float:uint;
 			for each (way in ways) {
 				if (way.length==0) continue;
-				if (way.length<10 && isDeadEnd(way)) { way=[]; continue; }
+				if (way.length<MINIMUM_DEAD_END_LENGTH && isDeadEnd(way)) { way=[]; continue; }
 				var tokeep:Array=[];
 				stack=[way.length-1];
 				var anchor:uint=0;
@@ -374,10 +380,10 @@ package net.systemeD.potlatch2.tools {
 			var dx:uint,dy:uint;
 			dx=Math.abs(way1[0].x-way2[0].x);
 			dy=Math.abs(way1[0].y-way2[0].y);
-			if (dx>2 || dy>2) return false;
+			if (dx>DUPE_TOLERANCE || dy>DUPE_TOLERANCE) return false;
 			dx=Math.abs(way1[way1.length-1].x-way2[way2.length-1].x);
 			dy=Math.abs(way1[way1.length-1].y-way2[way2.length-1].y);
-			if (dx>2 || dy>2) return false;
+			if (dx>DUPE_TOLERANCE || dy>DUPE_TOLERANCE) return false;
 			return true;
 		}
 		
