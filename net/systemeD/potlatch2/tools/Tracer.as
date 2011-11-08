@@ -12,6 +12,8 @@ package net.systemeD.potlatch2.tools {
 		- show some progress display
 		- don't break utterly if you try and trace a non-road thing
 		- be zoom-level sensitive (currently works best at OSSV 16)
+		- crop to viewport only (optionally?)
+		- magically join to existing nodes/ways (using quadtree I guess)
 	*/
 
 	public class Tracer {
