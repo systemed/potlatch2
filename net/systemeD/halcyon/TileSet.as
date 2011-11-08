@@ -253,20 +253,48 @@ package net.systemeD.halcyon {
 			update();
 		}
 
+		// ------------------------------------------------------------------
+		// Bitmap handling functions
+		
+		public function pixelAt(px:Number,py:Number):uint {
+			var tileX:uint=px>>8; var tilePX:uint=px & 0xFF;
+			var tileY:uint=py>>8; var tilePY:uint=py & 0xFF;
+			var tile:Loader=tiles[map.scale+","+tileX+","+tileY];
+			if (!tile) return NaN;
+			if (!tile.contentLoaderInfo.content) return NaN;
+			var bitmap:BitmapData=Bitmap(tile.contentLoaderInfo.content).bitmapData;
+			return bitmap.getPixel(tilePX,tilePY);
+		}
+		
+		public function setPixel(px:Number,py:Number,colour:uint):void {
+			var tileX:uint=px>>8; var tilePX:uint=px & 0xFF;
+			var tileY:uint=py>>8; var tilePY:uint=py & 0xFF;
+			var tile:Loader=tiles[map.scale+","+tileX+","+tileY];
+			if (!tile) return;
+			var bitmap:BitmapData=Bitmap(tile.contentLoaderInfo.content).bitmapData;
+			bitmap.setPixel(tilePX,tilePY,colour);
+		}
 		
 		// ------------------------------------------------------------------
 		// Co-ordinate conversion functions
 
-		private function lon2tile(lon:Number):int {
-			return (Math.floor((lon+180)/360*Math.pow(2,map.scale)));
+		public function lon2tile(lon:Number):int  { return (Math.floor(lon2tileFloat(lon))); }
+		public function lat2tile(lat:Number):int  { return (Math.floor(lat2tileFloat(lat))); }
+		public function lon2pixel(lon:Number):Number { return (Math.floor(lon2tileFloat(lon)*256)); }
+		public function lat2pixel(lat:Number):Number { return (Math.floor(lat2tileFloat(lat)*256)); }
+		public function pixel2lon(t:Number):Number { return tile2lon(t/256); }
+		public function pixel2lat(t:Number):Number { return tile2lat(t/256); }
+
+		private function lon2tileFloat(lon:Number):Number {
+			return ((lon+180)/360*Math.pow(2,map.scale));
 		}
-		private function lat2tile(lat:Number):int { 
-			return (Math.floor((1-Math.log(Math.tan(lat*Math.PI/180) + 1/Math.cos(lat*Math.PI/180))/Math.PI)/2 *Math.pow(2,map.scale)));
+		private function lat2tileFloat(lat:Number):Number {
+			return ((1-Math.log(Math.tan(lat*Math.PI/180) + 1/Math.cos(lat*Math.PI/180))/Math.PI)/2 *Math.pow(2,map.scale));
 		}
-		private function tile2lon(t:int):Number {
+		private function tile2lon(t:Number):Number {
 			return (t/Math.pow(2,map.scale)*360-180);
 		}
-		private function tile2lat(t:int):Number { 
+		private function tile2lat(t:Number):Number { 
 			var n:Number=Math.PI-2*Math.PI*t/Math.pow(2,map.scale);
 			return (180/Math.PI*Math.atan(0.5*(Math.exp(n)-Math.exp(-n))));
 		}

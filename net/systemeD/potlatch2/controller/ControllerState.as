@@ -8,6 +8,7 @@ package net.systemeD.potlatch2.controller {
     import net.systemeD.potlatch2.EditController;
 	import net.systemeD.potlatch2.save.SaveManager;
 	import net.systemeD.potlatch2.utils.SnapshotConnection;
+	import net.systemeD.potlatch2.tools.Tracer;
 	import flash.ui.Keyboard;
 	import mx.controls.Alert;
 	import mx.events.CloseEvent;
@@ -149,6 +150,9 @@ package net.systemeD.potlatch2.controller {
 					return new SelectArea(event.localX,event.localY,selection);
 				}
 
+			} else if ( event.type==MouseEvent.MOUSE_UP && focus == null && map.dragstate!=map.DRAGGING && event.altKey) {
+				new Tracer(controller.map.mouseX,controller.map.mouseY,controller.map);
+				return new NoSelection();
             } else if ( event.type==MouseEvent.MOUSE_UP && focus == null && map.dragstate!=map.DRAGGING && !event.ctrlKey) {
                 return (this is NoSelection) ? null : new NoSelection();
             }

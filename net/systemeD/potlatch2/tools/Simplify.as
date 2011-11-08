@@ -79,15 +79,15 @@ package net.systemeD.potlatch2.tools {
 			MainUndoStack.getGlobalStack().addAction(action);
 		}
 		
-		private static function getDistance(ax:Number,ay:Number,bx:Number,by:Number,l:Number,cx:Number,cy:Number):Number {
+		public static function getDistance(ax:Number,ay:Number,bx:Number,by:Number,l:Number,cx:Number,cy:Number):Number {
 			// l=length of line
 			// r=proportion along AB line (0-1) of nearest point
 			var r:Number;
-                        if (l > 0) {
-                                r=((cx-ax)*(bx-ax)+(cy-ay)*(by-ay))/(l*l);
-                        } else {
-                                r=0;
-                        }
+			if (l > 0) {
+				r=((cx-ax)*(bx-ax)+(cy-ay)*(by-ay))/(l*l);
+			} else {
+				r=0;
+			}
 			// now find the length from cx,cy to ax+r*(bx-ax),ay+r*(by-ay)
 			var px:Number=(ax+r*(bx-ax)-cx);
 			var py:Number=(ay+r*(by-ay)-cy);
