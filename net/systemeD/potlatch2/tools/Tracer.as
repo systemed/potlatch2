@@ -1,14 +1,13 @@
 package net.systemeD.potlatch2.tools {
 	import net.systemeD.halcyon.connection.*;
 	import net.systemeD.halcyon.Map;
-	import flash.utils.Dictionary;
+	import flash.utils.*;
 
 	/**	Automatically trace vectors from a tiled background.
 		Still to do:
-		- pick up coloursets (including 'ignorable' colours for streetnames) from imagery.xml
+		- pick up coloursets (including background colour, and 'ignorable' colours for streetnames) from imagery.xml
 		- automatically join adjacent ways with a similar bearing
 		- show some progress display
-		- split into chunks so it can be run asynchronously
 		- don't break utterly if you try and trace a non-road thing
 		- be zoom-level sensitive (currently works best at OSSV 16)
 		- crop to viewport only (optionally?) - maybe just "don't extend from junctions outside the viewport"
@@ -21,8 +20,14 @@ package net.systemeD.potlatch2.tools {
 		private var map:Map;
 		private var stack:Array=[];		// list of 'open' pixels
 		private var pixels:Object={};	// hash of pixels by x,y
+		
+		private var timeout:uint;		// timer so we don't hit Flash's 15-second timeout
+		private var pass:uint=0;		// thinning pass
+
+		private var bgcolor:Object;		// background colour to avoid
 
 		private static const COLOUR_TOLERANCE:uint=15;
+		private static const BACKGROUND_TOLERANCE:uint=1;
 		private static const MINIMUM_PATH_LENGTH:uint=4;
 		private static const MINIMUM_DEAD_END_LENGTH:uint=10;
 		private static const SIMPLIFY_TOLERANCE:Number=3;
@@ -38,21 +43,22 @@ package net.systemeD.potlatch2.tools {
 			2,3,1,3,0,0,1,3,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 			2,3,0,1,0,0,0,1,0,0,0,0,0,0,0,0,3,3,0,1,0,0,0,0,2,2,0,0,2,0,0,0];
 
-		public function Tracer(startX:Number,startY:Number,map:Map):void {
+		public function Tracer(startX:Number,startY:Number,map:Map,options:Object=null):void {
 			this.map=map;
 			connection=map.editableLayer.connection;
 
+			if (options && options['background']) bgcolor=TracerPoint.lab(options['background'])
+
 			var px:Number=map.tileset.lon2pixel(map.coord2lon(startX));
 			var py:Number=map.tileset.lat2pixel(map.coord2lat(startY));
-			createPixelIndex(px,py);
+			startPixelIndex(px,py);
+		}
+		
+		/* Once we have a pixel skeleton, rationalise junctions, create pixel chains, and make ways. */
+		
+		private function makeWaysFromSkeleton():void {
+			clearTimeout(timeout);
 			
-			// make lines into skeletons
-			var pass:uint=0, removed:uint;
-			do {
-				removed=thin(pass);
-				pass++;
-			} while (removed>0);
-
 			// mark the junctions
 			stack=[];
 			var deadEnd:TracerPoint;
@@ -71,6 +77,7 @@ package net.systemeD.potlatch2.tools {
 			}
 
 			// slim junctions so we don't have two next to each other unnecessarily
+			var removed:uint;
 			do { removed=thinJunctions(); } while (removed>0);
 			
 			// create pixel chains
@@ -84,18 +91,29 @@ package net.systemeD.potlatch2.tools {
 			createPixelChains();
 		}
 		
+		// -------------------------------------------------------------------------------------------------------------------
 		/* Flood-fill from the clicked point, and store the results in pixels[][] */
-		
-		private function createPixelIndex(startX:Number,startY:Number):void {
+
+		private function startPixelIndex(startX:Number,startY:Number):void {
 			var rgb:int=map.tileset.pixelAt(startX,startY); if (!rgb) return;
 			stack=[new TracerPoint(startX,startY,false,rgb)];
 			addToPixels(stack[0]);
-
-			while (stack.length>0) {
+			timeout=setTimeout(runPixelIndex,50);
+		}
+		
+		private function runPixelIndex():void {
+			clearTimeout(timeout);
+			var time:uint=getTimer();
+			while (stack.length>0 && (getTimer()<time+5000)) {
 				var p:TracerPoint=stack.shift();
 				newFromOffset(p,-1,-1); newFromOffset(p,-1, 0); newFromOffset(p,-1, 1);
 				newFromOffset(p, 0,-1);                         newFromOffset(p, 0, 1);
 				newFromOffset(p, 1,-1); newFromOffset(p, 1, 0); newFromOffset(p, 1, 1);
+			}
+			if (stack.length>0) {
+				timeout=setTimeout(runPixelIndex,50);
+			} else {
+				timeout=setTimeout(runThin,50);
 			}
 		}
 
@@ -127,7 +145,13 @@ package net.systemeD.potlatch2.tools {
 
 			var lab:Object=TracerPoint.lab(rgb);
 			var diff:Number=p.difference(lab.l,lab.a,lab.b);
+			var addit:Boolean=false;
 			if (diff<COLOUR_TOLERANCE) {
+				addit=true;
+				if (bgcolor && p.difference(bgcolor.l,bgcolor.a,bgcolor.b)<BACKGROUND_TOLERANCE) addit=false;
+			}
+			
+			if (addit) {
 				newp=new TracerPoint(newx,newy,false,lab.l,lab.a,lab.b);
 				stack.push(newp); addToPixels(newp);
 // map.tileset.setPixel(newx,newy,0);
@@ -138,9 +162,22 @@ package net.systemeD.potlatch2.tools {
 			}
 		}
 
+		// -------------------------------------------------------------------------------------------------------------------
 		/* Thin the filled image to a simple skeleton.
 		   Code adapted from ImageJ (public domain - thanks!)
 		   http://rsbweb.nih.gov/ij/developer/source/ij/process/BinaryProcessor.java.html */
+
+		private function runThin():void {
+			clearTimeout(timeout);
+			var time:uint=getTimer();
+			var removed:uint=1;
+			while (removed>0 && (getTimer()<time+5000)) {
+				removed=thin(pass);
+				pass++;
+			}
+			if (removed>0) { timeout=setTimeout(runThin,50); }
+			          else { timeout=setTimeout(makeWaysFromSkeleton,50); }
+		}
 
 		private function thin(pass:int):uint {
 			var removed:uint=0;

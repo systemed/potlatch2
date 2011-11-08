@@ -151,7 +151,7 @@ package net.systemeD.potlatch2.controller {
 				}
 
 			} else if ( event.type==MouseEvent.MOUSE_UP && focus == null && map.dragstate!=map.DRAGGING && event.altKey) {
-				new Tracer(controller.map.mouseX,controller.map.mouseY,controller.map);
+				new Tracer(controller.map.mouseX,controller.map.mouseY,controller.map,{background:0xFFFFEE});
 				return new NoSelection();
             } else if ( event.type==MouseEvent.MOUSE_UP && focus == null && map.dragstate!=map.DRAGGING && !event.ctrlKey) {
                 return (this is NoSelection) ? null : new NoSelection();
