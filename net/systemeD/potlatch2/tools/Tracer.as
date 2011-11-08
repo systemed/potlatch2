@@ -11,7 +11,7 @@ package net.systemeD.potlatch2.tools {
 		- split into chunks so it can be run asynchronously
 		- don't break utterly if you try and trace a non-road thing
 		- be zoom-level sensitive (currently works best at OSSV 16)
-		- crop to viewport only (optionally?)
+		- crop to viewport only (optionally?) - maybe just "don't extend from junctions outside the viewport"
 		- magically join to existing nodes/ways (using quadtree I guess)
 	*/
 
@@ -21,8 +21,6 @@ package net.systemeD.potlatch2.tools {
 		private var map:Map;
 		private var stack:Array=[];		// list of 'open' pixels
 		private var pixels:Object={};	// hash of pixels by x,y
-		private var xmin:Number=Number.POSITIVE_INFINITY, xmax:Number=Number.NEGATIVE_INFINITY;
-		private var ymin:Number=Number.POSITIVE_INFINITY, ymax:Number=Number.NEGATIVE_INFINITY;
 
 		private static const COLOUR_TOLERANCE:uint=15;
 		private static const MINIMUM_PATH_LENGTH:uint=4;
@@ -58,8 +56,9 @@ package net.systemeD.potlatch2.tools {
 			// mark the junctions
 			stack=[];
 			var deadEnd:TracerPoint;
-			for (var x:Number=xmin; x<=xmax; x++) {
-				for (var y:Number=ymin; y<=ymax; y++) {
+			for (var xs:String in pixels) {
+				for (var ys:String in pixels[xs]) {
+					var x:Number=Number(xs); var y:Number=Number(ys);
 					if (!pixelExists(x,y)) continue;
 					var conns:Array=connections(x,y);
 					if (conns.length>2) { pixels[x][y].junction=true; stack.push(pixels[x][y]); }
@@ -76,8 +75,9 @@ package net.systemeD.potlatch2.tools {
 			
 			// create pixel chains
 			stack=[];
-			for (x=xmin; x<=xmax; x++) {
-				for (y=ymin; y<=ymax; y++) {
+			for (xs in pixels) {
+				for (ys in pixels[xs]) {
+					x=Number(xs); y=Number(ys);
 					if (pixelExists(x,y) && pixels[x][y].junction) { stack.push(pixels[x][y]); }
 				}
 			}
@@ -102,8 +102,6 @@ package net.systemeD.potlatch2.tools {
 		private function addToPixels(p:TracerPoint):void {
 			if (!pixels[p.x]) { pixels[p.x]={}; }
 			pixels[p.x][p.y]=p;
-			xmin=Math.min(p.x,xmin); xmax=Math.max(p.x,xmax);
-			ymin=Math.min(p.y,ymin); ymax=Math.max(p.y,ymax);
 		}
 		private function deletePixel(p:TracerPoint):void {
 			delete pixels[p.x][p.y];
@@ -147,8 +145,9 @@ package net.systemeD.potlatch2.tools {
 		private function thin(pass:int):uint {
 			var removed:uint=0;
 			var toRemove:Array=[];
-			for (var x:Number=xmin; x<=xmax; x++) {
-				for (var y:Number=ymin; y<=ymax; y++) {
+			for (var xs:String in pixels) {
+				for (var ys:String in pixels[xs]) {
+					var x:Number=Number(xs); var y:Number=Number(ys);
 					if (!pixelExists(x,y)) continue;
 					var p:TracerPoint=pixels[x][y];
 
@@ -182,8 +181,9 @@ package net.systemeD.potlatch2.tools {
 		
 		private function thinJunctions():uint {
 			var removed:uint=0;
-			for (var x:Number=xmin; x<=xmax; x++) {
-				for (var y:Number=ymin; y<=ymax; y++) {
+			for (var xs:String in pixels) {
+				for (var ys:String in pixels[xs]) {
+					var x:Number=Number(xs); var y:Number=Number(ys);
 					if (!pixelExists(x,y)) continue;
 					if (!pixels[x][y].junction) continue;
 
