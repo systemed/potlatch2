@@ -25,21 +25,25 @@ package net.systemeD.potlatch2.controller {
 
 			if (event.type==MouseEvent.MOUSE_UP && (focus==null || (paint && paint.isBackground)) && map.dragstate!=map.DRAGGING && map.dragstate!=map.SWALLOW_MOUSEUP) {
 				map.dragstate=map.NOT_DRAGGING;
-				// ** FIXME: BeginWayAction ought to be a discrete class
-				/*var undo:CompositeUndoableAction = new BeginWayAction();
 				var conn:Connection = layer.connection;
-				var startNode:Node = conn.createNode(
-					{}, 
-					controller.map.coord2lat(event.localY),
-					controller.map.coord2lon(event.localX), undo.push);
-				var way:Way = conn.createWay({}, [startNode], undo.push);*/
-				var undo:BeginWayAction = new BeginWayAction(
-				    layer.connection,
+				
+				// User just created a node...
+				var nodeAction:CreatePOIAction = new CreatePOIAction(
+				    conn, 
+				    {}, 
 				    controller.map.coord2lat(event.localY), 
 				    controller.map.coord2lon(event.localX));
-                MainUndoStack.getGlobalStack().addAction(undo);
 				
-				return new DrawWay(undo.getWay(), true, false);
+				MainUndoStack.getGlobalStack().addAction(nodeAction);
+
+				// And a way. See BeginWayAction doco for why we keep these separate.
+				var wayAction:BeginWayAction = new BeginWayAction(
+				    layer.connection,
+				    nodeAction.getNode());
+
+                MainUndoStack.getGlobalStack().addAction(wayAction);
+				
+				return new DrawWay(wayAction.getWay(), true, false);
 			}
 			return this;
 		}
