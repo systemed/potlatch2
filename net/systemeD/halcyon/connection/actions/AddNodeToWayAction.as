@@ -35,12 +35,6 @@ package net.systemeD.halcyon.connection.actions {
             markDirty();
 			way.expandBbox(node);
             
-            // sadly this gets ignored
-            /*            if (way.length == 1) {
-            	// way had no nodes before, so this event was probably ignored by WayUI etc.
-                way.dispatchEvent(new EntityEvent(Connection.NEW_WAY,way));
-            }*/ 
-
             way.dispatchEvent(new WayNodeEvent(Connection.WAY_NODE_ADDED, node, way, index));
             
             return SUCCESS;
