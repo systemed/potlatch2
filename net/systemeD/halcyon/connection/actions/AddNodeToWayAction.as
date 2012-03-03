@@ -63,8 +63,21 @@ package net.systemeD.halcyon.connection.actions {
 				way.dispatchEvent(new EntityEvent(Connection.WAY_DELETED, way));
 				firstNode=way.getNode(0);
 				firstNode.removeParent(way);
-				if (!firstNode.hasParentWays) firstNode.connection.registerPOI(firstNode);
-				MainUndoStack.getGlobalStack().removeLastIfAction(BeginWayAction);
+				var bwa: BeginWayAction;
+				bwa = MainUndoStack.getGlobalStack().removeLastIfAction(BeginWayAction) as BeginWayAction;
+                if (!firstNode.hasParentWays) {
+                    var cpa: CreatePOIAction = new CreatePOIAction(
+                        way.connection,
+                        firstNode.getTagsCopy()/*getTagsHash?*/,
+                        firstNode.lat, 
+                        firstNode.lon, 
+                        firstNode,
+                        bwa.getNodeCreation()
+                        );
+                    //firstNode.connection.registerPOI(firstNode);
+                    MainUndoStack.getGlobalStack().addAction(cpa);
+                    
+                }
 			}
 			return SUCCESS;
         }

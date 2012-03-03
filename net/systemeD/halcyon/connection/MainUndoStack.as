@@ -104,10 +104,15 @@ package net.systemeD.halcyon.connection {
 			}
 		}
 		
-		public function removeLastIfAction(action:Class):void {
+        /**
+        * Remove (without undoing) the most recent action, but only if it's a particular class
+        * @param action The class of the previous action.
+        */
+		public function removeLastIfAction(action:Class):UndoableAction {
 			if (undoActions.length && undoActions[undoActions.length-1] is action) {
-				undoActions.pop();
+				return undoActions.pop() as UndoableAction;
 			}
+			return null;
 		}
 
         [Bindable(event="new_undo_item")]
