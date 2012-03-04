@@ -234,6 +234,72 @@
     <inputSet ref="common"/>
   </feature>
 
+  <feature name="Under construction">
+    <category>roads</category>
+    <icon image="features/highway__construction.png">
+      <font size="14pt"><b>${name}</b></font>
+    </icon>
+    <help>http://wiki.openstreetmap.org/wiki/Tag:highway%3Dconstruction</help>
+
+    <line/>
+    <tag k="highway" v="construction"/>
+
+    <input type="choice" presence="always" name="Type of road being built" key="construction" category="" priority="highest">
+      <choice value="motorway" text="Motorway"/>
+      <choice value="primary" text="Primary" />
+      <choice value="secondary" text="Secondary" />
+      <choice value="tertiary" text="Tertiary" />
+      <choice value="unclassified" text="Minor road" />
+      <choice value="residential" text="Residential" />
+      <choice value="road" text="Unknown" />
+      <choice value="service" text="Service road" />
+      <choice value="motorway_link" text="Motorway link" />
+      <choice value="primary_link" text="Primary link" />
+      <choice value="secondary_link" text="Secondary link" />
+      <choice value="tertiary_link" text="Tertiary link" />
+      <choice value="footway" text="Footway" />
+      <choice value="cycleway" text="Cycleway" />
+      <choice value="bridleway" text="Bridleway" />
+      <choice value="path" text="Generic path" />
+    </input>
+    <inputSet ref="minorRoad"/>
+    <inputSet ref="common"/>
+  </feature>
+
+  <feature name="Proposed">
+    <category>roads</category>
+    <icon image="features/highway__proposed.png">
+      <font size="14pt"><b>${name}</b></font>
+    </icon>
+    <help>http://wiki.openstreetmap.org/wiki/Tag:highway%3Dproposed</help>
+
+    <line/>
+    <tag k="highway" v="proposed"/>
+
+    <input type="choice" presence="always" name="Type of road planned." key="proposed" category="" priority="highest">
+      <choice value="motorway" text="Motorway"/>
+      <choice value="primary" text="Primary" />
+      <choice value="secondary" text="Secondary" />
+      <choice value="tertiary" text="Tertiary" />
+      <choice value="unclassified" text="Minor road" />
+      <choice value="residential" text="Residential" />
+      <choice value="road" text="Unknown" />
+      <choice value="service" text="Service road" />
+      <choice value="motorway_link" text="Motorway link" />
+      <choice value="primary_link" text="Primary link" />
+      <choice value="secondary_link" text="Secondary link" />
+      <choice value="tertiary_link" text="Tertiary link" />
+      <choice value="footway" text="Footway" />
+      <choice value="cycleway" text="Cycleway" />
+      <choice value="bridleway" text="Bridleway" />
+      <choice value="path" text="Generic path" />
+    </input>
+    <inputSet ref="minorRoad"/>
+    <inputSet ref="common"/>
+  </feature>
+
+
+
   <feature name="Track">
     <category>roads</category>
     <icon image="features/highway__track.png">
