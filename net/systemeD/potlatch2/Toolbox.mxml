@@ -224,16 +224,15 @@
 		// Individual toolbox actions
 
 		public function doDelete():void {
-			var undo:CompositeUndoableAction = new CompositeUndoableAction("Delete objects");
-			for each (var entity:Entity in controller.state.selection) {
-				if (entity is Node) { entity.connection.unregisterPOI(Node(entity)); }
-				entity.remove(undo.push);
-			}
-			MainUndoStack.getGlobalStack().addAction(undo);
-
 			if (controller.state is SelectedWayNode) {
-				controller.setState(new SelectedWay(SelectedWayNode(controller.state).selectedWay));
+				controller.setState(SelectedWayNode(controller.state).deleteNode());
 			} else {
+				var undo:CompositeUndoableAction = new CompositeUndoableAction("Delete objects");
+				for each (var entity:Entity in controller.state.selection) {
+					if (entity is Node) { entity.connection.unregisterPOI(Node(entity)); }
+					entity.remove(undo.push);
+				}
+				MainUndoStack.getGlobalStack().addAction(undo);
 				controller.setState(new NoSelection());
 			}
 		}
