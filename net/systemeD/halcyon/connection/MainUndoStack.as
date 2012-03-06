@@ -18,6 +18,8 @@ package net.systemeD.halcyon.connection {
         
         private var undoActions:Array = [];
         private var redoActions:Array = [];
+        private var undorequests:int = 0;
+        private var redorequests:int = 0;
 
         /**
          * Performs the action, then puts it on the undo stack.
@@ -88,6 +90,10 @@ package net.systemeD.halcyon.connection {
             redoActions.push(action);
             dispatchEvent(new Event("new_undo_item"));
             dispatchEvent(new Event("new_redo_item"));
+            if (undorequests > 0) {
+            	undorequests --;
+            	undo();
+            }
         }
 
         /**
@@ -104,10 +110,15 @@ package net.systemeD.halcyon.connection {
 			}
 		}
 		
-		public function removeLastIfAction(action:Class):void {
+        /**
+        * Remove (without undoing) the most recent action, but only if it's a particular class
+        * @param action The class of the previous action.
+        */
+		public function removeLastIfAction(action:Class):UndoableAction {
 			if (undoActions.length && undoActions[undoActions.length-1] is action) {
-				undoActions.pop();
+				return undoActions.pop() as UndoableAction;
 			}
+			return null;
 		}
 
         [Bindable(event="new_undo_item")]
@@ -134,6 +145,23 @@ package net.systemeD.halcyon.connection {
             undoActions.push(action);
             dispatchEvent(new Event("new_undo_item"));
             dispatchEvent(new Event("new_redo_item"));
+            if (redorequests > 0) {
+                redorequests --;
+                redo();
+            }
+            
+        }
+        
+        /** The cleanest solution to an ugly problem. Say an undo event X wants to call
+        * another undo event Y: if it calls it directly, they end up swapped
+        * in the undo history. This way, they can get called in the normal order. It's
+        * a way to loosely chain two events together. */ 
+        public function requestUndo():void {
+            undorequests = undorequests + 1;
+        }
+
+        public function requestRedo():void {
+            redorequests = redorequests + 1;
         }
        
     }

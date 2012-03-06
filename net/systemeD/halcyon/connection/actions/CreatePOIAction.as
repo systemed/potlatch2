@@ -12,13 +12,18 @@ package net.systemeD.halcyon.connection.actions {
 		private var lon:Number;
 		private var connection:Connection;
         
-        public function CreatePOIAction(connection:Connection, tags:Object, lat:Number, lon:Number) {
+        public function CreatePOIAction(connection:Connection, tags:Object, lat:Number, lon:Number, node: Node=null, nodeCreation: CreateEntityAction=null) {
           super("Create POI");
           this.connection = connection;
           this.tags = tags;
           this.lat = lat;
           this.lon = lon;
+          if (node) {
+            this.newNode = node;
+            push(nodeCreation);
+          }
         }
+
         
         public override function doAction():uint {
           if (newNode == null) {
