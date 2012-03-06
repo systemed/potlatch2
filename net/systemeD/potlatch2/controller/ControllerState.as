@@ -82,8 +82,9 @@ package net.systemeD.potlatch2.controller {
 				case 71:	FlexGlobals.topLevelApplication.trackLoader.load(); break;				// G - GPS tracks **FIXME: move from Application to Map
 				case 83:	SaveManager.saveChanges(editableLayer.connection); break;				// S - save
 				case 84:	controller.tagViewer.togglePanel(); return null;						// T - toggle tags panel
-				case 90:	if (!event.shiftKey) { MainUndoStack.getGlobalStack().undo(); return null;}// Z - undo
-				            else { MainUndoStack.getGlobalStack().redo(); return null;  }           // Shift-Z - redo 						
+				case 90:	if (event.shiftKey) MainUndoStack.getGlobalStack().redo();				// Z - undo/redo
+							else MainUndoStack.getGlobalStack().undo();								//   |
+							return controller.findStateForSelection(validItemsInSelection());		//   |
 				case Keyboard.ESCAPE:	revertSelection(); break;									// ESC - revert to server version
 				case Keyboard.NUMPAD_ADD:															// + - add tag
 				case 187:	controller.tagViewer.selectAdvancedPanel();								//   |
@@ -400,6 +401,10 @@ package net.systemeD.potlatch2.controller {
 				_selection.push(item); return true;
 			}
 			_selection.splice(_selection.indexOf(item),1); return false;
+		}
+		
+		public function validItemsInSelection():Array {
+			return _selection.filter(function(item:Entity,index:int,array:Array):Boolean { return !item.deleted; });
 		}
     }
 }

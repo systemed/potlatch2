@@ -37,7 +37,7 @@
 			click="SaveManager.saveChanges(theMap.editableLayer.connection);" id="saveButton" enabled="false"/>
         <mx:Button id="helpButton" label="Help" click="new HelpDialog().init();" styleName="appBarButton" />
         <mx:Spacer width="40"/>
-        <mx:Button id="undo" label="Undo" click="MainUndoStack.getGlobalStack().undo();" styleName="appBarButton"
+        <mx:Button id="undo" label="Undo" click="MainUndoStack.getGlobalStack().undo();checkSelection();" styleName="appBarButton"
             enabled="{MainUndoStack.getGlobalStack().canUndo()}"
             toolTip="{MainUndoStack.getGlobalStack().getUndoDescription() ? 'Undo '+MainUndoStack.getGlobalStack().getUndoDescription() : 'Undo last action'}" />
         <mx:Button id="redo" label="Redo" click="MainUndoStack.getGlobalStack().redo();" styleName="appBarButton"
@@ -398,6 +398,16 @@
 			// Pan if required, and select the object
 			if (panTo) { theMap.moveMapFromLatLon(lat,lon); }
 			theController.setState(theController.findStateForSelection([entity]));
+		}
+
+		/** Filter deleted items from selection, and set state accordingly */
+		
+		private function checkSelection():void {
+			theController.setState(
+				theController.findStateForSelection(
+					theController.state.validItemsInSelection()
+				)
+			);
 		}
 
 		/** Display floating warning in response to an 'alert' event */
