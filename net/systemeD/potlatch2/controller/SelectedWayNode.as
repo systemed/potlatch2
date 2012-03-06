@@ -75,8 +75,8 @@ package net.systemeD.potlatch2.controller {
 				case 87:					return new SelectedWay(parentWay);		// 'W'
 				case 191:					return cycleWays();						// '/'
                 case 74:                    if (event.shiftKey) { return unjoin() }; return join();// 'J'
-				case Keyboard.BACKSPACE:	return deleteNode();
-				case Keyboard.DELETE:		return deleteNode();
+				case Keyboard.BACKSPACE:
+				case Keyboard.DELETE:		if (event.shiftKey) { return deleteWay() }; return deleteNode();
 				case 188: /* , */           return stepNode(-1);
 				case 190: /* . */           return stepNode(+1);           
 			}
@@ -182,8 +182,14 @@ package net.systemeD.potlatch2.controller {
 		
 		public function deleteNode():ControllerState {
 			layer.setPurgable(selection,true);
+			if (parentWay.length<=2) return deleteWay();
 			firstSelected.remove(MainUndoStack.getGlobalStack().addAction);
 			return new SelectedWay(parentWay);
+		}
+		
+		public function deleteWay():ControllerState {
+			parentWay.remove(MainUndoStack.getGlobalStack().addAction);
+			return new NoSelection();
 		}
 
         public function unjoin():ControllerState {
