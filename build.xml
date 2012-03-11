@@ -331,7 +331,9 @@
       - also include the MX Framework locale assets
       Note: this requires user to invoke copyLocale.exe prior to running this script
       -->
-      <mxmlc output="${basedir}/l10n/locale/bundles/@{locale}.swf">
+      <mxmlc output="${basedir}/l10n/locale/bundles/@{locale}.swf" 
+             fork="true"
+             maxmemory="1024m">
 <!--         <locale>@{locale}</locale> -->
 
 
