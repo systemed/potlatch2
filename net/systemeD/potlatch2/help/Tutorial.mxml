@@ -53,10 +53,18 @@
 			tutorialText.text=slide.text;
 			if (slide.hasOwnProperty('require')) {
 				nextButton.enabled=false;
+				if (slide.require[0].@advance=='yes') {
+				// ** set to false if auto-advance
+				// ** set advance state, too
+					nextButton.visible=false;
+				} else {
+					nextButton.visible=true;
+				}
 				requireAction=slide.require.@action;
 				requireState=slide.require.@state;
 			} else {
 				nextButton.enabled=true;
+				nextButton.visible=true;
 			}
 		}
 		

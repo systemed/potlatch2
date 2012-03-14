@@ -2,7 +2,11 @@ package net.systemeD.potlatch2.controller {
 
     import flash.events.Event;
 
-    /** Defines map-related events. */
+	/**
+	 *	ControllerEvents are used to help aspects of the Flex user interface
+	 *	(for example, the tutorial window or toolbox) to listen in to the
+	 *  user's actions, and respond to it. */
+
     public class ControllerEvent extends Event {
 
 		public static const ENTER_STATE:String = "enter";
