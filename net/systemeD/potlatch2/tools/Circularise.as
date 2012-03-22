@@ -81,6 +81,11 @@ package net.systemeD.potlatch2.tools {
 				if (clockwise) {
 					if (a2>a1) { a2=a2-360; }
 					diff=a1-a2;
+					if (diff > 180) {
+						// If way crosses back on itself, we risk creating lots of extra nodes.
+						// (Bug 3786)
+						throw new Error ("This shape is too irregular. Sorry.");
+					}
 					if (diff>20) {
 						for (ang=a1-20; ang>a2+10; ang-=20) {
 						    insertNode(ang, i+1);
@@ -90,6 +95,9 @@ package net.systemeD.potlatch2.tools {
 				} else {
 					if (a1>a2) { a1=a1-360; }
 					diff=a2-a1;
+                    if (diff > 180) {
+                        throw new Error ("This shape is too irregular. Sorry.");
+                    }
 					if (diff>20) {
 						for (ang=a1+20; ang<a2-10; ang+=20) {
 						    insertNode(ang, i+1);
@@ -168,3 +176,4 @@ package net.systemeD.potlatch2.tools {
 		}
 	}
 }
+	
