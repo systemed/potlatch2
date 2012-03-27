@@ -567,5 +567,25 @@
     <inputSet ref="wheelchair-basic" />
   </feature>
 
+  <feature name="Highway Route">
+    <category>transport</category>
+    <!-- this doesn't seem possible: icon image="${symbol}"> -->
+    <icon image="features/route__road.png">
+         <font size="12pt">Route: <b>${ref}</b> (${network})</font>
+    </icon>
+
+    <relation/>
+    <tag k="type" v="route"/>
+    <tag k="route" v="road"/>
+    <input type="freetext" presence="always" category="Details" name="Name" priority="high" key="name" description="Official route name"/>
+    <input type="freetext" presence="always" category="Details" name="Reference" priority="high" key="ref" description="The official reference number"/>
+    <input type="freetext" presence="always" category="Details" name="Network" key="network" description="The network the route is part of" priority="high"/>
+    <input type="freetext" presence="onTagMatch" category="Details" name="Symbol" key="symbol" description="URL of route symbol" priority="low"/>
+    <input type="freetext" presence="onTagMatch" category="Details" name="Route authority" key="operator" description="Who manages the route ('operator')" priority="low"/>
+    <input type="freetext" presence="onTagMatch" category="Details" name="Description" key="description" description="Text description of the route" priority="low"/>
+    <inputSet ref="source"/>
+    
+  </feature>
+
       
 </featureGroup>

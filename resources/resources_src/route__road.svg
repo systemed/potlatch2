@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   version="1.0"
+   width="20"
+   height="20"
+   viewBox="0 0 19.966722 19.96669"
+   id="Layer_1"
+   xml:space="preserve"
+   sodipodi:version="0.32"
+   inkscape:version="0.48.2 r9819"
+   sodipodi:docname="route__road.svg"
+   inkscape:output_extension="org.inkscape.output.svg.inkscape"
+   sodipodi:modified="true"
+   inkscape:export-filename="I:\OSM\potgit6\potlatch2\resources\features\route__road.png"
+   inkscape:export-xdpi="135"
+   inkscape:export-ydpi="135"><metadata
+   id="metadata36"><rdf:RDF><cc:Work
+       rdf:about=""><dc:format>image/svg+xml</dc:format><dc:type
+         rdf:resource="http://purl.org/dc/dcmitype/StillImage" /><dc:title></dc:title><dc:contributor><cc:Agent><dc:title>Steve Bennett. Derived from http://upload.wikimedia.org/wikipedia/commons/f/fa/I-blank.svg</dc:title></cc:Agent></dc:contributor></cc:Work></rdf:RDF></metadata><sodipodi:namedview
+   inkscape:window-height="968"
+   inkscape:window-width="1280"
+   inkscape:pageshadow="2"
+   inkscape:pageopacity="0.0"
+   guidetolerance="10.0"
+   gridtolerance="10.0"
+   objecttolerance="10.0"
+   borderopacity="1.0"
+   bordercolor="#666666"
+   pagecolor="#ffffff"
+   id="base"
+   width="601px"
+   height="601px"
+   inkscape:zoom="29.065494"
+   inkscape:cx="11.917981"
+   inkscape:cy="8.9569822"
+   inkscape:window-x="-4"
+   inkscape:window-y="-4"
+   inkscape:current-layer="g3009"
+   showgrid="false"
+   inkscape:window-maximized="0" /><defs
+   id="defs1659">
+	
+	
+	
+	
+
+		
+	</defs>
+
+
+
+
+
+
+<g
+   id="g3009"
+   transform="translate(0.04857514,-0.09715028)"><g
+     id="g1600"
+     style="fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:7.16853443;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+     transform="matrix(0.03244905,0,0,0.0324491,0.22312056,0.46796879)">
+		
+		
+			<path
+   inkscape:connector-curvature="0"
+   d="M 80.75293,0 C 115.42871,10.583496 149.20112,23.686394 186.14289,23.686451 223.08466,23.686508 265.32422,10.583496 300,4.883e-4 334.67578,10.583496 367.25032,23.686451 405.38899,23.686451 443.52766,23.686451 484.57129,10.583496 519.24707,0 569.8125,63.908203 600,144.67822 600,232.5 600,413.92383 471.16992,565.25391 300,599.99902 128.83008,565.25391 0,413.92383 0,232.5 0,144.67822 30.187988,63.907715 80.75293,0 z"
+   style="fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:7.16853428;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+   id="path1604"
+   sodipodi:nodetypes="czcscscsc" />
+	</g><path
+     id="path1608"
+     style="fill:#003f87;fill-opacity:0.44385029;stroke:none"
+     d="m 1.3524786,8.3909095 c 0,-0.9756612 0.1258929,-1.5094293 0.3621682,-2.409979 l 16.4863912,0 c 0.236245,0.9005497 0.362153,1.4343178 0.362153,2.409979 0,5.2813505 -3.688945,9.2454675 -8.6053556,10.2981915 C 5.0414381,17.636377 1.3524786,13.67226 1.3524786,8.3909095 z"
+     inkscape:connector-curvature="0"
+     sodipodi:nodetypes="sccscs"
+     inkscape:export-filename="I:\OSM\potgit6\potlatch2\resources\features\path1608.png"
+     inkscape:export-xdpi="135"
+     inkscape:export-ydpi="135" /><g
+     id="g1610"
+     transform="matrix(0.03203507,0,0,0.03249707,0.34731551,0.55915312)"
+     style="fill:#32af1e;fill-opacity:0.4652406;stroke:none">
+		<path
+   inkscape:connector-curvature="0"
+   d="M 40.973965,130.28377 C 52.788703,95.61249 70.897759,61.375721 94.074378,32.927861 125.98706,41.00131 159.60103,56.527346 194.31417,56.527346 c 36.69357,0 72.15943,-16.03149 105.68583,-25.018296 33.5264,8.986806 68.99226,25.018296 105.68583,25.018296 34.71268,0 68.32757,-15.526036 100.24027,-23.599485 23.17567,28.44786 41.2852,62.684629 53.09993,97.355909 z"
+   style="fill:#32af1e;fill-opacity:0.4652406;stroke:none"
+   id="path1612"
+   sodipodi:nodetypes="ccscsccc" />
+	</g></g>
+</svg>
