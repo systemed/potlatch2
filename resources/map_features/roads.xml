@@ -244,6 +244,13 @@
     <tag k="highway" v="track"/>
 
     <inputSet ref="path"/>
+    <input type="choice" presence="always" name="Surface of Track" key="Track" category="">
+     <choice value="grade1" text="Asphalt, cobbles"/>
+     <choice value="grade2" text="Gravel" description="Mainly gravel with some sand."/>
+     <choice value="grade3" text="Hard Surface" description="Mixture of hard and soft materials. For example soil with many stones, sand and gravel beneath it."/>
+     <choice value="grade4" text="Dirt" description="Prominently dirt/sand/grass, but with some hard materials."/>
+     <choice value="grade5" text="Grass" description="Mainly grass. Visible traces."/>
+     </input>
     <inputSet ref="common"/>
   </feature>
 
