@@ -126,11 +126,11 @@ package net.systemeD.halcyon.connection {
 		}
 
 		public function removeNode(node:Node, performAction:Function):void {
-			performAction(new RemoveNodeFromWayAction(this, node, nodes));
+            performAction(new RemoveNodeFromWayAction(this, nodes, node));
 		}
 
-        public function removeNodeByIndex(index:uint, performAction:Function, fireEvent:Boolean=true):void {
-            performAction(new RemoveNodeByIndexAction(this, nodes, index, fireEvent));
+        public function removeNodeByIndex(index:uint, performAction:Function, fireEvent:Boolean=true, allowSingleNodeWays: Boolean=false):void {
+            performAction(new RemoveNodeFromWayAction(this, nodes, null, index, fireEvent, allowSingleNodeWays));
         }
 
 		public function sliceNodes(start:int,end:int):Array {
@@ -139,7 +139,7 @@ package net.systemeD.halcyon.connection {
 
         public function deleteNodesFrom(start:int, performAction:Function):void {
             for (var i:int=nodes.length-1; i>=start; i--) {
-              performAction(new RemoveNodeByIndexAction(this, nodes, i));
+              performAction(new RemoveNodeFromWayAction(this, nodes, null, i));
             }
             markDirty();
         }

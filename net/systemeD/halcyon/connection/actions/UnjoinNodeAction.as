@@ -28,7 +28,7 @@ package net.systemeD.halcyon.connection.actions {
                 var newNode:Node = way.connection.createNode(node.getTagsCopy(), node.lat, node.lon, push);
                 for (var i:int = 0; i < way.length; i++) {
                   if(way.getNode(i) == node) {
-                    way.removeNodeByIndex(i, push);
+                    way.removeNodeByIndex(i, push, true, true);// allow one-length nodes temporarily
                     way.insertNode(i, newNode, push);
                   }
                 }

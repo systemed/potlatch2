@@ -110,6 +110,10 @@ package net.systemeD.potlatch2.controller {
 			selectedWay.remove(MainUndoStack.getGlobalStack().addAction);
 			return new NoSelection();
 		}
+		
+		private function updateNodeHighlights(event:WayNodeEvent):void {
+			layer.setHighlightOnNodes(initWay, { selectedway: true });
+		}
 
         /** Officially enter this state by marking the previously nominated way as selected. */
         override public function enterState():void {
@@ -120,6 +124,8 @@ package net.systemeD.potlatch2.controller {
 	            selection = [initWay];
 	            controller.updateSelectionUI();
 	            initWay.addEventListener(Connection.WAY_REORDERED, updateSelectionUI, false, 0, true);
+                initWay.addEventListener(Connection.WAY_NODE_ADDED, updateNodeHighlights,
+                    false, 0, true); // if ways are re-added with undo, they need to show up.
 			}
 			layer.setPurgable(selection,false);
         }
@@ -132,6 +138,7 @@ package net.systemeD.potlatch2.controller {
             copyRelations(firstSelected);
 			layer.setPurgable(selection,true);
             firstSelected.removeEventListener(Connection.WAY_REORDERED, updateSelectionUI);
+            firstSelected.removeEventListener(Connection.WAY_NODE_ADDED, updateNodeHighlights);
             clearSelection(newState);
         }
 

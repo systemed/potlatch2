@@ -11,7 +11,7 @@ package net.systemeD.halcyon.connection.actions {
         public function DeleteWayAction(way:Way, setDeleted:Function, nodeList:Array) {
             super(way, "Delete");
             this.setDeleted = setDeleted;
-            this.nodeList = nodeList;
+            this.nodeList = nodeList; // reference to way's actual nodes array. 
         }
             
         public override function doAction():uint {
@@ -24,8 +24,10 @@ package net.systemeD.halcyon.connection.actions {
 			way.suspend();
 			way.removeFromParents(effects.push);
 			oldNodeList = nodeList.slice();
+			// Delete or detach each node
 			while (nodeList.length > 0) {
-				node=nodeList.pop();
+				
+				node=nodeList.pop(); // do the actual deletion
 				node.removeParent(way);
 				way.dispatchEvent(new WayNodeEvent(Connection.WAY_NODE_REMOVED, node, way, 0));
                 if (!node.hasParents && !node.hasInterestingTags()) { //need to trigger redraw of new POIs?
