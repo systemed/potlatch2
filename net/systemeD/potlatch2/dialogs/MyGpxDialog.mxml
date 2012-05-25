@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:TitleWindow
+        xmlns:fx="http://ns.adobe.com/mxml/2009"
+        xmlns:mx="library://ns.adobe.com/flex/mx"
+        xmlns:s="library://ns.adobe.com/flex/spark"
+        title="My tracks"
+        width="600" height="400">
+
+  <s:layout>
+    <s:VerticalLayout />
+  </s:layout>
+   
+  <s:HGroup width="100%" horizontalAlign="center" verticalAlign="middle" paddingTop="5">
+    <s:RichText text="Traces" id="results" />
+  </s:HGroup>
+  <s:DataGrid dataProvider="{traces}" width="100%" height="100%" id="traceGrid">
+    <s:columns>
+      <s:ArrayCollection>
+        <s:GridColumn editable="false" dataField="id" headerText="id" width="45"/>
+        <s:GridColumn editable="false" dataField="filename" headerText="filename"/>
+        <s:GridColumn editable="false" dataField="description" headerText="description"/>
+        <s:GridColumn editable="false" dataField="tagsText" headerText="tags"/>
+        <s:GridColumn editable="false">
+          <s:itemRenderer>
+            <fx:Component>
+              <s:GridItemRenderer>
+                <s:VGroup horizontalAlign="center" verticalAlign="middle" width="100%" height="100%">
+                  <s:Button label="Load"
+                      click="outerDocument.loadFile(data)"/>
+                </s:VGroup>
+              </s:GridItemRenderer>
+            </fx:Component>
+          </s:itemRenderer>
+        </s:GridColumn>
+      </s:ArrayCollection>
+    </s:columns>
+  </s:DataGrid>
+
+  <s:controlBarContent>
+    <s:Button label="Refresh List" click="fetchList(true)" />
+  </s:controlBarContent>
+
+  <fx:Script><![CDATA[
+    import mx.managers.PopUpManager;
+    import mx.events.CloseEvent;
+    import mx.core.Application;
+    import mx.core.FlexGlobals;
+
+    import net.systemeD.halcyon.connection.*;
+    import net.systemeD.potlatch2.save.*;
+    import net.systemeD.halcyon.Map;
+    import net.systemeD.halcyon.Globals;
+    import net.systemeD.potlatch2.utils.Importer;
+    import net.systemeD.potlatch2.utils.GpxImporter;
+    import mx.controls.Alert;
+    import com.bealearts.collection.VectorCollection;
+
+    private var map:Map;
+    private var conn:Connection;
+
+    public function init():void {
+        PopUpManager.addPopUp(this, Application(FlexGlobals.topLevelApplication), true);
+        PopUpManager.centerPopUp(this);
+        this.addEventListener(CloseEvent.CLOSE, myGpxDialog_close);
+
+        // >>>> REFACTOR: really horrible way of getting both map and connection
+        map = Globals.vars.root;
+        conn = map.editableLayer.connection;
+
+        conn.addEventListener(Connection.TRACES_LOADED, onTracesLoaded);
+        SaveManager.ensureAccess(fetchList, conn);
+    }
+
+    private function myGpxDialog_close(evt:CloseEvent):void {
+        PopUpManager.removePopUp(this);
+        conn.removeEventListener(Connection.TRACES_LOADED, onTracesLoaded);
+    }
+
+    private function fetchList(refresh:Boolean=false):void {
+        results.text = "Fetching Traces...";
+        conn.fetchUserTraces(refresh);
+    }
+
+    private function onTracesLoaded(e:Event):void {
+        results.text = "Traces Loaded";
+        dispatchEvent(new Event("traces_loaded"));
+    }
+
+    [Bindable(event="traces_loaded")]
+    private function get traces():VectorCollection {
+        return new VectorCollection(conn.getTraces().sort(f).reverse());
+    }
+
+    private function f(a:Trace, b:Trace):int {
+        return a.id - b.id
+    }
+
+    public function loadFile(o:Object):void {
+        var t:Trace = Trace(o);
+        t.addToMap();
+    }
+
+    public function filesLoaded(success:Boolean,message:String=null):void {
+        if (success) {
+            dispatchEvent(new Event("layers_changed"));
+        } else {
+            Alert.show(message, 'Error', mx.controls.Alert.OK);
+        }
+    }
+              ]]>
+  </fx:Script>
+</s:TitleWindow>

@@ -1,7 +1,7 @@
 package net.systemeD.halcyon.styleparser {
 
 	import net.systemeD.halcyon.connection.Entity;
-    import net.systemeD.halcyon.ImageBank;
+    import net.systemeD.halcyon.FileBank;
 
 	public class StyleChooser {
 
@@ -52,7 +52,8 @@ package net.systemeD.halcyon.styleparser {
 					sl.addSubpart(c.subpart);
 
 					// Update StyleList
-					for each (var r:Style in styles) {
+					for (var i:uint=0; i<styles.length; i++) {
+						var r:Style=styles[i];
 						var a:Object;
 						if (r is ShapeStyle) {
 							a=sl.shapeStyles;
@@ -67,15 +68,13 @@ package net.systemeD.halcyon.styleparser {
 							if (PointStyle(r).icon_width && !PointStyle(r).evals['icon_width']) {
 								// ** FIXME: we should check this is the bit being used for 'square', 'circle' etc.
 								w=PointStyle(r).icon_width;
-							} else if (PointStyle(r).icon_image && ImageBank.getInstance().hasImage(PointStyle(r).icon_image)) {
-								w=ImageBank.getInstance().getWidth(PointStyle(r).icon_image);
+							} else if (PointStyle(r).icon_image && FileBank.getInstance().hasFile(PointStyle(r).icon_image)) {
+								w=FileBank.getInstance().getWidth(PointStyle(r).icon_image);
 							}
 							if (w>sl.maxwidth) { sl.maxwidth=w; }
 						} else if (r is InstructionStyle) {
 							if (InstructionStyle(r).breaker) { return; }
-							if (InstructionStyle(r).set_tags) {
-								for (var k:String in InstructionStyle(r).set_tags) { tags[k]=InstructionStyle(r).set_tags[k]; }
-							}
+							InstructionStyle(r).assignSetTags(tags);
 							continue;
 						}
 						if (r.drawn) { tags[':drawn']='yes'; }
@@ -94,6 +93,24 @@ package net.systemeD.halcyon.styleparser {
 					}
 				}
 			}
+		}
+		
+		/** Cut-down version of updateStyles that runs InstructionStyles only - for CSSTransform usage. */
+
+		public function runInstructions(obj:Entity, tags:Object):Object {
+			for each (var c:RuleChain in ruleChains) {
+				if (c.test(-1,obj,tags,10)) {
+					for (var i:uint=0; i<styles.length; i++) {
+						var r:Style=styles[i];
+						if (r is InstructionStyle) {
+							if (InstructionStyle(r).breaker) { return tags; }
+							InstructionStyle(r).assignSetTags(tags);
+						}
+						r.runEvals(tags);
+					}
+				}
+			}
+			return tags;
 		}
 		
 		

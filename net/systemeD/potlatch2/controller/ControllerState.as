@@ -4,13 +4,17 @@ package net.systemeD.potlatch2.controller {
     import net.systemeD.halcyon.Map;
     import net.systemeD.halcyon.MapPaint;
     import net.systemeD.halcyon.connection.*;
+    import net.systemeD.halcyon.AttentionEvent;
     import net.systemeD.potlatch2.collections.Imagery;
     import net.systemeD.potlatch2.EditController;
+    import net.systemeD.potlatch2.history.HistoryDialog;
 	import net.systemeD.potlatch2.save.SaveManager;
 	import net.systemeD.potlatch2.utils.SnapshotConnection;
+    import net.systemeD.halcyon.AttentionEvent;
 	import flash.ui.Keyboard;
 	import mx.controls.Alert;
 	import mx.events.CloseEvent;
+	import mx.core.FlexGlobals;
 	
     /** Represents a particular state of the controller, such as "dragging a way" or "nothing selected". Key methods are 
     * processKeyboardEvent and processMouseEvent which take some action, and return a new state for the controller. 
@@ -21,7 +25,6 @@ package net.systemeD.potlatch2.controller {
 
         protected var controller:EditController;
 		public var layer:MapPaint;
-        protected var previousState:ControllerState;
 
 		protected var _selection:Array=[];
 
@@ -30,11 +33,6 @@ package net.systemeD.potlatch2.controller {
         public function setController(controller:EditController):void {
             this.controller=controller;
             if (!layer) layer=controller.map.editableLayer;
-        }
-
-        public function setPreviousState(previousState:ControllerState):void {
-            if ( this.previousState == null )
-                this.previousState = previousState;
         }
 
 		public function isSelectionState():Boolean {
@@ -74,9 +72,12 @@ package net.systemeD.potlatch2.controller {
 		protected function sharedKeyboardEvents(event:KeyboardEvent):ControllerState {
 			var editableLayer:MapPaint=controller.map.editableLayer;								// shorthand for this method
 			switch (event.keyCode) {
+				case 48:	removeTags(); break;													// 0 - remove all tags
 				case 66:	setSourceTag(); break;													// B - set source tag for current object
 				case 67:	editableLayer.connection.closeChangeset(); break;						// C - close changeset
 				case 68:	editableLayer.alpha=1.3-editableLayer.alpha; return null;				// D - dim
+				case 71:	FlexGlobals.topLevelApplication.trackLoader.load(); break;				// G - GPS tracks **FIXME: move from Application to Map
+                case 72:    showHistory(); break;                                                   // H - History
 				case 83:	SaveManager.saveChanges(editableLayer.connection); break;				// S - save
 				case 84:	controller.tagViewer.togglePanel(); return null;						// T - toggle tags panel
 				case 90:	if (!event.shiftKey) { MainUndoStack.getGlobalStack().undo(); return null;}// Z - undo
@@ -108,12 +109,13 @@ package net.systemeD.potlatch2.controller {
 			if ( paint && paint.isBackground ) {
 				if (event.type == MouseEvent.MOUSE_DOWN && ((event.shiftKey && event.ctrlKey) || event.altKey) ) {
 					// alt-click to pull data out of vector background layer
-					// first, create a list of the alt-clicked item, plus anything else already selected (assuming it's in the same layer!)
+					// extend the current selection (alt-ctrl) or create a new one (alt)?
+					var newSelection:Array=(event.altKey && event.ctrlKey) ? _selection : [];
+					// create a list of the alt-clicked item, plus anything else already selected (assuming it's in the same layer!)
 					var itemsToPullThrough:Array=[]
 					if (_selection.length && firstSelected.connection==entity.connection) itemsToPullThrough=_selection.slice();
 					if (itemsToPullThrough.indexOf(entity)==-1) itemsToPullThrough.push(entity);
 					// make sure they're unhighlighted, and pull them through
-					var newSelection:Array=[]
 					for each (var entity:Entity in itemsToPullThrough) {
 						paint.setHighlight(entity, { hover:false, selected: false });
 						if (entity is Way) paint.setHighlightOnNodes(Way(entity), { selectedway: false });
@@ -136,9 +138,9 @@ package net.systemeD.potlatch2.controller {
 				if ( entity is Node && selectedWay && entity.hasParent(selectedWay) ) {
 					// select node within this way
 					return new DragWayNode(selectedWay,  getNodeIndex(selectedWay,entity as Node),  event, false);
-				} else if ( controller.keyDown(Keyboard.SPACE) ) {
+				} else if ( controller.spaceHeld ) {
 					// drag the background imagery to compensate for poor alignment
-					return new DragBackground(event);
+					return new DragBackground(event, this);
 				} else if (entity && selection.indexOf(entity)>-1) {
 					return new DragSelection(selection, event);
 				} else if (entity) {
@@ -193,11 +195,67 @@ package net.systemeD.potlatch2.controller {
 				object.setTag(k, controller.clipboards[object.getType()][k], undo.push)
 			}
 			MainUndoStack.getGlobalStack().addAction(undo);
-                        controller.updateSelectionUI();
+			controller.updateSelectionUI();
 			object.resume();
-
-
 		}
+
+		/** Create a "repeat relations" action on the current entity, if possible. */
+		protected function repeatRelations(object:Entity):void {
+			if (!controller.relationClipboards[object.getType()]) { return; }
+			object.suspend();
+
+			var undo:CompositeUndoableAction = new CompositeUndoableAction("Repeat relations");
+			var relationsadded:uint;
+			for each (var rr:Object in controller.relationClipboards[object.getType()]) {
+				if (!rr.relation.findEntityMemberIndex(object)>-1) {
+					rr.relation.appendMember(new RelationMember(object, rr.role), undo.push);
+					relationsadded++;
+				}
+			}
+			MainUndoStack.getGlobalStack().addAction(undo);
+			controller.updateSelectionUI();
+			object.resume();
+			if (relationsadded > 0) {
+				var msg:String=relationsadded.toString() + " relation(s) added to " + object.getType() + ".";
+				controller.dispatchEvent(new AttentionEvent(AttentionEvent.ALERT, null, msg));
+			}
+		}
+
+		/** Copy list of relations from current object, for future repeatRelation() call. */
+		protected function copyRelations(object: Entity):void {
+			// Leave existing relations alone if it doesn't have any
+			if (object.parentRelations.length == 0) return;
+			controller.relationClipboards[object.getType()]=[];
+			for each (var rm:Object in object.getRelationMemberships() ) {
+				var rr:Object = { relation: rm.relation, role: rm.role };
+				controller.relationClipboards[object.getType()].push(rr);
+			}
+		}
+		
+		/** Remove all tags from current selection. */
+		protected function removeTags():void {
+			if (selectCount==0) return;
+			var undo:CompositeUndoableAction = new CompositeUndoableAction("Remove tags");
+			for each (var item:Entity in _selection) {
+				item.suspend();
+				var tags:Array=item.getTagArray();
+				for each (var tag:Tag in tags) item.setTag(tag.key,null,undo.push);
+			}
+			MainUndoStack.getGlobalStack().addAction(undo);
+			controller.updateSelectionUI();
+			for each (item in _selection) item.resume();
+		}
+
+        /** Show the history dialog, if only one object is selected. */
+        protected function showHistory():void {
+            if (selectCount == 1) {
+                new HistoryDialog().init(firstSelected);
+            } else if (selectCount == 0) {
+                controller.dispatchEvent(new AttentionEvent(AttentionEvent.ALERT, null, "Can't show history, nothing selected"));
+            } else {
+                controller.dispatchEvent(new AttentionEvent(AttentionEvent.ALERT, null, "Can't show history, multiple objects selected"));
+            }
+        }
 
 		/** Create an action to add "source=*" tag to current entity based on background imagery. This is a convenient shorthand for users. */
 		protected function setSourceTag():void {
@@ -217,7 +275,7 @@ package net.systemeD.potlatch2.controller {
 			for each (var item:Entity in _selection)
 				if (item.id>0) revertable=true;
 			if (revertable)
-				Alert.show("Revert selected items to the last saved version, discarding your changes?","Are you sure?",Alert.YES | Alert.CANCEL,null,revertHandler);
+				Alert.show("Revert selected items to the last saved version, discarding your changes?","Are you sure?",Alert.YES | Alert.CANCEL,null,revertHandler,null,Alert.CANCEL);
 		}
 		protected function revertHandler(event:CloseEvent):void {
 			if (event.detail==Alert.CANCEL) return;

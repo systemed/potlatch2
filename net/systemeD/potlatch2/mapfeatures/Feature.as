@@ -1,5 +1,4 @@
 package net.systemeD.potlatch2.mapfeatures {
-
     import flash.events.Event;
     import flash.events.EventDispatcher;
     import flash.net.*;
@@ -8,17 +7,18 @@ package net.systemeD.potlatch2.mapfeatures {
     import mx.core.BitmapAsset;
     import mx.graphics.codec.PNGEncoder;
     
-    import net.systemeD.halcyon.ImageBank;
+    import net.systemeD.halcyon.FileBank;
     import net.systemeD.halcyon.connection.Entity;
-    import net.systemeD.potlatch2.utils.CachedDataLoader;
 
-        /** A "map feature" is sort of a template for a map entity. It consists of a few crucial key/value pairs that define the feature, so that
-         * entities can be recognised. It also contains optional keys, with associated editing controls, that are defined as being appropriate
-         * for the feature. */
+
+    /** A "map feature" is sort of a template for a map entity. It consists of a few crucial key/value pairs that define the feature, so that
+     * entities can be recognised. It also contains optional keys, with associated editing controls, that are defined as being appropriate
+     * for the feature. */
 	public class Feature extends EventDispatcher {
         private var mapFeatures:MapFeatures;
         private var _xml:XML;
-        private static var variablesPattern:RegExp = /[$][{]([^}]+)[}]/g;
+        // match ${foo|bar|baz|...} - see makeHTMLIcon()
+        private static var variablesPattern:RegExp = /\$\{([^|}]+)\|?([^|}]+)?\|?([^|}]+)?\|?([^|}]+)?\|?([^|}]+)?\|?([^}]+)?\}/g;
         private var _tags:Array;
         private var _withins:Array;
         private var _editors:Array;
@@ -32,8 +32,21 @@ package net.systemeD.potlatch2.mapfeatures {
         public function Feature(mapFeatures:MapFeatures, _xml:XML) {
             this.mapFeatures = mapFeatures;
             this._xml = _xml;
+            loadImages();
             parseConditions();
             parseEditors();
+        }
+
+        private function loadImages():void {
+            var icon:XMLList = _xml.icon;
+            if ( icon.length() > 0 ) {
+                if ( icon[0].hasOwnProperty("@dnd") ) {
+                    FileBank.getInstance().addFromFile(icon[0].@dnd);
+                }
+                if ( icon[0].hasOwnProperty("@image") ) {
+                    FileBank.getInstance().addFromFile(icon[0].@image);
+                }
+            }
         }
 
         private function parseConditions():void {
@@ -105,7 +118,7 @@ package net.systemeD.potlatch2.mapfeatures {
         }
 
         [Bindable(event="nameChanged")]
-        /** The human-readable name of the feature (@name), or null if none. */
+        /** The human-readable name of the feature (name), or null if none. */
         public function get name():String {
 			if (_xml.attribute('name').length()>0) { return _xml.@name; }
 			return null;
@@ -138,6 +151,7 @@ package net.systemeD.potlatch2.mapfeatures {
         /** Fetches the feature's image, as defined by the icon element in the feature definition.
         * @param dnd if true, overrides the normal image and returns the one defined by the dnd property instead. */
         private function getImage(dnd:Boolean = false):ByteArray {
+            var fileBank:FileBank = FileBank.getInstance();
             var icon:XMLList = _xml.icon;
             var imageURL:String;
 
@@ -147,12 +161,12 @@ package net.systemeD.potlatch2.mapfeatures {
                 imageURL = icon[0].@image;
             }
 
-            if ( imageURL ) {
-				if (ImageBank.getInstance().hasImage(imageURL)) {
-					return ImageBank.getInstance().getAsByteArray(imageURL)
-				} else {
-	                return CachedDataLoader.loadData(imageURL, imageLoaded);
-				}
+            if ( imageURL && fileBank.hasFile(imageURL) ) {
+                if (fileBank.fileLoaded(imageURL, imageLoaded)) {
+                    return fileBank.getAsByteArray(imageURL);
+                } else {
+                    return null;
+                }
             }
             var bitmap:BitmapAsset = new missingIconCls() as BitmapAsset;
             return new PNGEncoder().encode(bitmap.bitmapData);
@@ -166,7 +180,7 @@ package net.systemeD.potlatch2.mapfeatures {
         	return point.length() > 0 && !(XML(point[0]).attribute("draganddrop")[0] == "no");
         }
 
-        private function imageLoaded(url:String, data:ByteArray):void {
+        private function imageLoaded(fileBank:FileBank, url:String):void {
             dispatchEvent(new Event("imageChanged"));
         }
 
@@ -175,17 +189,29 @@ package net.systemeD.potlatch2.mapfeatures {
             return makeHTMLIcon(icon, entity);
         }
 
-        /** Convert the contents of the "icon" tag as an HTML string, with variable substitution. */
+        /** Convert the contents of the "icon" tag as an HTML string, with variable substitution:
+        *   ${highway} shows the value of the highway key
+        *   ${name|operator|network} - if there's no name value, show operator, or network, or nothing.
+        *   (${ref}) - renders as nothing if $ref is valueless.
+        */
         public static function makeHTMLIcon(icon:XMLList, entity:Entity):String {
             if ( icon == null )
                 return "";
 
             var txt:String = icon.children().toXMLString();
+            // Args to this function: "string matched", "substring 1", "substring 2"..., index of match, whole string
             var replaceTag:Function = function():String {
-                var value:String = entity.getTag(arguments[1]);
+            	var matchnum:uint=0;
+            	var value:String = null;
+            	while ((value == null || value == "") && matchnum < arguments.length - 3  ) {
+                  value = entity.getTag(arguments[matchnum + 1]);
+                  matchnum++;
+            	}
                 return value == null ? "" : htmlEscape(value);
             };
             txt = txt.replace(variablesPattern, replaceTag);
+            // a slightly hacky way of making "${name} (${ref})" look ok even if ref is undefined.
+            txt = txt.replace("()", ""); 
             return txt;
         }
 

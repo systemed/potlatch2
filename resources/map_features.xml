@@ -48,7 +48,7 @@
    </inputSet> 
 
   <inputSet id="source">
-    <input type="freetext" category="Details" presence="onTagMatch" name="Source" key="source" description="The primary source of information for this object (GPS, survey, Yahoo, ...)" priority="lowest"/>
+    <input type="freetext" category="Details" presence="onTagMatch" name="Source" key="source" description="The primary source of information for this object (GPS, survey, Bing, ...)" priority="lowest"/>
   </inputSet>
 
   <inputSet id="designation">
@@ -142,6 +142,7 @@
     <inputSet ref="cycle"/>
     <inputSet ref="bicycle-lane"/>
     <inputSet ref="bus-route"/>
+    <inputSet ref="tram-route"/>
     <inputSet ref="pedestrians"/>
     <inputSet ref="roadLanes"/>
     <inputSet ref="roadRoundabout"/>
@@ -156,6 +157,7 @@
     <inputSet ref="cycle"/>
     <inputSet ref="bicycle-lane"/>
     <inputSet ref="bus-route"/>
+    <inputSet ref="tram-route"/>
     <inputSet ref="pedestrians"/>
     <inputSet ref="roadLanes"/>
     <inputSet ref="roadRoundabout"/>
@@ -166,7 +168,6 @@
     <inputSet ref="simpleName"/>
     <inputSet ref="roadPhysical"/>
     <inputSet ref="cycle"/>
-    <inputSet ref="ldp"/>
     <inputSet ref="pedestrians"/>
     <inputSet ref="permissions"/>
   </inputSet>
@@ -267,6 +268,7 @@
       <choice value="750" text="750V"/>
       <choice value="1500" text="1500V"/>
       <choice value="3000" text="3000V"/>
+      <choice value="12000" text="12kV"/>
       <choice value="15000" text="15kV"/>
       <choice value="25000" text="25kV"/>
     </input>
@@ -315,12 +317,46 @@
       <role role="via"/>
     </input>
   </inputSet>
+  
+  <inputSet id="trafficSignals">
+    <!-- can't add as standalone feature due to current limitations, would conflict with junction node feature -->
+    <input type="choice" key="highway" name="Traffic signals" description="Intersection controlled by traffic lights" category="Restrictions" presence="always">
+      <choice value="traffic_signals" text="Yes"/>
+    </input>
+  </inputSet>
 
   <inputSet id="pedestrians">
-    <input type="choice" name="Pedestrians" description="Can pedestrians use this road, including footpaths if any?" category="Walk" key="foot">
+    <input type="choice" name="Pedestrians permitted" description="Can pedestrians use this road, including footpaths if any?" category="Walk" key="foot">
       <choice value="yes" text="Allowed"/>
       <choice value="no" text="Prohibited"/>
       <choice value="designated" text="Designated"/>
+    </input>
+    <input type="route" name="National Walking Route" description="National walking route" category="Walk" priority="low">
+      <match k="type" v="route"/>
+      <match k="route" v="hiking|foot"/>
+      <match k="network" v="nwn"/>
+      <icon image="features/route__nwn.png" background="red" foreground="white">
+        <font size="14pt"><b>${ref}</b></font><br/>
+        <font size="12pt">${name}</font>
+      </icon>
+    </input>
+    <input type="route" name="Regional Walking Route" description="Regional walking route" category="Walk" priority="low">
+      <match k="type" v="route"/>
+      <match k="route" v="hiking|foot"/>
+      <match k="network" v="rwn"/>
+      <icon image="features/route__rwn.png" background="cyan" foreground="white">
+        <font size="14pt"><b>${ref}</b></font><br/>
+        <font size="12pt">${name}</font>
+      </icon>
+    </input>
+    <input type="route" name="Local Walking Route" description="Local walking route" category="Walk" priority="lowest">
+      <match k="type" v="route"/>
+      <match k="route" v="hiking|foot"/>
+      <match k="network" v="lwn"/>
+      <icon image="features/route__lwn.png" background="blue" foreground="white">
+        <font size="14pt"><b>${ref}</b></font><br/>
+        <font size="12pt">${name}</font>
+      </icon>
     </input>
   </inputSet>
 
@@ -364,6 +400,16 @@
       <match k="route" v="tram"/>
       <icon image="features/transport__tram.png">
         <font size="12pt">${operator} <b>${ref}</b></font>
+      </icon>
+    </input>
+  </inputSet>
+
+  <inputSet id="train-route">
+    <input type="route" name="Train Route" description="Train route" category="Transport" priority="low" presence="onTagMatch">
+      <match k="type" v="route"/>
+      <match k="route" v="train"/>
+      <icon image="features/transport__railway.png">
+        <font size="12pt">${name|operator} <b>(${ref})</b></font>
       </icon>
     </input>
   </inputSet>
@@ -434,36 +480,6 @@
     </input>
   </inputSet>
 
-  <inputSet id="ldp">
-    <input type="route" name="National Walking Route" description="National walking route" category="Walk" priority="normal">
-      <match k="type" v="route"/>
-      <match k="route" v="hiking|foot"/>
-      <match k="network" v="nwn"/>
-      <icon image="features/route__nwn.png" background="red" foreground="white">
-        <font size="14pt"><b>${ref}</b></font><br/>
-        <font size="12pt">${name}</font>
-      </icon>
-    </input>
-    <input type="route" name="Regional Walking Route" description="Regional walking route" category="Walk" priority="low">
-      <match k="type" v="route"/>
-      <match k="route" v="hiking|foot"/>
-      <match k="network" v="rwn"/>
-      <icon image="features/route__rwn.png" background="cyan" foreground="white">
-        <font size="14pt"><b>${ref}</b></font><br/>
-        <font size="12pt">${name}</font>
-      </icon>
-    </input>
-    <input type="route" name="Local Walking Route" description="Local walking route" category="Walk" priority="lowest">
-      <match k="type" v="route"/>
-      <match k="route" v="hiking|foot"/>
-      <match k="network" v="lwn"/>
-      <icon image="features/route__lwn.png" background="blue" foreground="white">
-        <font size="14pt"><b>${ref}</b></font><br/>
-        <font size="12pt">${name}</font>
-      </icon>
-    </input>
-  </inputSet>
-
   <inputSet id="route">
     <inputSet ref="names"/>
     <inputSet ref="roadRefs"/>
@@ -503,14 +519,18 @@
       <choice value="designated" text="Designated" description="Permitted, according to signs or specific local laws."/>
     </input>
 
-    <input type="choice" name="Horses" category="Restrictions" key="horse" description="Are cars and other private vehicles allowed?">
+    <inputSet ref="hores-permission" />
+
+  </inputSet>
+
+  <inputSet id="horse-permission">
+    <input type="choice" name="Horses" category="Restrictions" key="horse" description="Are horses allowed?">
       <choice value="yes" text="Allowed" description="General right of way."/>
       <choice value="no" text="Prohibited" description="No access to the public."/>
       <choice value="permissive" text="Permissive" description="Access permitted through private land."/>
       <choice value="private" text="Private" description="No access to the public, except individual exceptions."/>
       <choice value="designated" text="Designated" description="Permitted, according to signs or specific local laws."/>
     </input>
-
   </inputSet>
 
   <inputSet id="places">
@@ -532,7 +552,32 @@
   </inputSet>
 
   <inputSet id="isBuilding">
-    <input type="checkbox" presence="onTagMatch" category="Details" description="Does this thing also represent one, solid building?" name="Building" key="building"/>
+    <input type="choice" presence="withCategory" category="Details" name="Building type, if it is one" key="building">
+      <choice value="yes" text="Generic building"/>
+      <choice value="residential" text="Generic residential"/>
+      <choice value="apartments" text="Big apartments house"/>
+      <choice value="terrace" text="Terraced house"/>
+      <choice value="house" text="Family house"/>
+      <choice value="hut" text="Small hut"/>
+      <choice value="garage" text="A garage"/>
+      <choice value="garages" text="Block of garages"/>
+      <choice value="office" text="Office building"/>
+      <choice value="public" text="Public building"/>
+      <choice value="industrial" text="Generic industrial"/>
+      <choice value="manufacture" text="Manufacture"/>
+      <choice value="warehouse" text="Warehouse"/>
+      <choice value="hangar" text="Hangar"/>
+      <choice value="storage_tank" text="Fluids storage tank"/>
+      <choice value="retail" text="Retail"/>
+      <choice value="supermarket" text="Supermarket"/>
+      <choice value="train_station" text="Train station"/>
+      <choice value="church" text="Church"/>
+      <choice value="school" text="School"/>
+      <choice value="bunker" text="Military bunker"/>
+      <choice value="collapsed" text="Collapsed building"/>
+      <choice value="roof" text="Just a roof"/>
+      <help>http://wiki.openstreetmap.org/wiki/Key:building</help>
+    </input>
   </inputSet>
 
   <inputSet id="powerCables">
@@ -557,9 +602,10 @@
       <choice value="35000" text="35 kV"/>
       <choice value="110000" text="110 kV"/>
       <choice value="132000" text="132 kV"/>
-      <choice value="138000" text="238 kV"/>
+      <choice value="138000" text="138 kV"/>
       <choice value="220000" text="220 kV"/>
       <choice value="380000" text="380 kV"/>
+      <choice value="500000" text="500 kV"/>
     </input>
   </inputSet>
 
@@ -600,6 +646,14 @@
       <choice value="volleyball" text="Volleyball"/>
     </input>
   </inputSet>
+  
+  <inputSet id="wheelchair-basic">
+    <input type="choice" name="Wheelchair" key="wheelchair" presence="onTagMatch" category="Details">
+      <choice value="yes" text="Yes: ramps/elevators/etc" />
+      <choice value="no" text="No: inaccessible to wheelchairs" />
+      <choice value="limited" text="Limited accessibility" />
+    </input>
+  </inputSet>      
 
 <!-- Features -->
 
@@ -614,8 +668,8 @@
   <include file="map_features/shopping.xml" />  <!-- no clear distinction between this, amenities and buildings -->
   <include file="map_features/amenities.xml" /> <!-- includes cafe, bar... --> 
   <include file="map_features/landuse.xml" />   <!-- includes outdoor leisure/sporting stuff, agriculture, natural. --> 
-  <include file="map_features/buildings.xml" /> <!-- a bit of a dumping ground, includes sports centre, shopping centre, hospital... --> 
   <include file="map_features/man_made.xml" />  
+  <include file="map_features/buildings.xml" /> <!-- a bit of a dumping ground, includes sports centre, shopping centre, hospital... --> 
 
 
   

@@ -7,6 +7,7 @@ package net.systemeD.halcyon.connection {
 	import org.iotashan.oauth.*;
 
 	import net.systemeD.halcyon.MapEvent;
+    import net.systemeD.halcyon.connection.bboxes.*;
 
 	/**
 	* XMLBaseConnection is the common code between connecting to an OSM server
@@ -29,6 +30,7 @@ package net.systemeD.halcyon.connection {
 				var version:uint;
 				var uid:Number;
 				var timestamp:String;
+				var user:String;
 				var tags:Object;
 				var node:Node, newNode:Node;
 				var unusedNodes:Object={};
@@ -42,6 +44,7 @@ package net.systemeD.halcyon.connection {
 					minlat=map.bounds.@minlat;
 					maxlat=map.bounds.@maxlat;
 					singleEntityRequest=false;
+					fetchSet.add(new Box().fromBbox(minlon,minlat,maxlon,maxlat));
 				}
 
 				for each(var relData:XML in map.relation) {
@@ -49,6 +52,7 @@ package net.systemeD.halcyon.connection {
 					version = uint(relData.@version);
 					uid = Number(relData.@uid);
 					timestamp = relData.@timestamp;
+					user = relData.@user;
 			   
 					var rel:Relation = getRelation(id);
 					if ( rel == null || !rel.loaded || singleEntityRequest ) {
@@ -86,11 +90,11 @@ package net.systemeD.halcyon.connection {
 						}
 					
 						if ( rel == null ) {
-							rel=new Relation(this, id, version, tags, true, members, uid, timestamp);
+							rel=new Relation(this, id, version, tags, true, members, uid, timestamp, user);
 							setRelation(rel, false);
 							createdEntities.push(rel);
 						} else {
-							rel.update(version, tags, true, false, members, uid, timestamp);
+							rel.update(version, tags, true, false, members, uid, timestamp, user);
 							sendEvent(new EntityEvent(NEW_RELATION, rel), false);
 						}
 					}
@@ -107,9 +111,11 @@ package net.systemeD.halcyon.connection {
 									   Number(nodeData.@lat),
 									   Number(nodeData.@lon),
 									   Number(nodeData.@uid),
-									   nodeData.@timestamp);
-                if ( inlineStatus ) { newNode.status = nodeData.@status; }
-				
+									   nodeData.@timestamp,
+									   nodeData.@user);
+
+                    if ( inlineStatus ) { newNode.status = nodeData.@status; }
+
 					if ( singleEntityRequest ) {
 						// it's a revert request, so create/update the node
 						setOrUpdateNode(newNode, true);
@@ -130,6 +136,7 @@ package net.systemeD.halcyon.connection {
 					version = uint(data.@version);
 					uid = Number(data.@uid);
 					timestamp = data.@timestamp;
+					user = data.@user;
 
 					var way:Way = getWay(id);
 					if ( way == null || !way.loaded || singleEntityRequest) {
@@ -143,20 +150,19 @@ package net.systemeD.halcyon.connection {
 						}
 						tags = parseTags(data.tag);
 						if ( way == null ) {
-							way=new Way(this, id, version, tags, true, nodelist, uid, timestamp)
+							way=new Way(this, id, version, tags, true, nodelist, uid, timestamp, user)
 							if ( inlineStatus ) { way.status = data.@status; }
 							setWay(way,false);
 							createdEntities.push(way);
 						} else {
+							if (!way.loaded) createdEntities.push(way);
 							waycount++;
-							way.update(version, tags, true, true, nodelist, uid, timestamp);
+							way.update(version, tags, true, true, nodelist, uid, timestamp, user);
 							if ( inlineStatus ) { way.status = data.@status; }
 							sendEvent(new EntityEvent(NEW_WAY, way), false);
 						}
 					}
 				}
-			
-				markBboxLoaded(minlon,maxlon,maxlat,minlat);
 				registerPOINodes();
 			}
 
@@ -165,15 +171,7 @@ package net.systemeD.halcyon.connection {
 			if (statusFetcher) statusFetcher.fetch(createdEntities); 
 		}
 		
-		protected function registerPOINodes():void {
-			for each (var nodeID:Number in getAllNodeIDs()) {
-				var node:Node = getNode(nodeID);
-				if (!node.hasParentWays)
-					registerPOI(node);
-			}
-		}
-
-		private function parseTags(tagElements:XMLList):Object {
+		protected function parseTags(tagElements:XMLList):Object {
 			var tags:Object = {};
 			for each (var tagEl:XML in tagElements)
 				tags[tagEl.@k] = tagEl.@v;

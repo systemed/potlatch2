@@ -12,8 +12,8 @@ package net.systemeD.potlatch2.utils {
     */
 	public class GpxImporter extends Importer {
 
-		public function GpxImporter(connection:Connection, map:Map, filenames:Array, callback:Function=null, simplify:Boolean=false) {
-			super(connection,map,filenames,callback,simplify);
+		public function GpxImporter(connection:Connection, map:Map, callback:Function=null, simplify:Boolean=false, options:Object=null) {
+			super(connection,map,callback,simplify,options);
 		}
 
 		override protected function doImport(push:Function): void {
@@ -42,7 +42,6 @@ package net.systemeD.potlatch2.utils {
 					tags[tag.name().localName]=tag.toString().substr(0,255);
 				}
 				var node:Node = connection.createNode(tags, wpt.@lat, wpt.@lon, push);
-				connection.registerPOI(node);
 			}
 
 			default xml namespace = new Namespace("");

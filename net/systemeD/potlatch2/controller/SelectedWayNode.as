@@ -71,7 +71,9 @@ package net.systemeD.potlatch2.controller {
 				case 88:					return splitWay();						// 'X'
 				case 79:					return replaceNode();					// 'O'
                 case 81:  /* Q */           Quadrilateralise.quadrilateralise(parentWay, MainUndoStack.getGlobalStack().addAction); return this;
-				case 82:					repeatTags(firstSelected); return this;	// 'R'
+                case 82:  /* R */           { if (! event.shiftKey) repeatTags(firstSelected); 
+                                              else                  repeatRelations(firstSelected);
+                                              return this; }
 				case 87:					return new SelectedWay(parentWay);		// 'W'
 				case 191:					return cycleWays();						// '/'
                 case 74:                    if (event.shiftKey) { return unjoin() }; return join();// 'J'
@@ -113,6 +115,7 @@ package net.systemeD.potlatch2.controller {
             if (firstSelected.hasTags()) {
               controller.clipboards['node']=firstSelected.getTagsCopy();
             }
+            copyRelations(firstSelected);
 			layer.setPurgable(selection,true);
             clearSelection(newState);
         }
@@ -232,7 +235,14 @@ package net.systemeD.potlatch2.controller {
         }
         
         private function doMergeNodes(n:Node): ControllerState {
-        	n.mergeWith(Node(firstSelected), MainUndoStack.getGlobalStack().addAction);
+        	var nways:Array = n.parentWays.concat(Node(firstSelected).parentWays);
+        	var mna:MergeNodesAction = n.mergeWith(Node(firstSelected), MainUndoStack.getGlobalStack().addAction);
+            /* Duplicated consecutive nodes happen if the two merged nodes are consecutive nodes of a (different) way */
+            for each (var w:Way in nways) {
+               // If there's a node to remove, jam that action into the existing MergeNodesAction. 
+               w.removeRepeatedNodes(function (a:UndoableAction):void { a.doAction(); mna.push(a); } );
+            }
+               
             // only merge one node at a time - too confusing otherwise?
             var msg:String = "Nodes merged"
             if (MergeNodesAction.lastTagsMerged) msg += ": check conflicting tags";

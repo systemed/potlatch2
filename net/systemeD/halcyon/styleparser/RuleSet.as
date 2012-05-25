@@ -2,20 +2,19 @@ package net.systemeD.halcyon.styleparser {
 
 	import flash.events.*;
 	import flash.net.*;
-	import net.systemeD.halcyon.ExtendedLoader;
-	import net.systemeD.halcyon.ExtendedURLLoader;
-	import net.systemeD.halcyon.DebugURLRequest;
     import net.systemeD.halcyon.connection.Entity;
-    import net.systemeD.halcyon.ImageBank;
+    import net.systemeD.halcyon.FileBank;
 
     import net.systemeD.halcyon.connection.*;
-	
-	/** A complete stylesheet, as loaded from a MapCSS file. It contains all selectors, declarations, 
-		and embedded images.																				</p><p>
-		
-		The RuleSet class has two principal methods: getStyles, which calculates the styles that apply
-		to an entity (returned as a StyleList); and parse, which parses a MapCSS stylesheet into
-		a complete RuleSet. */
+
+    /**
+    * A complete stylesheet, as loaded from a MapCSS file. It contains all selectors, declarations,
+    * and embedded images.
+    *
+    * <p>The RuleSet class has two principal methods: getStyles, which calculates the styles that apply
+    * to an entity (returned as a StyleList); and parse, which parses a MapCSS stylesheet into
+    * a complete RuleSet.</p>
+    */
 
 	public class RuleSet {
 
@@ -59,12 +58,15 @@ package net.systemeD.halcyon.styleparser {
 		private static const CONDITION_LE:RegExp        =/^ \s* ([:\w]+) \s* <= \s* (.+) \s* $/sx;
 		private static const CONDITION_REGEX:RegExp     =/^ \s* ([:\w]+) \s* =~\/ \s* (.+) \/ \s* $/sx;
 
-		private static const ASSIGNMENT_EVAL:RegExp	=/^ \s* (\S+) \s* \:      \s* eval \s* \( \s* ' (.+?) ' \s* \) \s* $/isx;
-		private static const ASSIGNMENT:RegExp		=/^ \s* (\S+) \s* \:      \s*          (.+?) \s*                   $/sx;
-		private static const SET_TAG_EVAL:RegExp	=/^ \s* set \s+(\S+)\s* = \s* eval \s* \( \s* ' (.+?) ' \s* \) \s* $/isx;
-		private static const SET_TAG:RegExp			=/^ \s* set \s+(\S+)\s* = \s*          (.+?) \s*                   $/isx;
-		private static const SET_TAG_TRUE:RegExp	=/^ \s* set \s+(\S+)\s* $/isx;
-		private static const EXIT:RegExp			=/^ \s* exit \s* $/isx;
+		private static const ASSIGNMENT_EVAL:RegExp		=/^ \s* (\S+) \s* \:      \s* eval \s* \( \s* ' (.+?) ' \s* \) \s* $/isx;
+		private static const ASSIGNMENT_TAGVALUE:RegExp	=/^ \s* (\S+) \s* \:      \s* tag  \s* \( \s* ' (.+?) ' \s* \) \s* $/isx;
+		private static const ASSIGNMENT:RegExp			=/^ \s* (\S+) \s* \:      \s*          (.+?) \s*                   $/sx;
+		private static const SET_TAG_EVAL:RegExp		=/^ \s* set \s+(\S+)\s* = \s* eval \s* \( \s* ' (.+?) ' \s* \) \s* $/isx;
+		private static const SET_TAG_TAGVALUE:RegExp	=/^ \s* set \s+(\S+)\s* = \s* tag  \s* \( \s* ' (.+?) ' \s* \) \s* $/isx;
+		private static const SET_TAG:RegExp				=/^ \s* set \s+(\S+)\s* = \s*          (.+?) \s*                   $/isx;
+		private static const SET_TAG_TRUE:RegExp		=/^ \s* set \s+(\S+)\s* $/isx;
+		private static const DELETE_TAG:RegExp			=/^ \s* delete \s+(\S+)\s* $/isx;
+		private static const EXIT:RegExp				=/^ \s* exit \s* $/isx;
 
 		private static const oZOOM:uint=2;
 		private static const oGROUP:uint=3;
@@ -235,14 +237,27 @@ package net.systemeD.halcyon.styleparser {
 		}
 
 		/** Create a StyleList for an Entity, by creating a blank StyleList, then running each StyleChooser over it.
+		    Optionally, styleUntagged can be set to false, to abort (and return a blank StyleList) if the tag hash is empty.
 			@see net.systemeD.halcyon.styleparser.StyleList */
 
-		public function getStyles(obj:Entity, tags:Object, zoom:uint):StyleList {
+		public function getStyles(obj:Entity, tags:Object, zoom:uint, styleUntagged:Boolean=true):StyleList {
 			var sl:StyleList=new StyleList();
-			for each (var sc:StyleChooser in choosers) {
-				sc.updateStyles(obj,tags,sl,zoom);
+			var tagged:Boolean=styleUntagged;
+			for (var k:String in tags) { tagged=true; break; }
+			if (tagged) {
+				for each (var sc:StyleChooser in choosers) {
+					sc.updateStyles(obj,tags,sl,zoom);
+				}
 			}
 			return sl;
+		}
+
+		/** Run instruction styles only, for CSSTransform. */
+		public function runInstructions(obj:Entity, tags:Object):Object {
+			for each (var sc:StyleChooser in choosers) {
+				tags=sc.runInstructions(obj,tags);
+			}
+			return tags;
 		}
 
 		// ---------------------------------------------------------------------------------------------------------
@@ -276,7 +291,6 @@ package net.systemeD.halcyon.styleparser {
 		/** Load all images referenced in the RuleSet (for example, icons or bitmap fills). */
 		
 		private function loadImages():void {
-			ImageBank.getInstance().addEventListener(ImageBank.IMAGES_LOADED,doIconCallback);
 			var filename:String;
 			for each (var chooser:StyleChooser in choosers) {
 				for each (var style:Style in chooser.styles) {
@@ -286,13 +300,10 @@ package net.systemeD.halcyon.styleparser {
 					else { continue; }
 
 					if (filename!='square' && filename!='circle')
-						ImageBank.getInstance().loadImage(filename);
+						FileBank.getInstance().addFromFile(filename);
 				}
 			}
-		}
-		
-		private function doIconCallback(e:Event):void {
-			iconCallback();
+            if (iconCallback!=null) { FileBank.getInstance().onFilesLoaded(iconCallback); }
 		}
 		
 		// ------------------------------------------------------------------------------------------------
@@ -425,11 +436,14 @@ package net.systemeD.halcyon.styleparser {
 			var xs:InstructionStyle=new InstructionStyle(); 
 
 			for each (a in s.split(';')) {
-				if ((o=ASSIGNMENT_EVAL.exec(a)))   { t[o[1].replace(DASH,'_')]=saveEval(o[2]); }
-				else if ((o=ASSIGNMENT.exec(a)))   { t[o[1].replace(DASH,'_')]=o[2]; }
-				else if ((o=SET_TAG_EVAL.exec(a))) { xs.addSetTag(o[1],saveEval(o[2])); }
-				else if ((o=SET_TAG.exec(a)))      { xs.addSetTag(o[1],o[2]); }
-				else if ((o=SET_TAG_TRUE.exec(a))) { xs.addSetTag(o[1],true); }
+				if      ((o=ASSIGNMENT_EVAL.exec(a)))		{ t[o[1].replace(DASH,'_')]=saveEval(o[2]); }
+				else if ((o=ASSIGNMENT_TAGVALUE.exec(a)))	{ t[o[1].replace(DASH,'_')]=new TagValue(o[2]); }
+				else if ((o=ASSIGNMENT.exec(a)))			{ t[o[1].replace(DASH,'_')]=o[2]; }
+				else if ((o=SET_TAG_EVAL.exec(a)))			{ xs.addSetTag(o[1],saveEval(o[2])); }
+				else if ((o=SET_TAG_TAGVALUE.exec(a)))		{ xs.addSetTag(o[1],new TagValue(o[2])); }
+				else if ((o=SET_TAG.exec(a)))				{ xs.addSetTag(o[1],o[2]); }
+				else if ((o=SET_TAG_TRUE.exec(a)))			{ xs.addSetTag(o[1],true); }
+				else if ((o=DELETE_TAG.exec(a)))			{ xs.addSetTag(o[1],''); }
 				else if ((o=EXIT.exec(a))) { xs.setPropertyFromString('breaker',true); }
 			}
 
@@ -512,7 +526,7 @@ package net.systemeD.halcyon.styleparser {
 
         public static function parseCSSColor(colorStr:String):uint {
             colorStr = colorStr.toLowerCase();
-            if (CSSCOLORS[colorStr]) {
+            if (CSSCOLORS[colorStr] != undefined) {
                 return CSSCOLORS[colorStr];
             } else {
                 var match:Object = HEX.exec(colorStr);

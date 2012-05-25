@@ -37,7 +37,7 @@ package net.systemeD.potlatch2.controller {
 			if (event.type==MouseEvent.MOUSE_MOVE) { return this; }
 			var paint:MapPaint = getMapPaint(DisplayObject(event.target));
 
-			if (event.type==MouseEvent.MOUSE_DOWN && event.ctrlKey && entity && entity!=firstSelected && paint==layer) {
+			if (event.type==MouseEvent.MOUSE_DOWN && event.ctrlKey && !event.altKey && entity && entity!=firstSelected && paint==layer) {
 				return new SelectedMultiple([firstSelected,entity],layer);
 			} else if (event.type==MouseEvent.MOUSE_DOWN && event.shiftKey && !entity && !layer.isBackground) {
 				return new DrawQuadrilateral(firstSelected as Node);
@@ -52,7 +52,9 @@ package net.systemeD.potlatch2.controller {
 			switch (event.keyCode) {
 				case Keyboard.BACKSPACE:	return deletePOI();
 				case Keyboard.DELETE:		return deletePOI();
-				case 82:					repeatTags(firstSelected); return this;	// 'R'
+				case 82: /* R */			if (!event.shiftKey) { repeatTags(firstSelected); }
+											else { repeatRelations(firstSelected); }
+											return this;
 			}
 			var cs:ControllerState = sharedKeyboardEvents(event);
 			return cs ? cs : this;
@@ -72,6 +74,7 @@ package net.systemeD.potlatch2.controller {
             if(firstSelected.hasTags()) {
               controller.clipboards['node']=firstSelected.getTagsCopy();
             }
+            copyRelations(firstSelected);
 			layer.setPurgable(selection,true);
             clearSelection(newState);
         }

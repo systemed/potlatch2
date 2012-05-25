@@ -123,6 +123,28 @@
     <inputSet ref="common"/>
   </feature>
 
+  <feature name="Beach">
+    <category>natural</category>
+    <icon image="features/natural__beach.png"/>
+    <area/>
+    <tag k="natural" v="beach"/>
+    <input type="choice" presence="always" category="Details" name="Beach surface" key="surface" description="What material is the ground mostly?">
+      <choice value="sand" text="Sand"/>
+      <choice value="pebbles" text="Pebbles"/>
+      <choice value="stone" text="Pebbles"/>
+      <choice value="rocky" text="Rocky"/>
+    </input>
+    <input type="choice" presence="always" category="Details" name="Access" key="access" description="Accessible to the public?">
+      <choice value="yes" text="Public access"/>
+      <choice value="permissive" text="Privately owned, but publicly accessible"/>
+      <choice value="private" text="Private access only"/>
+    </input>
+    <input type="freetext" presence="always" category="Details" name="Operator" key="Operator" description="Organisation that manages or owns the beach.">
+    </input>
+    
+    <inputSet ref="simpleName"/>
+    <inputSet ref="common"/>
+  </feature>
 
 
 
@@ -189,6 +211,24 @@
     <inputSet ref="roadPhysical"/>
     <inputSet ref="common"/>
   </feature>
+
+  <feature name="Sports centre">
+    <category>sport</category>
+    <icon image="features/pois/sport_leisure_centre.n.24.png">
+      <b>${name} ${addr:housename}</b><br/>
+      ${addr:housenumber} ${addr:street} ${addr:postcode}
+    </icon>
+
+    <area/>
+    <point/>
+    <tag k="leisure" v="sports_centre"/>
+    <inputSet ref="names"/>
+    <inputSet ref="buildingAddress"/>
+    <inputSet ref="pitchSport"/>
+    <inputSet ref="isBuilding"/>
+    <inputSet ref="common"/>
+  </feature>
+
 
   <!-- **************** Agriculture *************** -->
   <feature name="Farm">
@@ -264,15 +304,17 @@
 
     <area/>
     <tag k="leisure" v="park"/>
+    <inputSet ref="simpleName"/>
     <inputSet ref="common"/>
   </feature>
 
   <feature name="Forest">
     <category>natural</category>
-    <icon image="/features/pois/landuse_coniferous.n.24.png"/>
+    <icon image="features/pois/landuse_coniferous.n.24.png"/>
 
     <area/>
     <tag k="landuse" v="forest"/>
+    <inputSet ref="simpleName"/>
     <inputSet ref="common"/>
   </feature>
 
@@ -282,6 +324,7 @@
 
     <area/>
     <tag k="landuse" v="meadow"/>
+    <inputSet ref="simpleName"/>
     <inputSet ref="common"/>
   </feature>
 </featureGroup>

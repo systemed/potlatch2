@@ -10,12 +10,13 @@ package net.systemeD.halcyon {
 	import flash.geom.Point;
 	import net.systemeD.halcyon.styleparser.*;
     import net.systemeD.halcyon.connection.*;
-    import net.systemeD.halcyon.ImageBank;
+    import net.systemeD.halcyon.FileBank;
 	
 	/** The graphical representation of a Node (including POIs and nodes that are part of Ways). */
 	public class NodeUI extends EntityUI {
 		
 		public var loaded:Boolean=false;
+		public var isPOI:Boolean;
 		private var iconnames:Object={};			// name of icon on each subpart
 		private var heading:Number=0;				// heading within way
 		private var rotation:Number=0;				// rotation applied to this POI
@@ -27,9 +28,10 @@ package net.systemeD.halcyon {
 		 * @param heading Optional angle.
 		 * @param layer Which layer on the MapPaint object it sits on. @default Top layer
 		 * @param stateClasses A settings object definining the initial state of the node (eg, highlighted, hover...) */
-		public function NodeUI(node:Node, paint:MapPaint, heading:Number=0, layer:int=NO_LAYER, stateClasses:Object=null) {
+		public function NodeUI(node:Node, paint:MapPaint, isPOI:Boolean, heading:Number=0, layer:int=NO_LAYER, stateClasses:Object=null) {
 			super(node,paint);
 			if (layer==NO_LAYER) { this.layer=paint.maxlayer; } else { this.layer=layer; }
+			this.isPOI=isPOI;
 			this.heading = heading;
 			if (stateClasses) {
 				for (var state:String in stateClasses) {
@@ -77,7 +79,7 @@ package net.systemeD.halcyon {
 			tags=applyStateClasses(tags);
 			if (entity.status) { tags['_status']=entity.status; }
 			if (!styleList || !styleList.isValidAt(paint.map.scale)) {
-				styleList=paint.ruleset.getStyles(entity,tags,paint.map.scale); 
+				styleList=paint.ruleset.getStyles(entity,tags,paint.map.scale,isPOI); 
 			}
 
 			var suggestedLayer:Number=styleList.layerOverride();
@@ -117,12 +119,12 @@ package net.systemeD.halcyon {
 						} else if (s.icon_image=='circle') {
 							// draw circle
 							w=styleIcon(icon,subpart);
-							icon.graphics.drawCircle(w,w,w);
+							icon.graphics.drawCircle(w/2,w/2,w/2);
 							if (s.interactive) { maxwidth=Math.max(w,maxwidth); }
 
-						} else if (ImageBank.getInstance().hasImage(s.icon_image)) {
+						} else if (FileBank.getInstance().hasFile(s.icon_image)) {
 							// load icon from library
-							icon.addChild(ImageBank.getInstance().getAsDisplayObject(s.icon_image));
+							icon.addChild(FileBank.getInstance().getAsDisplayObject(s.icon_image));
 //							addHitSprite(icon.width);			// ** check this - we're doing it below too
 							loaded=true; updatePosition();		// ** check this
 							if (s.interactive) { maxwidth=Math.max(icon.width,maxwidth); }

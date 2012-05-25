@@ -6,6 +6,7 @@ package net.systemeD.potlatch2.save {
     import mx.core.Application;
     import mx.core.FlexGlobals;
     import net.systemeD.halcyon.connection.*;
+    import net.systemeD.potlatch2.controller.*;
     import org.iotashan.oauth.*;
 
     public class SaveManager {
@@ -22,6 +23,7 @@ package net.systemeD.potlatch2.save {
         }
 
         private function save(callback:Function, connection:Connection):void {
+			FlexGlobals.topLevelApplication.theController.setState(new NoSelection());
 			_connection=connection;
             if (connection.hasAccessToken()) {
                 callback();
@@ -39,7 +41,7 @@ package net.systemeD.potlatch2.save {
             var listener:Function = function(event:Event):void {
                 var accessToken:OAuthToken = oauthPanel.accessToken;
                 if ( oauthPanel.shouldRemember ) {
-                    var obj:SharedObject = SharedObject.getLocal("access_token");
+                    var obj:SharedObject = SharedObject.getLocal("access_token","/");
                     obj.setProperty("oauth_token", accessToken.key);
                     obj.setProperty("oauth_token_secret", accessToken.secret);
                     obj.flush();

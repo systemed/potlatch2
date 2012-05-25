@@ -4,6 +4,7 @@ package net.systemeD.potlatch2.mapfeatures {
     import flash.events.EventDispatcher;
     import flash.net.*;
     
+    import net.systemeD.halcyon.FileBank;
     import net.systemeD.halcyon.NestedXMLLoader;
     import net.systemeD.halcyon.connection.*;
 

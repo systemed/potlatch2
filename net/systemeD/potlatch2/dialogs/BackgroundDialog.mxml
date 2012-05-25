@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:TitleWindow
+        xmlns:fx="http://ns.adobe.com/mxml/2009"
+        xmlns:mx="library://ns.adobe.com/flex/mx"
+        layout="vertical" showCloseButton="true"
+        horizontalAlign="center" 
+        width="500" height="300" verticalGap="0">
+
+  <mx:DataGrid editable="true" width="100%" height="100%" id="dataGrid" itemEditEnd="updateSource()" dataProvider="{dataCollection}">
+    <mx:columns>
+        <mx:DataGridColumn editable="true"  dataField="name" headerText="Name"/>
+        <mx:DataGridColumn editable="true"  dataField="url" headerText="URL"/>
+        <mx:DataGridColumn editable="false" dataField="name" headerText="Key" width="70">
+			<mx:itemRenderer>
+				<fx:Component>
+					<mx:ComboBox
+						selectedItem="{FunctionKeyManager.instance().getKeyFor(outerDocument.title,data.name)}"
+					    dataProvider="{FunctionKeyManager.fkeysCollection}"
+	 					change="FunctionKeyManager.instance().setKeyFromFString(selectedItem as String,outerDocument.title,data.name)">
+	 					<fx:Script><![CDATA[ import net.systemeD.potlatch2.FunctionKeyManager; ]]></fx:Script>
+					</mx:ComboBox>
+				</fx:Component>
+			</mx:itemRenderer>
+		</mx:DataGridColumn>
+    </mx:columns>
+  </mx:DataGrid>
+
+  <mx:HBox horizontalAlign="right" width="100%">
+    <mx:LinkButton label="Delete" click="removeSource()" enabled="{dataGrid.selectedItem != null? true : false}"/>
+    <mx:LinkButton label="Add" click="addNewSource()"/>
+  </mx:HBox>
+
+  <fx:Script><![CDATA[
+
+	/*
+		Still to do:
+		- editable source tag for each layer
+		- editable bbox for each layer
+		- ability to use this dialogue to select as well as edit
+		- automatically select imagery once you've edited it (i.e. itemEditEnd)
+		- edits should stick around, either in SharedObjects or OSM preferences
+	*/
+
+    import mx.managers.PopUpManager;
+    import mx.events.CloseEvent;
+    import mx.core.Application;
+    import mx.core.FlexGlobals;
+	import mx.collections.ArrayCollection;
+	import spark.components.List;
+	import net.systemeD.potlatch2.FunctionKeyManager;
+
+	[Bindable] public var dataCollection:ArrayCollection;
+	private var menu:List;
+	private var collection:Object;
+
+    public function init(title:String, menu:List, source:Object):void {
+		this.title=title;
+		this.menu=menu;
+		collection=source;
+		dataCollection = source.getCollection();
+        PopUpManager.addPopUp(this, Application(FlexGlobals.topLevelApplication), true);
+        PopUpManager.centerPopUp(this);
+        this.addEventListener(CloseEvent.CLOSE, backgroundDialog_close);
+    }
+    
+    private function backgroundDialog_close(evt:CloseEvent):void {
+        PopUpManager.removePopUp(this);
+    }
+
+	private function addNewSource():void {
+		dataCollection.addItemAt( {name:'(new name)',url:'(new URL)'} , dataCollection.length);
+		dataGrid.validateNow();
+		dataGrid.verticalScrollPosition=dataGrid.maxVerticalScrollPosition;
+		dataGrid.editedItemPosition = {rowIndex: dataCollection.length-1, columnIndex: 0};
+	}
+	private function removeSource():void {
+		dataCollection.removeItemAt(dataGrid.selectedIndex);
+	}
+	public function updateSource():void {
+		collection.dispatchEvent(new Event("collection_changed"));
+	}
+
+  ]]>
+  </fx:Script>
+
+</mx:TitleWindow>

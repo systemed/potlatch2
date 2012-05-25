@@ -2,7 +2,7 @@
 
 <imagery>
 	<set>
-		<name>Bing</name>
+		<name>Bing aerial imagery</name>
 		<url>http://ecn.t0.tiles.virtualearth.net/tiles/a$quadkey.jpeg?g=587&mkt=en-gb&n=z</url>
 		<scheme>microsoft</scheme>
 		<sourcetag>Bing</sourcetag>
@@ -16,11 +16,6 @@
         <name>MapQuest Open Aerial</name>
         <url>http://oatile1.mqcdn.com/naip/$z/$x/$y.png</url>
     </set>
-	<set>
-		<name>Yahoo</name>
-		<url>yahoo</url>
-		<sourcetag>yahoo</sourcetag>
-	</set>
 	<set>
 		<name>OSM - Mapnik</name>
 		<url>http://c.tile.openstreetmap.org/$z/$x/$y.png</url>
@@ -54,13 +49,29 @@
 		<sourcekey>source:name</sourcekey>
 	</set>
 	<set minlat="49.8" minlon="-9" maxlat="61.1" maxlon="1.9">
-		<name>OS 1:25k historic</name>
+		<name>OS 1:25k historic (OSM)</name>
 		<url>http://ooc.openstreetmap.org/os1/$z/$x/$y.jpg</url>
 		<sourcetag>OS 1:25k</sourcetag>
 	</set>
 	<set minlat="49.8" minlon="-9" maxlat="61.1" maxlon="1.9">
-		<name>OS 7th Series historic</name>
+		<name>OS 1:25k historic (NLS)</name>
+		<scheme>tms</scheme>
+		<url>http://geo.nls.uk/mapdata2/os/25000/$z/$x/$y.png</url>
+		<logo>icons/logo_nls70-nq8.png</logo>
+		<logo_url>http://geo.nls.uk/maps/</logo_url>
+		<sourcetag>OS 1:25k</sourcetag>
+	</set>
+	<set minlat="49.8" minlon="-9" maxlat="61.1" maxlon="1.9">
+		<name>OS 7th Series historic (OSM)</name>
 		<url>http://ooc.openstreetmap.org/os7/$z/$x/$y.jpg</url>
+		<sourcetag>OS7</sourcetag>
+	</set>
+	<set minlat="49.8" minlon="-9" maxlat="61.1" maxlon="1.9">
+		<name>OS 7th Series historic (NLS)</name>
+		<scheme>tms</scheme>
+		<url>http://geo.nls.uk/mapdata2/os/seventh/$z/$x/$y.png</url>
+		<logo>icons/logo_nls70-nq8.png</logo>
+		<logo_url>http://geo.nls.uk/maps/</logo_url>
 		<sourcetag>OS7</sourcetag>
 	</set>
 	<set minlat="49.8" minlon="-5.8" maxlat="55.8" maxlon="1.9">
@@ -100,12 +111,12 @@
 	</set>
 	<set minlat="24.2" minlon="-125.8" maxlat="49.5" maxlon="-62.3">
 		<name>National Agriculture Imagery Program</name>
-		<url>http://cube.telascience.org/tilecache/tilecache.py/1.0.0/NAIP_ALL/$z/$x/$y.png</url>
+		<url>http://cube.telascience.org/tilecache/tilecache.py/NAIP_ALL/$z/$x/$y.png</url>
 		<sourcetag>NAIP</sourcetag>
 	</set>
 	<set minlat="55.3" minlon="-168.5" maxlat="71.5" maxlon="-140">
 		<name>National Agriculture Imagery Program</name>
-		<url>http://cube.telascience.org/tilecache/tilecache.py/1.0.0/NAIP_ALL/$z/$x/$y.png</url>
+		<url>http://cube.telascience.org/tilecache/tilecache.py/NAIP_ALL/$z/$x/$y.png</url>
 		<sourcetag>NAIP</sourcetag>
 	</set>
 	<set minlat='51.32' minlon='-10.71' maxlat='55.46' maxlon='-5.37'>
@@ -140,5 +151,10 @@
 		<name>Belarus - Kosmosnimki.ru SPOT4 Satellite</name>
 		<url>http://irs.gis-lab.info/?layers=spot&request=GetTile&z=$z&x=$x&y=$y</url>
 		<sourcetag>Kosmosnimki.ru SPOT4</sourcetag>
+	</set>
+	<set minlon="96" minlat="-44" maxlon="168" maxlat="-9">
+		<name>Australia - Geographic Reference Image</name>
+		<url>http://agri.openstreetmap.org/$z/$x/$y.png</url>
+		<sourcetag>AGRI</sourcetag>
 	</set>
 </imagery>

@@ -11,18 +11,18 @@ package net.systemeD.halcyon.connection {
 		private var edge_b:Number;
 		public static var entity_type:String = 'way';
 
-        public function Way(connection:Connection, id:Number, version:uint, tags:Object, loaded:Boolean, nodes:Array, uid:Number = NaN, timestamp:String = null) {
-            super(connection, id, version, tags, loaded, uid, timestamp);
+        public function Way(connection:Connection, id:Number, version:uint, tags:Object, loaded:Boolean, nodes:Array, uid:Number = NaN, timestamp:String = null, user:String = null) {
+            super(connection, id, version, tags, loaded, uid, timestamp, user);
             this.nodes = nodes;
 			for each (var node:Node in nodes) { node.addParent(this); }
 			calculateBbox();
 			connection.addToWayMap(this);
         }
 
-		public function update(version:uint, tags:Object, loaded:Boolean, parentsLoaded:Boolean, nodes:Array, uid:Number = NaN, timestamp:String = null):void {
+		public function update(version:uint, tags:Object, loaded:Boolean, parentsLoaded:Boolean, nodes:Array, uid:Number = NaN, timestamp:String = null, user:String = null):void {
 			var node:Node;
 			for each (node in this.nodes) { node.removeParent(this); }
-			updateEntityProperties(version,tags,loaded,parentsLoaded,uid,timestamp); this.nodes=nodes;
+			updateEntityProperties(version,tags,loaded,parentsLoaded,uid,timestamp,user); this.nodes=nodes;
 			for each (node in nodes) { node.addParent(this); }
 			calculateBbox();
 		}
@@ -46,6 +46,12 @@ package net.systemeD.halcyon.connection {
 			connection.removeFromWayMap(this);
 			updateBboxFromNode(node);
 			connection.addToWayMap(this);
+		}
+
+		public function get nodeList():Array {
+			var arr:Array=[];
+			for each (var node:Node in nodes) { arr.push(node.id); }
+			return arr;
 		}
 
 		private function calculateBbox():void {
@@ -176,6 +182,16 @@ package net.systemeD.halcyon.connection {
         public function reverseNodes(performAction:Function):void {
             performAction(new ReverseNodesAction(this, nodes));
         }
+        
+        /** Check for, and remove, consecutive series of the same node */ 
+        public function removeRepeatedNodes(performAction:Function):void {
+        	var n: Node = nodes[0];
+        	for (var i:int = 1; i < nodes.length; i++) {
+        		if (nodes[i] == nodes[i-1]) {
+        			removeNodeByIndex(i, performAction);
+        		}
+        	}
+        } 
 
 		
 		/** Is a point within this way?

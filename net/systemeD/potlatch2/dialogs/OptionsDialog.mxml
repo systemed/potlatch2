@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:TitleWindow
+        xmlns:fx="http://ns.adobe.com/mxml/2009"
+        xmlns:mx="library://ns.adobe.com/flex/mx"
+        xmlns:s="library://ns.adobe.com/flex/spark"
+        title="Options"
+        width="350" height="250">
+
+    <s:layout>
+      <s:VerticalLayout
+          paddingLeft="5" paddingRight="5"
+          paddingTop="5" paddingBottom="5" />
+    </s:layout>
+
+	<s:CheckBox width="100%" label="Show toolbox" selected="true" id="tbcheck"
+	    change="FlexGlobals.topLevelApplication.toolbox.toggle()" />
+
+	<s:CheckBox width="100%" label="Use custom cursors" selected="true" id="cursorcheck"
+	    change="FlexGlobals.topLevelApplication.theController.cursorsEnabled=cursorcheck.selected" />
+
+    <s:CheckBox width="100%" label="Highlight unedited TIGER (US roads)" selected="false" id="tigercheck"
+        change="tigerToggle()" />
+
+	<s:CheckBox width="100%" label="Show mouse latitude/longitude" selected="false" id="latlongcheck"
+		change="FlexGlobals.topLevelApplication.coordsbox.visible=latlongcheck.selected" />
+
+    <s:CheckBox width="100%" label="Show licence status" selected="false" id="licencecheck"
+        change="licenceToggle()" />
+
+	<s:HGroup width="100%" verticalAlign="middle">
+      <s:Label text="Simplify accuracy: "/>
+      <mx:HSlider id="simplifyslider"
+		minimum="1" maximum="5"
+		dataTipPlacement="top" tickColor="black" labels="[High,Low]"
+		snapInterval="1" tickInterval="1"
+		allowTrackClick="true" liveDragging="true"
+		change="simplifySet();"/>
+	</s:HGroup>
+
+    <s:controlBarContent>
+      <s:Button id="ok" label="OK" click="PopUpManager.removePopUp(this);" styleName="titleWindowButton" />
+    </s:controlBarContent>
+
+    <s:controlBarLayout>
+      <s:HorizontalLayout horizontalAlign="right"
+          paddingLeft="5" paddingRight="5"
+          paddingTop="5" paddingBottom="5" />
+    </s:controlBarLayout>
+
+  <fx:Script><![CDATA[
+    import mx.managers.PopUpManager;
+    import mx.events.CloseEvent;
+    import mx.core.Application;
+    import mx.core.FlexGlobals;
+    import net.systemeD.halcyon.Globals;
+    import net.systemeD.halcyon.Map;
+    import net.systemeD.halcyon.connection.Connection;
+    import net.systemeD.halcyon.connection.StatusFetcher;
+
+	private var userState:SharedObject=SharedObject.getLocal("user_state","/");
+    
+    public function init():void {
+        PopUpManager.addPopUp(this, Application(FlexGlobals.topLevelApplication), true);
+        PopUpManager.centerPopUp(this);
+        this.addEventListener(CloseEvent.CLOSE, optionsDialog_close);
+
+        tbcheck.selected = FlexGlobals.topLevelApplication.toolbox.visible;
+        cursorcheck.selected = FlexGlobals.topLevelApplication.theController.cursorsEnabled;
+        tigercheck.selected = userState.data['tiger_highlighted'];
+        latlongcheck.selected = FlexGlobals.topLevelApplication.coordsbox.visible;
+		licencecheck.selected = Map(Globals.vars.root).editableLayer.connection.statusFetcher!=null;
+		simplifyslider.value = userState.data['simplify_tolerance'] ? userState.data['simplify_tolerance']/0.00001 : 5;
+    }
+    
+    private function optionsDialog_close(evt:CloseEvent):void {
+        PopUpManager.removePopUp(this);
+    }
+
+    private function tigerToggle():void {
+        Globals.vars.highlightTiger = tigercheck.selected;
+        FlexGlobals.topLevelApplication.theMap.redraw();
+
+        userState.setProperty("tiger_highlighted",tigercheck.selected);
+        userState.flush();
+    }
+
+	private function simplifySet():void {
+        userState.setProperty("simplify_tolerance",simplifyslider.value*0.00001);
+        userState.flush();
+	}
+
+	private function licenceToggle():void {
+		// ** FIXME: this is an inelegant patch for the short-term issue of highlighting licensing status
+		var conn:Connection=Map(Globals.vars.root).editableLayer.connection;
+		if (conn.statusFetcher) {
+			conn.statusFetcher=null;
+			userState.setProperty("licence_status",false);
+		} else {
+			conn.statusFetcher=new StatusFetcher("http://wtfe.gryph.de/api/0.6/problems",conn);
+			conn.statusFetcher.fetch(conn.getAllLoadedEntities());
+			userState.setProperty("licence_status",true);
+			// ** FIXME: needs to also switch map style
+		}
+	}
+	
+              ]]>
+  </fx:Script>
+</s:TitleWindow>
