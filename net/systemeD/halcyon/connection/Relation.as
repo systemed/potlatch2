@@ -145,9 +145,37 @@ package net.systemeD.halcyon.connection {
 			if ( relTags["name"]   ) { desc += " " + relTags["name"]; named=true; }
 			// handle node->node routes
 			if ( !named && relTags["type"] && relTags["type"]=="route" ) {
-				var firstName:String=getSignificantName(getFirstMember().entity);
-				var lastName:String=getSignificantName(getLastMember().entity);
-				if ((firstName+lastName)!='') desc+=" "+firstName+"-"+lastName;
+				var firstName:String = '';
+				var lastName:String = '';
+
+				var aMember:Entity = getMember(0).entity;
+				var bMember:Entity = getMember(1).entity;
+				if (aMember.getType() == 'way') {
+					if (Way(aMember).getFirstNode()==Way(bMember).getFirstNode() || Way(aMember).getFirstNode()==Way(bMember).getLastNode()) {
+						firstName += getNodeName(Way(aMember).getLastNode());
+					} else {
+						firstName += getNodeName(Way(aMember).getFirstNode());
+					}
+				} else if (aMember.getType() == 'node') {
+					firstName += getNodeName(Node(aMember));
+				}
+
+				aMember = getMember(members.length - 1).entity;
+				bMember = getMember(members.length - 2).entity;
+				if (aMember.getType() == 'way') {
+					if (Way(aMember).getFirstNode()==Way(bMember).getFirstNode() || Way(aMember).getFirstNode()==Way(bMember).getLastNode()) {
+						lastName += getNodeName(Way(aMember).getLastNode());
+					} else {
+						lastName += getNodeName(Way(aMember).getFirstNode());
+					}
+				} else if (aMember.getType() == 'node') {
+					lastName += getNodeName(Node(aMember));
+				}
+
+				if ((firstName+lastName)!='') {
+					if ( firstName < lastName ) desc+=" ("+firstName+"-"+lastName+")";
+					else desc+=" ("+lastName+"-"+firstName+")";
+				}
 			}
 			return desc;
 		}
@@ -155,6 +183,13 @@ package net.systemeD.halcyon.connection {
 		public function getRelationType():String {
 			var relTags:Object = getTagsHash();
 			return relTags["type"] ? relTags["type"] : getType();
+		}
+
+		private function getNodeName(node:Node):String {
+			var t:String;
+			t=node.getTag('name');
+			if (!t) t=node.getTagByRegex(/ref$/);
+			return t ? t : '';
 		}
 		
 		private function getSignificantName(entity:Entity):String {
@@ -166,9 +201,7 @@ package net.systemeD.halcyon.connection {
 				if (t=='') t=getSignificantName(Way(entity).getLastNode());
 				return t;
 			}
-			t=Node(entity).getTag('name');
-			if (!t) t=Node(entity).getTagByRegex(/ref$/);
-			return t ? t : '';
+			return getNodeName(Node(entity));
 		}
 
 		public override function getType():String {
