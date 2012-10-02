@@ -1,5 +1,5 @@
 <featureGroup>
-  <feature name="School">
+  <feature name="School" id="amenity.school">
     <category>buildings</category>
     <icon image="features/pois/education_school.n.24.png">
       <b>${name} ${addr:housename}</b><br/>
@@ -15,7 +15,7 @@
   </feature>
 
 
-  <feature name="College">
+  <feature name="College" id="amenity.college">
     <category>buildings</category>
     <icon image="features/pois/education_university.n.24.png">
       <b>${name} ${addr:housename}</b><br/>
@@ -30,7 +30,7 @@
     <inputSet ref="common"/>
   </feature>
 
-  <feature name="University">
+  <feature name="University" id="amenity.university">
     <category>buildings</category>
     <icon image="features/pois/education_university.n.24.png">
       <b>${name} ${addr:housename}</b><br/>
@@ -46,7 +46,7 @@
   </feature>
 
 
-  <feature name="Supermarket">
+  <feature name="Supermarket" id="amenity.supermarket">
     <category>buildings</category>
     <icon image="features/pois/shopping_supermarket.n.24.png">
       <b>${name} ${addr:housename}</b><br/>
@@ -62,7 +62,7 @@
   </feature>
 
 
-  <feature name="Place of worship">
+  <feature name="Place of worship" id="amenity.place_of_worship">
     <category>buildings</category>
     <icon image="icons/place_of_worship.png">
       <b>${name} ${addr:housename}</b><br/>
@@ -142,7 +142,7 @@
   </feature>
 
 
-  <feature name="Public building">
+  <feature name="Public building" id="amenity.public_building">
     <category>buildings</category>
     <icon image="features/pois/building_generic.png">
       <b>${name} ${addr:housename}</b><br/>
@@ -158,7 +158,7 @@
   </feature>
 
 
-  <feature name="Hospital">
+  <feature name="Hospital" id="amenity.hospital">
     <category>buildings</category>
     <icon image="features/pois/health_hospital.n.24.png">
       <b>${name} ${addr:housename}</b><br/>
@@ -175,7 +175,7 @@
 
 
 
-  <feature name="Museum">
+  <feature name="Museum" id="tourism.museum">
     <category>buildings</category>
     <icon image="features/pois/tourist_museum.n.24.png">
       <b>${name} ${addr:housename}</b><br/>
@@ -190,7 +190,7 @@
     <inputSet ref="common"/>
   </feature>
 
-  <feature name="Shopping centre">
+  <feature name="Shopping centre" id="shop.mall">
     <category>buildings</category>
     <category>shopping</category>
     <node/>
@@ -202,7 +202,7 @@
     <inputSet ref="common"/>
   </feature>
 
-  <feature name="Zoo">
+  <feature name="Zoo" id="tourism.zoo">
     <category>buildings</category>
     <icon image="features/pois/tourist_zoo.n.24.png">
       <b>${name} ${addr:housename}</b><br/>
@@ -218,7 +218,7 @@
   </feature>
 
 
-  <feature name="Stadium">
+  <feature name="Stadium" id="leisure.stadium">
     <category>buildings</category>
     <icon image="features/pois/sport_stadium.n.24.png">
       <b>${name} ${addr:housename}</b><br/>
@@ -236,7 +236,7 @@
 
   <!-- Generic building. Should be last in the entire xml chain -->
   <!-- When user changes feature to some amenity, building tag is cleared. This should not be. -->
-  <feature name="Building">
+  <feature name="Building" id="building">
     <category>buildings</category>
     <icon image="features/pois/building_generic.png">
       <b>${name} ${addr:housename}</b><br/>

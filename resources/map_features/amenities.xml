@@ -1,7 +1,7 @@
 <featureGroup>
   <!-- =========== Amenity ============ -->
 
-  <feature name="Fire station">
+  <feature name="Fire station" id="amenity.fire_station">
     <category>amenity</category>
     <icon image="features/pois/amenity_firestation2.n.24.png"/>
     <help>http://wiki.openstreetmap.org/wiki/Tag:amenity%3Dfire_station</help>
@@ -12,7 +12,7 @@
   </feature>
 
 
-  <feature name="Police Station">
+  <feature name="Police Station" id="amenity.police">
     <category>amenity</category>
     <icon image="features/pois/amenity_police2.n.24.png"/>
     <help>http://wiki.openstreetmap.org/wiki/Tag:amenity%3Dpolice</help>
@@ -23,7 +23,7 @@
     <inputSet ref="common"/>
   </feature>
 
-  <feature name="Library">
+  <feature name="Library" id="amenity.library">
     <category>amenity</category>
     <icon image="features/pois/amenity_library.n.24.png">
       ${name}
@@ -37,7 +37,7 @@
   </feature>
 
 
-  <feature name="Hospital">
+  <feature name="Hospital" id="amenity.hospital">
     <category>amenity</category>
     <icon image="features/pois/health_hospital.n.24.png"/>
     <help>http://wiki.openstreetmap.org/wiki/Tag:amenity%3Dhospital</help>
@@ -52,7 +52,7 @@
     <inputSet ref="common"/>
   </feature>
 
-  <feature name="Veterinarian">
+  <feature name="Veterinarian" id="amenity.veterinary">
     <category>amenity</category>
     <icon image="features/pois/health_veterinary.n.8E7409.24.png">
       ${name}
@@ -67,7 +67,7 @@
     <inputSet ref="common"/>
   </feature>
 
-  <feature name="Place of Worship">
+  <feature name="Place of Worship" id="amenity.place_of_worship">
     <category>amenity</category>
     <icon image="features/pois/place_of_worship_unknown.n.24.png"/>
     <help>http://wiki.openstreetmap.org/wiki/Tag:amenity%3Dplace_of_worship</help>
@@ -88,7 +88,7 @@
     <inputSet ref="common"/>
   </feature>
 
-  <feature name="ATM">
+  <feature name="ATM" id="amenity.atm">
     <category>amenity</category>
     <icon image="features/pois/money_atm.n.24.png"/>
     <help>http://wiki.openstreetmap.org/wiki/Atm</help>
@@ -100,7 +100,7 @@
   </feature>
 
 
-  <feature name="Bank">
+  <feature name="Bank" id="amenity.bank">
     <category>amenity</category>
     <icon image="features/pois/money_bank2.n.24.png">
       ${name}
@@ -118,7 +118,7 @@
   </feature>
 
 
-  <feature name="Recycling">
+  <feature name="Recycling" id="amenity.recycling">
     <category>amenity</category>
     <icon image="features/pois/amenity_recycling.n.24.png"/>
     <help>http://wiki.openstreetmap.org/wiki/Tag:amenity%3Drecycling</help>
@@ -217,7 +217,7 @@
     <inputSet ref="common"/>
   </feature>
 
-  <feature name="School">
+  <feature name="School" id="amenity.school">
     <category>amenity</category>
     <icon image="features/pois/education_school.n.24.png">
       ${name}
@@ -230,7 +230,7 @@
     <inputSet ref="common"/>
   </feature>
 
-  <feature name="Kindergarten">
+  <feature name="Kindergarten" id="amenity.kindergarten">
     <category>amenity</category>
     <category>buildings</category>
     <icon image="features/pois/education_nursery3.n.24.png">
@@ -244,7 +244,7 @@
     <inputSet ref="common"/>
   </feature>
 
-  <feature name="Town hall">
+  <feature name="Town hall" id="amenity.townhall">
     <category>amenity</category>
     <icon image="features/pois/amenity_town_hall.n.24.png">
       ${name}
@@ -258,7 +258,7 @@
   </feature>
 
 
-  <feature name="Post Box">
+  <feature name="Post Box" id="amenity.post_box">
     <category>amenity</category>
     <icon image="features/pois/amenity_post_box.n.24.png">
       ${ref}
@@ -271,7 +271,7 @@
     <inputSet ref="common"/>
   </feature>
 
-  <feature name="Post Office">
+  <feature name="Post Office" id="amenity.post_office">
     <category>amenity</category>
     <category>buildings</category>
     <icon image="features/pois/amenity_post_office.n.24.png">
@@ -287,7 +287,7 @@
     <inputSet ref="simpleName"/>
   </feature>
 
-  <feature name="Trash/rubbish bin">
+  <feature name="Trash/rubbish bin" id="amenity.waste_basket">
     <category>amenity</category>
     <icon image="features/pois/amenity_waste_bin.n.24.png">
       ${ref}
@@ -299,7 +299,7 @@
   </feature>
 
 
-  <feature name="Toilets">
+  <feature name="Toilets" id="amenity.toilets">
     <category>amenity</category>
     <icon image="features/pois/amenity_toilets.n.24.png">
       ${ref}
@@ -309,7 +309,7 @@
     <inputSet ref="common"/>
   </feature>
 
-  <feature name="Water fountain">
+  <feature name="Water fountain" id="amenity.drinking_water">
     <category>amenity</category>
     <category>foodanddrink</category>
     <icon image="features/pois/food_drinkingtap.n.24.png">
@@ -320,7 +320,7 @@
     <inputSet ref="common"/>
   </feature>
 
-  <feature name="Shelter">
+  <feature name="Shelter" id="amenity.shelter">
     <category>amenity</category>
     <icon image="features/pois/accommodation_shelter2.n.24.png">
       ${name}
@@ -339,7 +339,7 @@
   </feature>
 
 
-  <feature name="Barbecue">
+  <feature name="Barbecue" id="amenity.bbq">
     <category>amenity</category>
     <icon image="features/pois/tourist_picnic.n.24.png"/>
     <!-- specific icon needed -->
@@ -348,7 +348,7 @@
     <inputSet ref="common"/>
   </feature>
 
-  <feature name="Hunting stand">
+  <feature name="Hunting stand" id="amenity.hunting_stand">
     <category>sport</category>
     <icon image="features/pois/sport_shooting.n.24.png"/>
     <point/>
@@ -358,7 +358,7 @@
   </feature>
 
 
-  <feature name="Park bench">
+  <feature name="Park bench" id="amenity.bench">
     <category>amenity</category>
     <icon image="features/pois/amenity_bench.n.24.png" />
     <point/>
@@ -366,7 +366,7 @@
     <inputSet ref="common"/>
   </feature>
 
-  <feature name="Public telephone">
+  <feature name="Public telephone" id="amenity.telephone">
     <category>amenity</category>
     <icon image="features/pois/amenity_telephone.n.24.png" />
     <point/>
@@ -374,7 +374,7 @@
     <inputSet ref="common"/>
   </feature>
 
-  <feature name="Emergency phone">
+  <feature name="Emergency phone" id="amenity.emergency_phone">
     <category>amenity</category>
     <icon image="features/pois/emergency-telephone-24.png" />
     <!-- icon from http://www.clker.com/clipart-emergency-telephone-blue.html, feel free to (re)move this notice -->
@@ -385,7 +385,7 @@
   </feature>
 
 
-  <feature name="Swimming pool">
+  <feature name="Swimming pool" id="amenity.swimming_pool">
     <category>amenity</category>
     <category>sport</category>
     <icon image="features/pois/sport_swimming_outdoor.n.24.png">
@@ -406,7 +406,7 @@
 
   </feature>
 
-  <feature name="Fountain">
+  <feature name="Fountain" id="amenity.fountain">
     <category>amenity</category>
     <icon image="features/pois/amenity_fountain2.n.24.png">
     ${name}
@@ -417,7 +417,7 @@
     <inputSet ref="simpleName"/>
   </feature>
 
-  <feature name="Vending machine">
+  <feature name="Vending machine" id="amenity.vending_machine">
     <category>amenity</category>
     <category>foodanddrink</category>
     <icon image="features/pois/shopping_vending_machine.n.24.png">A vending machine.</icon>
@@ -432,7 +432,7 @@
 
   <!-- ========= Entertainment ========= -->
 
-  <feature name="Pub">
+  <feature name="Pub" id="amenity.pub">
     <category>foodanddrink</category>
     <icon image="features/pois/food_pub.n.24.png">
       ${name}
@@ -448,7 +448,7 @@
   </feature>
 
 
-  <feature name="Bar">
+  <feature name="Bar" id="amenity.bar">
     <category>foodanddrink</category>
     <icon image="features/pois/food_bar.n.24.png">
       ${name}
@@ -463,7 +463,7 @@
   </feature>
 
 
-  <feature name="Restaurant">
+  <feature name="Restaurant" id="amenity.restaurant">
     <category>foodanddrink</category>
     <icon image="features/pois/food_restaurant.n.24.png">
       ${name}
@@ -478,7 +478,7 @@
   </feature>
 
 
-  <feature name="Cafe">
+  <feature name="Cafe" id="amenity.cafe">
     <category>foodanddrink</category>
     <icon image="features/pois/food_cafe.n.24.png">
       ${name}
@@ -495,7 +495,7 @@
   </feature>
 
 
-  <feature name="Fast Food">
+  <feature name="Fast Food" id="amenity.fast_food">
     <category>foodanddrink</category>
     <icon image="features/pois/food_fastfood.n.24.png">
       ${name}

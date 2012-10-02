@@ -4,7 +4,7 @@
        ************************************************************************ -->
 
 
-  <feature name="Motorway">
+  <feature name="motorway" id="highway.motorway">
     <category>roads</category>
     <icon image="features/highway__motorway.png">
       <font size="16pt"><b>${ref}</b></font><br/>
@@ -18,7 +18,7 @@
     <inputSet ref="common"/>
   </feature>
 
-  <feature name="Motorway link">
+  <feature name="Motorway link" id="highway.motorway_link">
     <category>roads</category>
     <icon image="features/highway__motorway_link.png"/>
     <line/>
@@ -28,7 +28,7 @@
     <inputSet ref="common"/>
   </feature>
 
-  <feature name="Trunk road">
+  <feature name="Trunk road" id="highway.trunk">
     <category>roads</category>
     <icon image="features/highway__trunk.png">
       <font size="16pt"><b>${ref}</b></font><br/>
@@ -43,7 +43,7 @@
     <inputSet ref="common"/>
   </feature>
 
-  <feature name="Trunk link">
+  <feature name="Trunk link" id="highway.trunk_link">
     <category>roads</category>
     <icon image="features/highway__trunk_link.png"/>
     <line/>
@@ -53,7 +53,7 @@
     <inputSet ref="common"/>
   </feature>
 
-  <feature name="Primary road">
+  <feature name="Primary road" id="highway.primary">
     <category>roads</category>
     <icon image="features/highway__primary.png">
       <font size="16pt"><b>${ref}</b></font><br/>
@@ -68,7 +68,7 @@
     <inputSet ref="common"/>
   </feature>
 
-  <feature name="Primary link">
+  <feature name="Primary link" id="highway.primary_link">
     <category>roads</category>
     <icon image="features/highway__primary_link.png">
       <font size="16pt"><b>${ref}</b></font><br/>
@@ -84,7 +84,7 @@
   </feature>
 
 
-  <feature name="Secondary road">
+  <feature name="Secondary road" id="highway.secondary">
     <category>roads</category>
     <icon image="features/highway__secondary.png">
       <font size="16pt"><b>${ref}</b></font><br/>
@@ -99,7 +99,7 @@
     <inputSet ref="common"/>
   </feature>
 
-  <feature name="Secondary link">
+  <feature name="Secondary link" id="highway.secondary_link">
     <category>roads</category>
     <icon image="features/highway__secondary_link.png">
       <font size="16pt">
@@ -119,7 +119,7 @@
 
 
 
-  <feature name="Tertiary road">
+  <feature name="Tertiary road" id="highway.tertiary">
     <category>roads</category>
     <icon image="features/highway__tertiary.png">
       <font size="14pt"><b>${name}</b></font><br/>
@@ -134,7 +134,7 @@
     <inputSet ref="common"/>
   </feature>
 
-  <feature name="Tertiary link">
+  <feature name="Tertiary link" id="highway.tertiary_link">
     <category>roads</category>
     <icon image="features/highway__tertiary_link.png">
       <font size="14pt"><b>${name}</b></font><br/>
@@ -150,7 +150,7 @@
   </feature>
 
 
-  <feature name="Minor road">
+  <feature name="Minor road" id="highway.unclassified">
     <category>roads</category>
     <icon image="features/highway__unclassified.png">
       <font size="14pt"><b>${name}</b></font>
@@ -164,7 +164,7 @@
     <inputSet ref="common"/>
   </feature>
 
-  <feature name="Residential road">
+  <feature name="Residential road" id="highway.residential">
     <category>roads</category>
     <icon image="features/highway__residential.png">
       <font size="14pt">
@@ -183,7 +183,7 @@
     <inputSet ref="common"/>
   </feature>
 
-  <feature name="Service road">
+  <feature name="Service road" id="highway.service">
     <category>roads</category>
     <icon image="features/highway__service.png">
       <font size="14pt"><b>${name}</b></font>
@@ -207,7 +207,7 @@
     <inputSet ref="common"/>
   </feature>
 
-  <feature name="Unknown road">
+  <feature name="Unknown road" id="highway.road">
     <category>roads</category>
     <icon image="features/highway__unknown.png">
       <font size="10pt">This road has not been given a specific type. It's a road, and that's all that's known.</font>
@@ -220,7 +220,7 @@
     <inputSet ref="common"/>
   </feature>
 
-  <feature name="Living Street">
+  <feature name="Living Street" id="highway.living_street">
     <category>roads</category>
     <icon image="features/highway__living_street.png">
       <font size="14pt"><b>${name}</b></font>
@@ -234,7 +234,7 @@
     <inputSet ref="common"/>
   </feature>
 
-  <feature name="Track">
+  <feature name="Track" id="highway.track">
     <category>roads</category>
     <icon image="features/highway__track.png">
       <font size="14pt"><b>${name}</b></font>
@@ -247,7 +247,7 @@
     <inputSet ref="common"/>
   </feature>
 
-  <feature name="Raceway/racing track">
+  <feature name="Raceway/racing track" id="highway.raceway">
     <category>sport</category>
     <icon>
       <font size="10pt">A purpose built track for racing motor vehicles.</font>
@@ -263,7 +263,7 @@
   </feature>
   
   
-  <feature name="Turning circle">
+  <feature name="Turning circle" id="highway.turning_circle">
     <category>transport</category>
     <icon image="features/pois/transport_turning_circle.n.24.png"/>
     <help>http://wiki.openstreetmap.org/wiki/Tag:highway%3Dturning_circle</help>
@@ -273,7 +273,7 @@
     <inputSet ref="common"/>
   </feature>
 
-  <feature name="Mini Roundabout">
+  <feature name="Mini Roundabout" id="highway.mini_roundabout">
     <category>transport</category>
     <icon image="features/pois/transport_miniroundabout_anticlockwise.n.24.png"/>
     <help>http://wiki.openstreetmap.org/wiki/Tag:highway%3Dmini_roundabout</help>
@@ -284,7 +284,7 @@
   </feature>
 
 
-  <feature name="Traffic calming">
+  <feature name="Traffic calming" id="traffic_calming">
     <category>transport</category>
     <icon image="features/pois/transport_speedbump.n.24.png"/>
 <!--    <help>http://wiki.openstreetmap.org/wiki/Key:traffic_calming</help>-->
@@ -305,52 +305,52 @@
     <inputSet ref="common"/>
   </feature>
 
-  <feature name="Pedestrian crossing">
+  <feature name="Pedestrian crossing" id="highway.crossing">
     <category>transport</category>
     <icon image="features/pois/transport_zebracrossing.n.24.png"/>
     <point draganddrop="no"/>
     <within entity="way" k="highway"/>
     <tag k="highway" v="crossing"/>
     <input type="choice" key="crossing" name="Type of crossing" presence="always">
-      <choice value="yes" text="Generic" vmatch="unknown" />
-      <choice value="uncontrolled" text="Uncontrolled (no lights)" />
-      <choice value="traffic_signals" text="Traffic lights" />
-      <choice value="island" text="Traffic island" />
-      <choice value="unmarked" text="Unmarked" />
-      <choice value="no" text="None" />
+      <choice value="yes" text="Generic" vmatch="unknown"/>
+      <choice value="uncontrolled" text="Uncontrolled (no lights)"/>
+      <choice value="traffic_signals" text="Traffic lights"/>
+      <choice value="island" text="Traffic island"/>
+      <choice value="unmarked" text="Unmarked"/>
+      <choice value="no" text="None"/>
     </input>
     <inputSet ref="common"/>
     <inputSet ref="bicycle-permission"/>
     <inputSet ref="horse-permission"/>
-    <input type="checkbox" key="supervised" name="Supervised by crossing guard" category="Details" presence="onTagMatch" />
-    <input type="checkbox" key="segregated" name="Horses, pedestrians etc segregated from each other" category="Details" presence="onTagMatch" />
-    <input type="freetext" key="crossing_ref" name="Crossing category reference"  category="Details" presence="onTagMatch" />
+    <input type="checkbox" key="supervised" name="Supervised by crossing guard" category="Details" presence="onTagMatch"/>
+    <input type="checkbox" key="segregated" name="Horses, pedestrians etc segregated from each other" category="Details" presence="onTagMatch"/>
+    <input type="freetext" key="crossing_ref" name="Crossing category reference" category="Details" presence="onTagMatch"/>
   </feature>
 
-  <feature name="Turn restriction">
+  <feature name="Turn restriction" id="highway.restriction">
     <category>advanced</category>
     <help>http://wiki.openstreetmap.org/wiki/Turn_restrictions</help>
     <relation/>
     <tag k="type" v="restriction"/>
     <input type="choice" category="Restrictions" presence="always" name="Type" key="restriction" description="What's the restriction?" layout="horizontal" priority="high">
-      <choice value="no_left_turn"      text="No left turn"/>
-      <choice value="no_right_turn"     text="No right turn"/>
-      <choice value="no_u_turn"         text="No U turns"/>
-      <choice value="no_straight_on"    text="No straight on"/>
-      <choice value="only_left_turn"    text="Left turn only"/>
-      <choice value="only_right_turn"   text="Right turn only"/>
-      <choice value="only_straight_on"  text="Straight on only"/>
+      <choice value="no_left_turn" text="No left turn"/>
+      <choice value="no_right_turn" text="No right turn"/>
+      <choice value="no_u_turn" text="No U turns"/>
+      <choice value="no_straight_on" text="No straight on"/>
+      <choice value="only_left_turn" text="Left turn only"/>
+      <choice value="only_right_turn" text="Right turn only"/>
+      <choice value="only_straight_on" text="Straight on only"/>
     </input>
     <input type="choice" category="Restrictions" presence="always" name="Except" key="except" description="Are any vehicles exempt?" layout="horizontal">
-      <choice value="psv"      text="Bus"/>
-      <choice value="bicycle"  text="Bicycle"/>
+      <choice value="psv" text="Bus"/>
+      <choice value="bicycle" text="Bicycle"/>
       <choice value="motorcar" text="Car"/>
-      <choice value="hgv"      text="HGV"/>
+      <choice value="hgv" text="HGV"/>
     </input>
-    <input type="freetext" category="Restrictions" presence="always" name="Start day"  key="day_on"   description="What day of the week does it start?" layout="horizontal" priority="low"/>
-    <input type="freetext" category="Restrictions" presence="always" name="Start time" key="hour_on"  description="What time of day does it start?"     layout="horizontal" priority="low"/>
-    <input type="freetext" category="Restrictions" presence="always" name="End day"    key="day_off"  description="What day of the week does it end?"   layout="horizontal" priority="lowest"/>
-    <input type="freetext" category="Restrictions" presence="always" name="End time"   key="hour_off" description="What time of day does it end?"       layout="horizontal" priority="lowest"/>
+    <input type="freetext" category="Restrictions" presence="always" name="Start day" key="day_on" description="What day of the week does it start?" layout="horizontal" priority="low"/>
+    <input type="freetext" category="Restrictions" presence="always" name="Start time" key="hour_on" description="What time of day does it start?" layout="horizontal" priority="low"/>
+    <input type="freetext" category="Restrictions" presence="always" name="End day" key="day_off" description="What day of the week does it end?" layout="horizontal" priority="lowest"/>
+    <input type="freetext" category="Restrictions" presence="always" name="End time" key="hour_off" description="What time of day does it end?" layout="horizontal" priority="lowest"/>
     <inputSet ref="common"/>
   </feature>
 

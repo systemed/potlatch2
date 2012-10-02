@@ -1,5 +1,5 @@
 <featureGroup>
-    <feature name="Railway line">
+    <feature name="Railway line" id="railway.rail">
         <category>transport</category>
         <icon image="features/railway__rail.png">
           <font size="14pt">
@@ -19,7 +19,7 @@
       </feature>
     
     
-      <feature name="Railway spur">
+      <feature name="Railway spur" id="railway.spur">
         <category>transport</category>
         <icon image="features/railway__spur.png">
           <font size="14pt">
@@ -35,7 +35,7 @@
       </feature>
     
     
-      <feature name="Railway siding">
+      <feature name="Railway siding" id="railway.siding">
         <category>transport</category>
         <icon image="features/railway__siding.png">
           <font size="14pt">
@@ -51,7 +51,7 @@
       </feature>
     
     
-      <feature name="Preserved line">
+      <feature name="Preserved line" id="railway.preserved">
         <category>transport</category>
         <icon image="features/railway__preserved.png">
           <font size="14pt"><b>${name}</b></font>
@@ -64,7 +64,7 @@
       </feature>
     
     
-      <feature name="Disused tracks">
+      <feature name="Disused tracks" id="railway.disused">
         <category>transport</category>
         <icon image="features/railway__disused.png">
           <font size="14pt">
@@ -79,7 +79,7 @@
       </feature>
     
     
-      <feature name="Old trackbed">
+      <feature name="Old trackbed" id="railway.abandoned">
         <category>transport</category>
         <icon image="features/railway__abandoned.png">
           <font size="14pt"><b>${name}</b></font>
@@ -92,7 +92,7 @@
       </feature>
     
     
-      <feature name="Light rail line">
+      <feature name="Light rail line" id="railway.light_rail">
         <category>transport</category>
         <icon image="features/railway__light.png">
           <font size="14pt">
@@ -112,7 +112,7 @@
       </feature>
     
     
-      <feature name="Tram line">
+      <feature name="Tram line" id="railway.tram">
         <category>transport</category>
         <icon image="features/railway__tram.png">
           <font size="14pt"><b>${name}</b></font>
@@ -129,7 +129,7 @@
       </feature>
     
     
-      <feature name="Subway line">
+      <feature name="Subway line" id="railway.subway">
         <category>transport</category>
         <icon image="features/railway__subway.png">
           <font size="14pt">
@@ -148,7 +148,7 @@
       </feature>
     
     
-      <feature name="Railway platform">
+      <feature name="Railway platform" id="railway.platform">
         <category>transport</category>
         <icon image="features/railway__platform.png"/>
         <line/>
@@ -160,7 +160,7 @@
 	    <inputSet ref="tunnel"/>
       </feature>
     
-  <feature name="Car Wash">
+  <feature name="Car Wash" id="amenity.car_wash">
     <category>transport</category>
     <icon image="features/pois/transport_car_wash.n.24.png">
       ${name}
@@ -183,7 +183,7 @@
     <inputSet ref="common"/>
   </feature>
     
-      <feature name="Bus station">
+      <feature name="Bus station" id="amenity.bus_station">
         <category>transport</category>
         <icon image="features/amenity__bus_station.png">
           <b>${name} ${addr:housename}</b><br/>
@@ -199,7 +199,7 @@
       </feature>
     
     
-      <feature name="Airport">
+      <feature name="Airport" id="aeroway.aerodrome">
         <category>transport</category>
         <icon image="features/aeroway__aerodrome.png" dnd="features/pois/transport_airport.n.24.png"/>
         <tag k="aeroway" v="aerodrome"/>
@@ -212,7 +212,7 @@
       </feature>
     
     
-      <feature name="Airport terminal">
+      <feature name="Airport terminal" id="aeroway.terminal">
         <category>transport</category>
         <icon image="features/aeroway__terminal.png" dnd="features/pois/transport_airport_terminal.n.24.png"/>
         <tag k="aeroway" v="terminal"/>
@@ -224,7 +224,7 @@
       </feature>
     
     
-      <feature name="Helipad">
+      <feature name="Helipad" id="aeroway.helipad">
         <category>transport</category>
         <icon image="features/aeroway__helipad.png" dnd="features/pois/transport_helicopter_pad.n.24.png"/>
         <tag k="aeroway" v="helipad"/>
@@ -236,7 +236,7 @@
       </feature>
     
     
-      <feature name="Airport runway">
+      <feature name="Airport runway" id="aeroway.runway">
         <category>transport</category>
         <icon image="features/aeroway__runway.png"/>
         <tag k="aeroway" v="runway"/>
@@ -248,7 +248,7 @@
       </feature>
     
     
-      <feature name="Airport taxiway">
+      <feature name="Airport taxiway" id="aeroway.taxiway">
         <category>transport</category>
         <icon image="features/aeroway__taxiway.png"/>
         <tag k="aeroway" v="taxiway"/>
@@ -260,7 +260,7 @@
       </feature>
     
     
-      <feature name="Airport apron">
+      <feature name="Airport apron" id="aeroway.apron">
         <category>transport</category>
         <icon image="features/aeroway__apron.png"/>
         <tag k="aeroway" v="apron"/>
@@ -271,7 +271,7 @@
       </feature>
     
     
-      <feature name="Airport gate">
+      <feature name="Airport gate" id="aeroway.gate">
         <category>transport</category>
         <icon image="features/pois/transport_airport_gate.n.24.png"/>
         <tag k="aeroway" v="gate"/>
@@ -282,7 +282,7 @@
       </feature>
       
       
-<feature name="Aerodrome">
+<feature name="Aerodrome" id="aeroway.aerodrome">
     <category>aeroway</category>
     <icon image="features/aeroway__aerodrome.png"/>
     <help>http://wiki.openstreetmap.org/wiki/Tag:aeroway%3Daerodrome</help>
@@ -293,7 +293,7 @@
   </feature>
 
 
-  <feature name="Bus Stop">
+  <feature name="Bus Stop" id="highway.bus_stop">
     <category>transport</category>
     <icon image="features/pois/transport_bus_stop2.n.24.png">
       ${name} ${local_ref}
@@ -305,7 +305,7 @@
   </feature>
 
 
-  <feature name="Car Parking">
+  <feature name="Car Parking" id="amenity.parking">
     <category>transport</category>
     <icon image="features/amenity__parking.png" dnd="features/pois/transport_parking_car.n.24.png">
       ${name}
@@ -331,7 +331,7 @@
   </feature>
 
 
-  <feature name="Bicycle Parking">
+  <feature name="Bicycle Parking" id="amenity.bicycle_parking">
     <category>transport</category>
     <icon image="features/pois/transport_parking_bicycle.n.24.png">
       ${name} ${capacity}
@@ -363,7 +363,7 @@
   </feature>
 
 
-  <feature name="Railway station">
+  <feature name="Railway station" id="railway.station">
     <category>transport</category>
     <icon image="features/pois/transport_train_station.n.24.png">
       <font size="14pt">
@@ -383,7 +383,7 @@
   </feature>
 
 
-  <feature name="Fuel">
+  <feature name="Fuel" id="amenity.fuel">
     <category>transport</category>
     <point />
     <inputSet ref="simpleName" />
@@ -460,7 +460,7 @@
   </feature>
 
 
-  <feature name="Bus station">
+  <feature name="Bus station" id="amenity.bus_station">
     <category>transport</category>
     <point/>
     <inputSet ref="simpleName"/>
@@ -470,7 +470,7 @@
   </feature>
 
 
-  <feature name="Taxi rank">
+  <feature name="Taxi rank" id="amenity.taxi">
     <category>transport</category>
     <point/>
     <inputSet ref="simpleName"/>
@@ -480,7 +480,7 @@
   </feature>
 
 
-  <feature name="Tram stop">
+  <feature name="Tram stop" id="railway.tram_stop">
     <category>transport</category><point/><inputSet ref="simpleName" />
     <icon image="features/pois/transport_tram_stop.n.24.png"/>
     <tag k="railway" v="tram_stop"/>
@@ -488,7 +488,7 @@
   </feature>
 
 
-  <feature name="Bicycle rental">
+  <feature name="Bicycle rental" id="amenity.bicycle_rental">
     <category>transport</category>
     <point/>
     <inputSet ref="simpleName"/>
@@ -498,7 +498,7 @@
   </feature>
 
 
-  <feature name="Car rental">
+  <feature name="Car rental" id="amenity.car_rental">
     <category>transport</category>
     <point/>
     <inputSet ref="simpleName"/>
@@ -508,7 +508,7 @@
   </feature>
 
 
-  <feature name="Ferry Terminal">
+  <feature name="Ferry Terminal" id="amenity.ferry_terminal">
     <category>transport</category>
     <icon image="features/pois/transport_port.n.24.png"/>
     <help>http://wiki.openstreetmap.org/wiki/Tag:amenity%3Dferry_terminal</help>
@@ -522,7 +522,7 @@
 
 
   <!-- public transit routes -->
-  <feature name="Bus Route">
+  <feature name="Bus Route" id="route.bus">
     <category>transport</category>
     <icon image="features/route__bus.png">
       <font size="12pt">
@@ -541,7 +541,7 @@
   </feature>
 
 
-  <feature name="Tram Route">
+  <feature name="Tram Route" id="route.tram">
     <category>transport</category>
     <icon image="features/transport__tram.png">
       <font size="12pt">
@@ -559,7 +559,7 @@
     <inputSet ref="common"/>
   </feature>
 
-  <feature name="Train Route">
+  <feature name="Train Route" id="route.train">
     <category>transport</category>
     <icon image="features/transport__railway.png">
       <font size="12pt">

@@ -31,16 +31,16 @@
   <!-- Common input sets -->
 
   <inputSet id="simpleName">
-    <input type="freetext" presence="always" name="Name" key="name" description="The name" priority="highest"/>
+    <input type="freetext" presence="always" name="Name" key="name" description="The name" priority="highest" id="simpleName.name"/>
   </inputSet>
 
   <inputSet id="nameAndRef">
     <inputSet ref="simpleName" />
-    <input type="freetext" presence="always" name="Reference number" key="ref" description="A reference number or code used to identify this thing." />
+    <input type="freetext" presence="always" name="Reference number" key="ref" description="A reference number or code used to identify this thing." id="nameAndRef.ref"/>
   </inputSet>
 
    <inputSet id="simpleBrand"> 
-     <input type="freetext" category="Naming" presence="always" name="Brand" key="brand" description="Brand, i.e. Acme"/> 
+     <input type="freetext" category="Naming" presence="always" name="Brand" key="brand" description="Brand, i.e. Acme" id="simpleBrand.brand"/> 
    </inputSet> 
   
    <inputSet id="simpleOperator"> 
@@ -48,11 +48,11 @@
    </inputSet> 
 
   <inputSet id="source">
-    <input type="freetext" category="Details" presence="onTagMatch" name="Source" key="source" description="The primary source of information for this object (GPS, survey, Bing, ...)" priority="lowest"/>
+    <input type="freetext" category="Details" presence="onTagMatch" name="Source" key="source" description="The primary source of information for this object (GPS, survey, Bing, ...)" priority="lowest" id="source.source"/>
   </inputSet>
 
   <inputSet id="designation">
-    <input type="freetext" category="Details" presence="onTagMatch" description="The official designation or classification (if any). Only use this if the organisation that runs it has its own classification system." name="Official classification" key="designation" priority="lowest" />
+    <input type="freetext" category="Details" presence="onTagMatch" description="The official designation or classification (if any). Only use this if the organisation that runs it has its own classification system." name="Official classification" key="designation" priority="lowest" id="input.designation"/>
   </inputSet>
 
   <inputSet id="common">
@@ -63,10 +63,10 @@
   <inputSet id="names">
     <input type="freetext" presence="always"
         name="Name" category="Details" priority="highest"
-        key="name" description="The most common name"/>
+        key="name" description="The most common name" id="names.name"/>
     <input type="freetext" presence="onTagMatch"
         name="International Name" category="Details" subcategory="Additional names"
-        key="int_name" description="The internationally recognised name"/>
+        key="int_name" description="The internationally recognised name" id="names.int_name"/>
     <input type="freetext" presence="onTagMatch"
         name="Historical Name" category="Details" subcategory="Additional names" priority="low"
         key="old_name" description="The historic or previous name"/>
