@@ -19,7 +19,9 @@ package net.systemeD.halcyon.connection {
         private var modified:Boolean = false;
         private var _loaded:Boolean = true;
         private var parents:Dictionary = new Dictionary();
-		public var status:String;
+        public var status:String;
+        /** Last changeset in which the Entity was updated. Used only by history calls, therefore we don't bloat the constructor by initialising it. */
+        public var lastChangeset:Number;
         /** Lock against purging when off-screen */
         public var locked:Boolean = false;
         protected var deleted:Boolean = false;
@@ -103,7 +105,7 @@ package net.systemeD.halcyon.connection {
         /** Whether the entity has any tags other than meta-tags (attribution, created_by, source, tiger:...) */
         public function hasInterestingTags():Boolean {
             for (var key:String in tags) {
-              if (key != "attribution" && key != "created_by" && key != "source" && key.indexOf('tiger:') != 0) {
+              if (key != "attribution" && key != "created_by" && key != "source" && key!='odbl' && key.indexOf('tiger:') != 0) {
                 //trace(key);
                 return true;
               }

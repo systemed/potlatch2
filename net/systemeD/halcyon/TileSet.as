@@ -25,6 +25,9 @@ package net.systemeD.halcyon {
 		private var scheme:String;			// 900913 or microsoft
 		public var blocks:Array;			// array of regexes which are verboten
 
+		private var count:Number=0;			// counter incremented to provide a/b/c/d tile swapping
+		private static const ROUNDROBIN:RegExp =/\$\{([^}]+)\}/;
+
 		private var map:Map;
 		private const MAXTILEREQUESTS:uint= 4;
 		private const MAXTILESLOADED:uint=30;
@@ -214,6 +217,7 @@ package net.systemeD.halcyon {
 		
 		private function tileURL(tx:int,ty:int,tz:uint):String {
 			var t:String='';
+			var tmsy:int=Math.pow(2,tz)-1-ty;
 			switch (scheme.toLowerCase()) {
 
 				case 'microsoft':
@@ -228,19 +232,26 @@ package net.systemeD.halcyon {
 					t=baseurl.replace('$quadkey',u); break;
 
 				case 'tms':
-					ty=Math.pow(2,tz)-1-ty;
-					t=baseurl.replace('$z',map.scale).replace('$x',tx).replace('$y',ty);
+					t=baseurl.replace('$z',map.scale).replace('$x',tx).replace('$y',tmsy);
 					break;
 
 				default:
 					if (baseurl.indexOf('$x')>-1) {
-						t=baseurl.replace('$z',map.scale).replace('$x',tx).replace('$y',ty);
+						t=baseurl.replace('$z',map.scale).replace('$x',tx).replace('$y',ty).replace('$-y',tmsy);
 					} else {
 						t=baseurl.replace('!',map.scale).replace('!',tx).replace('!',ty);
 					}
 					break;
 
 			}
+			var o:Object=new Object();
+			if ((o=ROUNDROBIN.exec(t))) {
+				var prefixes:Array=o[1].split('|');
+				var p:String = prefixes[count % prefixes.length];
+				t=t.replace(ROUNDROBIN,p);
+				count++;
+			}
+
 			for each (var block:* in blocks) { if (t.match(block)) return ''; }
 			return t;
 		}

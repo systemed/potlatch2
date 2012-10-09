@@ -1,11 +1,7 @@
 package net.systemeD.potlatch2.utils {
 
     import net.systemeD.halcyon.Map;
-    import net.systemeD.halcyon.connection.Connection;
-    import net.systemeD.halcyon.connection.Node;
-    import net.systemeD.halcyon.connection.Way;
-    import net.systemeD.halcyon.connection.Relation;
-    import net.systemeD.halcyon.connection.RelationMember;
+    import net.systemeD.halcyon.connection.*;
     import net.systemeD.potlatch2.tools.Simplify;
 
     /**
@@ -17,7 +13,8 @@ package net.systemeD.potlatch2.utils {
             super(connection, map, callback, simplify, options);
         }
 
-        override protected function doImport(push:Function): void {
+        override protected function doImport(): void {
+            var action:CompositeUndoableAction = new CompositeUndoableAction("Import KML "+connection.name);
             var kml:XML = new XML(files[0]);
 
             for each (var ns:Namespace in kml.namespaceDeclarations()) {
@@ -40,15 +37,15 @@ package net.systemeD.potlatch2.utils {
                 }
 
                 for each (var point:XML in placemark.Point) {
-                    importNode(point.coordinates, tags, push);
+                    importNode(point.coordinates, tags, action.push);
                 }
 
                 for each (var linestring:XML in placemark.LineString) {
-                    importWay(linestring.coordinates, tags, false, push);
+                    importWay(linestring.coordinates, tags, false, action.push);
                 }
 
                 for each (var linearring:XML in placemark.LinearRing) {
-                    importWay(linearring.coordinates, tags, true, push);
+                    importWay(linearring.coordinates, tags, true, action.push);
                 }
 
                 for each (var polygon:XML in placemark.Polygon) {
@@ -56,23 +53,25 @@ package net.systemeD.potlatch2.utils {
                         var members:Array = [];
                         var way:Way;
 
-                        way = importWay(polygon.outerBoundaryIs.LinearRing.coordinates, {}, true, push);
+                        way = importWay(polygon.outerBoundaryIs.LinearRing.coordinates, {}, true, action.push);
                         members.push(new RelationMember(way, "outer"));
 
                         for each (var inner:XML in polygon.innerBoundaryIs) {
-                            way = importWay(inner.LinearRing.coordinates, {}, true, push);
+                            way = importWay(inner.LinearRing.coordinates, {}, true, action.push);
                             members.push(new RelationMember(way, "inner"));
                         }
 
                         tags["type"] = "multipolygon";
 
-                        connection.createRelation(tags, members, push);
+                        connection.createRelation(tags, members, action.push);
                     } else {
-                        importWay(polygon.outerBoundaryIs.LinearRing.coordinates, tags, true, push);
+                        importWay(polygon.outerBoundaryIs.LinearRing.coordinates, tags, true, action.push);
                     }
                 }
             }
-			default xml namespace = new Namespace("");
+            default xml namespace = new Namespace("");
+            action.doAction();
+            finish();
         }
 
         private function importNode(coordinates:String, tags:Object, push:Function): Node {
@@ -91,12 +90,13 @@ package net.systemeD.potlatch2.utils {
         private function importWay(coordinates:String, tags:Object, polygon:Boolean, push:Function): Way {
             var way:Way;
             var nodestring:Array = [];
+            var nodemap:Object = [];
 
-            if (polygon) {
-                coordinates = coordinates.slice(0, coordinates.lastIndexOf(" "));
-            }
+            var tuples:Array=coordinates.split(" ");
+            if (tuples[0]==tuples[tuples.length-1]) { polygon=true; }
+            if (polygon) { tuples.splice(-1,1); }
 
-            for each (var tuple:String in coordinates.split(" ")) {
+            for each (var tuple:String in tuples) {
                 var coords:Array = tuple.split(",");
                 var lon:Number = coords[0];
                 var lat:Number = coords[1];

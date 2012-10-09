@@ -12,7 +12,7 @@ Many icons used in halcyon/potlatch2 are based on the awesome CC0-licensed SJJB 
 
 * Flex SDK 4.5
 ** Product page: http://www.adobe.com/products/flex/ 
-** Flex 4.5 Download page: http://opensource.adobe.com/wiki/display/flexsdk/Download+Flex+4.5 (free, OS X/Windows/Linux)
+** Flex download page: http://www.adobe.com/devnet/flex/flex-sdk-download-all.html (free, OS X/Windows/Linux)
 * AS3 docs - http://livedocs.adobe.com/flash/9.0/ActionScriptLangRefV3/
 * Flash debug player - http://www.adobe.com/support/flashplayer/downloads.html
 * Basically you might as well just sell your soul to Adobe
@@ -67,7 +67,7 @@ or
 * ant release-no-locales
 
 If you're using Mac OS X, you may need to tell ant to use more memory, by
-typing export ANT_OPTS="-Xms768m -Xmx1024m -XX:MaxPermSize=512m" 
+typing export ANT_OPTS="-Xms768m -Xmx1024m -XX:MaxPermSize=768m -XX:ReservedCodeCacheSize=512m" 
 beforehand (you can put this in your .profile).
 
 
@@ -104,7 +104,7 @@ of a much larger swf file.. but we're developing so that doesn't matter!).
 Running:
 
 * Flash security model sucks. If you want to use internet resource (e.g. map calls to the dev
-  server) the binary must have been served from "teh internets". Run resources/server.rb to launch a local 
+  server) the binary must have been served from "teh internets". Run resources/server.py to launch a local
   server, then go to http://localhost:3333/potlatch2.html to get started (or if you're already running e.g. 
   Apache locally, feel free to use that instead.)
   

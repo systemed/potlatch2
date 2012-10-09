@@ -34,6 +34,9 @@
             <mx:PopUpButton id="popupChange" openAlways="true" width="100%" styleName="dndTagPopUpMenu" closeDuration="0" />
             <mx:LinkButton icon="@Embed('../../../embedded/information.svg')" click="openDescription()" id="helpLabel" styleName="helpInfo"/>
           </mx:HBox>
+          <mx:HBox width="100%" id="summaryContainer" visible="false">
+            <mx:Text condenseWhite="true" width="100%" id="featureSummary" link="togglePanel()" />
+          </mx:HBox>
         </mx:VBox>
       </mx:VBox>
       <mx:VBox width="100%" height="100%" label="Advanced" id="advancedContainer" initialize="checkAdvanced()" verticalGap="1">
@@ -53,18 +56,27 @@
             itemDoubleClick="editRelation(relationsGrid.selectedItem.id)"
             doubleClick="if (event.target.parent==relationsGrid) { addToRelation(); }">
             <mx:columns>
-                <mx:DataGridColumn editable="false" dataField="description" headerText="Relation"/>
+                <mx:DataGridColumn editable="false" dataField="description" headerText="Relation" minWidth="100">
+                    <mx:itemRenderer>
+                        <fx:Component>
+                            <mx:Text x="4" y="0" width="100%" selectable="false" htmlText="{outerDocument.adaptHTMLDescription(data.description)}" height="20"/>
+                        </fx:Component>
+                    </mx:itemRenderer>
+                </mx:DataGridColumn>
                 <mx:DataGridColumn editable="false" dataField="id_idx" headerText="ID"/>
                 <mx:DataGridColumn editable="true" dataField="role" headerText="Role">
                     <mx:itemEditor><fx:Component><mx:TextInput restrict="&#x0020;-&#x10FFFF;" /></fx:Component></mx:itemEditor>
                 </mx:DataGridColumn>
-				<mx:DataGridColumn width="20" editable="false">
+				<mx:DataGridColumn width="40" minWidth="40" editable="false">
 					<mx:itemRenderer>
 						<fx:Component>
-		                    <mx:HBox horizontalAlign="center" verticalAlign="middle">
+							<mx:HBox horizontalAlign="center" verticalAlign="middle" paddingLeft="4">
 								<mx:PopUpButton arrowButtonWidth="12" paddingLeft="0" paddingRight="0" width="12" height="12" 
 								                open="{outerDocument.updateRelationMenu(event);}" 
 								                creationComplete="{outerDocument.createRelationMenu(PopUpButton(event.target));}"/>
+								<mx:Image source="@Embed('../../../embedded/delete_small.svg')"
+								          click='event.stopPropagation();outerDocument.removeFromRelation(data.id, data.index);'
+								          buttonMode="true" useHandCursor="true" width="12" height="12" />
 							</mx:HBox>
 						</fx:Component>
 					</mx:itemRenderer>
@@ -128,18 +140,27 @@
         itemDoubleClick="editRelation(multiRelationsGrid.selectedItem.id)"
         doubleClick="if (event.target.parent==multiRelationsGrid) { addToRelation(); }">
         <mx:columns>
-            <mx:DataGridColumn editable="false" dataField="description" headerText="Relation"/>
+            <mx:DataGridColumn editable="false" dataField="description" headerText="Relation">
+                <mx:itemRenderer>
+                    <fx:Component>
+                        <mx:Text x="4" y="0" width="100%" selectable="false" htmlText="{outerDocument.adaptHTMLDescription(data.description)}" height="20"/>
+                    </fx:Component>
+                </mx:itemRenderer>
+            </mx:DataGridColumn>
             <mx:DataGridColumn editable="false" dataField="id_idx" headerText="ID"/>
             <mx:DataGridColumn editable="true" dataField="role" headerText="Role">
                 <mx:itemEditor><fx:Component><mx:TextInput restrict="&#x0020;-&#x10FFFF;" /></fx:Component></mx:itemEditor>
             </mx:DataGridColumn>
-			<mx:DataGridColumn width="20" editable="false">
+			<mx:DataGridColumn width="40" minWidth="40" editable="false">
 				<mx:itemRenderer>
 					<fx:Component>
 	                    <mx:HBox horizontalAlign="center" verticalAlign="middle">
 							<mx:PopUpButton arrowButtonWidth="12" paddingLeft="0" paddingRight="0" width="12" height="12" 
 							                open="{outerDocument.updateRelationMenu(event);}" 
 							                creationComplete="{outerDocument.createRelationMenu(PopUpButton(event.target));}"/>
+							<mx:Image source="@Embed('../../../embedded/delete_small.svg')"
+							          click='event.stopPropagation();outerDocument.removeFromRelation(data.id);'
+							          buttonMode="true" useHandCursor="true" width="12" height="12" />
 						</mx:HBox>
 					</fx:Component>
 				</mx:itemRenderer>
@@ -367,20 +388,74 @@
 				iconText.htmlText = feature.htmlDetails(entity);
 				popupChange.label = feature.name;
 				helpLabel.visible = feature.hasHelpURL();
+				setSummary('');
 			} else {
 				iconImage.source = null;
 				popupChange.label = "unknown";
 				helpLabel.visible = false;
 				if (entity==null) {
 					iconText.htmlText = "<i>Nothing selected</i>";
-				} else if (entity.hasTags()) {
+					setSummary('');
+				} else if (entity.hasTags() || entity.parentRelations.length>0) {
 					iconText.htmlText = "<b>Not recognised</b><br/><font size='10pt'>Try looking at the tags under the advanced properties</font>";
+					setSummary(tagSummary(entity));
 				} else {
 					iconText.htmlText = "<b>No tags set</b><br/><font size='10pt'>Please use the menu below to define what this "+entity.getType()+" is</font>";
+					setSummary('');
 				}
 			}
 	  }
 
+	/** Construct an HTML string that summarises the tags and relation memberships of an object. */
+	private function tagSummary(entity:Entity):String {
+		// Process tags
+		var tags:Object=entity.getTagsCopy();
+		var len:uint=entity.getTagList().length;
+		var expl:Array=[];
+		var t:String="none";
+		if (tags['name']) {
+			expl.push("<b>"+tags['name']+"</b>"); delete tags['name']; len--;
+		}
+		for (var k:String in tags) {
+			if (nounKeys.indexOf(k)>-1) {
+				expl.push("<b>"+k+"</b>="+tags[k]); len--;
+			}
+		}
+		if (expl.length) {
+			switch (len) {
+				case 1:		expl.push("and 1 other tag"); break;
+				case 0: 	break;
+				default:	expl.push("and "+len+" other tags"); break;
+			}
+			t=expl.join('; ');
+		} else if (len>0) {
+			t=entity.getTagList().toString();
+		}
+
+		// Process relations
+		expl=[];
+		for each (var rel:Relation in entity.parentRelations) {
+			tags=rel.getTagsHash();
+			if (tags['type'] && tags['name']) { expl.push("<b>"+tags['type']+"</b> ("+tags['name']+")"); }
+			else if (tags['type']) { expl.push("<b>"+tags['type']+"</b>"); }
+			else if (tags['name']) { expl.push(tags['name']); }
+			else if (tags['ref' ]) { expl.push(tags['ref']); }
+			else { expl.push('unknown'); }
+		}
+
+		// Assemble complete string
+		return "<p>Tags: "+t+(expl.length ? "<br>Relations: "+expl.join('; ') : '')+" <b>(<a href='event:openAdvanced'>edit</a>)</b></p>";
+	}
+	
+	/** List of 'noun' keys (i.e. those that define the type of the object, rather than its properties). FIXME: should be defined in a config file. */
+	private static var nounKeys:Array=['amenity','barrier','boundary','building','construction','highway','historic','landuse','leisure',
+	                                   'man_made','natural','office','place','power','railway','service','shop','tourism','traffic_calming','waterway'];
+
+	private function setSummary(text:String):void {
+		featureSummary.htmlText=text;
+		summaryContainer.visible=(text!='');
+	}
+	
 	  private function isMultipleEditable(entities:Array):Boolean {
 		for each(var entity:Entity in entities) {
 			if(!(entity is Node || entity is Way))
@@ -518,16 +593,10 @@
 
 	private function initEditorStackUIs():void {
 		editorStackTabNavigator = new TabNavigator();
-//		editorStackTabNavigator.allowTabSqueezing=false;
-//		editorStackTabNavigator.minTabWidth=10;
-//		editorStackTabNavigator.closePolicy="close_never";
-//		editorStackTabNavigator.scrollSpeed=20;
 		editorStackTabNavigator.creationPolicy="auto";
 		editorStackTabNavigator.percentWidth=100;
 		editorStackTabNavigator.percentHeight=100;
 		editorStackTabNavigator.styleName="dndStackTab";
-//		editorStackTabNavigator.popUpButtonPolicy="off"
-
 
 		editorStackAccordion = new Accordion();
 		editorStackAccordion.percentWidth=100;
@@ -637,10 +706,12 @@
 
       private function addedToRelation(event:RelationMemberEvent):void {
          resetRelationsGrid(selectedEntity);
+         refreshFeatureIcon();
       }
 
       private function removedFromRelation(event:RelationMemberEvent):void {
          resetRelationsGrid(selectedEntity);
+         refreshFeatureIcon();
       }
 
       private function removeRelationListeners():void {
@@ -693,6 +764,7 @@
 
       private function relationTagChanged(event:TagEvent):void {
           resetRelationsGrid(selectedEntity);
+          refreshFeatureIcon();
       }
 
       private function entityRelationMemberChanged(event:RelationMemberEvent):void {
@@ -840,11 +912,21 @@
               navigateToURL(new URLRequest(feature.helpURL), "potlatch_help");
       }
 
+      /** Slightly poshify the description by making it HTML. 
+          In theory we could have embedded images here, but htmlText is completely broken. **/
+      public function adaptHTMLDescription(text:String):String {
+          text=text.replace(/^route (\w+) /,"<b>$1</b> ");
+          text=text.replace(/ncn (\d+)/,"<font color='#FF0000'>$1</font>");
+          text=text.replace(/rcn (\d+)/,"<font color='#00CCCC'>$1</font>");
+          text=text.replace(/lcn (\d+)/,"<font color='#0000FF'>$1</font>");
+          return text;
+      }
+
       public function addToRelation():void {
           new RelationSelectPanel().init(selectedEntity,new Object());
       }
 
-      private function removeFromRelation(id:Number, index:int=-1):void {
+      public function removeFromRelation(id:Number, index:int=-1):void {
 		var rel:Relation=connection.getRelation(id);
 		if (index>-1) {
 			rel.removeMemberByIndex(index, MainUndoStack.getGlobalStack().addAction);
