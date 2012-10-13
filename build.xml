@@ -236,18 +236,88 @@
   <target name="test" depends="init, compileTestRunner, runTestsAndReport" description="Compiles unit tests and generates test report artifacts." />
 
   <!-- ======================================= -->
+  <!-- Utils Targets -->
+  <!-- ======================================= -->
+
+  <target name="LocalizeUtils">
+    <mkdir dir="${basedir}/utils-generated/"/>
+    <javac srcdir="${basedir}/utils/" destdir="${basedir}/utils-generated/" includeAntRuntime="true"/>
+    <jar jarfile="${basedir}/lib/MapFeaturesConverter.jar" basedir="${basedir}/utils-generated/">
+    <manifest>
+      <attribute name="Main-Class" value="jp.osmf.mfc.MapFeaturesConverter"/>
+      <attribute name="Class-Path" value="${basedir}/lib"/>
+      <attribute name="Implementation-Title"   value="Map_Features Converter"/>
+      <attribute name="Implementation-Version" value="0.1"/>
+      <attribute name="Implementation-Vendor"  value="OSMFJ"/>
+      <attribute name="Build-Id"
+                value="${ts} (${user.name} [${os.name} ${os.version} ${os.arch}])"/>
+    </manifest>
+    </jar>
+  </target>
+
+  <!-- ======================================= -->
   <!-- Locale Targets -->
   <!-- ======================================= -->
+
+  <macrodef name="localizeFeatures">
+    <attribute name="source"/>
+    <attribute name="dest"/>
+    <attribute name="properties"/>
+    <attribute name="missing"/>
+    <sequential>
+      <java classname="jp.osmf.mfc.MapFeaturesConverter" dir="${basedir}"
+          fork="yes" classpath="${basedir}/lib/MapFeaturesConverter.jar">
+        <arg value="@{source}"/>
+        <arg value="@{dest}"/>
+        <arg value="@{properties}"/>
+        <arg value="@{missing}"/>
+      </java>
+    </sequential>
+  </macrodef>
+
+  <macrodef name="buildL10NFeatures" description="make gen/(lang)/map_features/(feature).xml">
+    <attribute name="locale" default="en_GB"/>
+    <sequential>
+      <mkdir dir="${basedir}/resources/bundles/@{locale}/map_features"/>
+      <delete file="${basedir}/l10n/locale/@{locale}/map_features_missing.properties"/>
+      <ac:var name="present" unset="true"/>
+      <available file="${basedir}/l10n/locale/@{locale}/map_features.properties" property="present"/>
+      <ac:if>
+        <isset property="present"/>
+      <ac:then>
+        <localizeFeatures source="${basedir}/resources/map_features.xml"
+                dest="${basedir}/resources/bundles/@{locale}/map_features.xml"
+                properties="${basedir}/l10n/locale/@{locale}/map_features.properties"
+                missing="${basedir}/l10n/locale/@{locale}/map_features_missing.properties"/>
+
+        <ac:for list="${featureGroups.list}" keepgoing="true" param="featuregroupname">
+          <sequential>
+            <localizeFeatures source="${basedir}/resources/map_features/@{featuregroupname}.xml"
+                dest="${basedir}/resources/bundles/@{locale}/map_features/@{featuregroupname}.xml"
+                properties="${basedir}/l10n/locale/@{locale}/map_features.properties"
+                missing="${basedir}/l10n/locale/@{locale}/map_features_missing.properties"/>
+          </sequential>
+        </ac:for>
+      </ac:then>
+      <ac:else>
+        <copy file="${basedir}/resources/map_features.xml" todir="${basedir}/resources/bundles/@{locale}/"/>
+        <copy todir="${basedir}/resources/bundles/@{locale}/map_features">
+          <fileset dir="${basedir}/resources/map_features"/>
+        </copy>
+      </ac:else>
+      </ac:if>
+    </sequential>
+  </macrodef>
 
   <!-- Deploy compiled Localization Resource Bundles and resources. -->
   <macrodef name="deployLocale" description="Deploying the compiled swfs">
     <attribute name="locale" default="en_GB"/>
     <sequential>
-      <echo>Copying @{locale}.swf to deploy directory...</echo>
+      <echo>Copying @{locale}.swf, @{locale}.zip to deploy directory...</echo>
 
       <mkdir dir="${basedir}/resources/locales"/>
       <copy file="${basedir}/l10n/locale/bundles/@{locale}.swf" tofile="${basedir}/resources/locales/@{locale}.swf" />
-
+      <zip destfile="${basedir}/resources/locales/@{locale}.zip" basedir="${basedir}/resources/bundles/@{locale}" />
     </sequential>
   </macrodef>
 
@@ -311,6 +381,18 @@
     </ac:for>
   </target>
 
+  <target name="buildLocalesFeatures" depends="makeLocalesList, LocalizeUtils">
+    <ac:for list="${locales.list}" keepgoing="true" param="localename">
+      <sequential>
+        <buildL10NFeatures locale="@{localename}" />
+      </sequential>
+    </ac:for>
+  </target>
+
+  <target name="updateLocalesMap" description="Update l10n/LocaleMap.mxml by populating messages from sources">
+    <!-- FIXME: not implemented yet -->
+  </target>
+
   <target name="buildLocales" depends="makeLocalesList">
     <echo>Building Localization .swf's</echo>
     <ac:for list="${locales.list}" keepgoing="true" param="localename">
@@ -320,7 +402,7 @@
     </ac:for>
   </target>
 
-  <target name="deployLocales" depends="buildLocales">
+  <target name="deployLocales" depends="buildLocales, buildLocalesFeatures">
     <echo>Deploying the compiled swf and assets package for the given locales</echo>
     <ac:for list="${locales.list}" keepgoing="true" param="localename">
       <sequential>
@@ -337,7 +419,9 @@
     <delete>
       <fileset dir="${basedir}/resources" includes="potlatch2.swf*"/>
     </delete>
+    <delete dir="${basedir}/l10n/bundles"/>
+    <delete dir="${basedir}/resources/bundles"/>
+    <delete dir="${basedir}/utils-generated/"/>
   </target>
-
 
 </project>

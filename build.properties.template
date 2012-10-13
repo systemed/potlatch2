@@ -20,3 +20,5 @@ test.fakeroot.dir = ${basedir}/tests/fakeroot
 test.bin.dir = ${basedir}/tests/bin
 report.dir = ${basedir}/tests/report
 report.html.dir = ${basedir}/tests/report/html
+
+featureGroups.list = amenities,barriers,buildings,landuse,man_made,paths,places,power,roads,shopping,tourism,transport,water
