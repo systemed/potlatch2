@@ -21,7 +21,13 @@ package net.systemeD.quadtree {
 		}
 
 		public function insert(item:Object):void {
-			root.insert(item);
+			if (item is Array) {
+				for (var i:Number=0; i<(item as Array).length; i++) {
+					root.insert(item[i]);
+				}
+			} else {
+				root.insert(item);
+			}
 		}
 		
 		public function remove(item:Object):Boolean {

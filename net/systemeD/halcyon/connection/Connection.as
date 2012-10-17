@@ -251,10 +251,10 @@ package net.systemeD.halcyon.connection {
 			nodeMap.remove({x:node.lon, y:node.lat, key:node});
 		}
 		public function addToWayMap(way:Way):void {
-			nodeMap.insert({x:way.left, y:way.bottom, width:way.right-way.left, height:way.top-way.bottom, key:way});
+			wayMap.insert({x:way.left, y:way.bottom, width:way.right-way.left, height:way.top-way.bottom, key:way});
 		}
 		public function removeFromWayMap(way:Way):void {
-			nodeMap.remove({x:way.left, y:way.bottom, width:way.right-way.left, height:way.top-way.bottom, key:way});
+			wayMap.remove({x:way.left, y:way.bottom, width:way.right-way.left, height:way.top-way.bottom, key:way});
 		}
 
 		// Remove data from Connection
@@ -401,9 +401,19 @@ package net.systemeD.halcyon.connection {
 		public function getObjectsByBbox(left:Number, right:Number, top:Number, bottom:Number):Object {
 			var o:Object = { poisInside: [], poisOutside: [], waysInside: [], waysOutside: [],
                               markersInside: [], markersOutside: [] };
+//			var r:Array=wayMap.retrieve({ x:left, y:bottom, width:right-left, height:top-bottom });
+//			trace ("**"+r[0]);
+//			for each (var way:Way in ways) {
+//				if (way.within(left,right,top,bottom)) { o.waysInside.push(way); }
+//				                                  else { o.waysOutside.push(way); }
+			var r:Array=wayMap.retrieve({ x:left, y:bottom, width:right-left, height:top-bottom });
+			trace(r);
+			for each (var obj:Object in r) {
+				var t:String=''; for (var k:String in obj) { t+=k+"="+obj[k]+";"; } trace(t);
+				if (obj.key) o.waysInside.push(obj.key);
+			}
 			for each (var way:Way in ways) {
-				if (way.within(left,right,top,bottom)) { o.waysInside.push(way); }
-				                                  else { o.waysOutside.push(way); }
+				if (o.waysInside.indexOf(way)==-1) o.waysOutside.push(way);
 			}
 			for each (var poi:Node in pois) {
 				if (poi.within(left,right,top,bottom)) { o.poisInside.push(poi); }
