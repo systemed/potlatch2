@@ -174,6 +174,24 @@
   </feature>
 
 
+  <feature name="Golf hole">
+    <category>sport</category>
+    <area/>
+    <icon  image="features/pois/sport_golf.n.24.png">
+      <font size="10pt">Golf hole details.</font>
+    </icon>
+    <tag k="golf" v="hole" vmatch="tee|green|fairway|bunker"/>
+    <help>http://wiki.openstreetmap.org/wiki/Golf</help>
+    <input type="choice" presence="always" name="Golf" category="Details" description="Golf course hole details" key="golf">
+      <choice value="tee" text="Tee"/>
+      <choice value="green" text="Green"/>
+      <choice value="fairway" text="Fairway"/>
+      <choice value="bunker" text="Bunker"/>
+    </input>
+    <inputSet ref="common"/>
+  </feature>
+
+
   <feature name="Recreation ground">
     <category>sport</category>    
     <area/>

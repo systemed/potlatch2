@@ -107,6 +107,13 @@ way[power=generator] :area { color: black; width: 2; fill-color: #444444; fill-o
 /* Leisure */
 
 way[golf=hole] {color: darkgreen; width: 5; casing-color: green; casing-width: 2; }
+way[golf=tee] :area        {fill-color: green; fill-opacity: 0.4; width: 1; casing-color: black; casing-width: 1; }
+way[golf=green] :area      {fill-color: #44ee22; fill-opacity: 0.4; width: 1; casing-color: black; casing-width: 1; }
+way[golf=fairway] :area    {fill-color: lightgreen; fill-opacity: 0.4; width: 1; casing-color: black; casing-width: 1; }
+way[golf=rough] :area      {fill-color: darkgreen;  fill-opacity: 0.4; width: 1; casing-color: black; casing-width: 1; }
+way[golf=water_hazard], way[golf=lateral_water_hazard] :area {fill-color: blue; fill-opacity: 0.4; width: 1; casing-color: black; casing-width: 1; }
+way[golf=bunker] :area     {fill-color: yellow; fill-opacity: 0.4; width: 1; casing-color: black; casing-width: 1; z-index: 15; }
+
 way[leisure=sports_centre] :area { color: #66ddcc; fill-color: #66ddcc; set .area_small_name; }
 
 
