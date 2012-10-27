@@ -1,5 +1,5 @@
 <featureGroup>
-  <feature name="Supermarket">
+  <feature name="Supermarket" id="shop.supermarket">
     <category>shopping</category>
     <icon image="features/pois/shopping_supermarket.n.24.png">
       ${name}
@@ -14,7 +14,7 @@
     <inputSet ref="common"/>
   </feature>
 
-  <feature name="Small Convenience Store">
+  <feature name="Small Convenience Store" id="shop.convenience">
     <category>shopping</category>
     <icon image="features/pois/shopping_convenience.n.24.png">
       ${name}
@@ -29,7 +29,7 @@
     <inputSet ref="common"/>
   </feature>
 
-  <feature name="Bakery">
+  <feature name="Bakery" id="shop.bakery">
     <category>shopping</category>
     <point/>
     <area/>
@@ -44,7 +44,7 @@
 
 
 
-  <feature name="Alcohol shop">
+  <feature name="Alcohol shop" id="shop.alcohol">
     <category>shopping</category>
     <point/>
     <area/>
@@ -58,7 +58,7 @@
 
 
 
-  <feature name="Bike shop">
+  <feature name="Bike shop" id="shop.bicycle">
     <category>shopping</category>
     <point/>
     <area/>
@@ -71,7 +71,7 @@
   </feature>
 
 
-  <feature name="Bookshop">
+  <feature name="Bookshop" id="shop.books">
     <category>shopping</category>
     <point/>
     <area/>
@@ -84,7 +84,7 @@
   </feature>
 
 
-  <feature name="Butcher">
+  <feature name="Butcher" id="shop.butcher">
     <category>shopping</category>
     <point/>
     <area/>
@@ -96,7 +96,7 @@
     <inputSet ref="common"/>
   </feature>
 
-  <feature name="Car sales">
+  <feature name="Car sales" id="shop.car">
     <category>shopping</category>
     <point/>
     <area/>
@@ -109,7 +109,7 @@
   </feature>
 
 
-  <feature name="Car repair">
+  <feature name="Car repair" id="shop.car_repair">
     <category>shopping</category>
     <point/>
     <area/>
@@ -122,7 +122,7 @@
   </feature>
 
 
-  <feature name="Clothes shop">
+  <feature name="Clothes shop" id="shop.clothes">
     <category>shopping</category>
     <point/>
     <area/>
@@ -135,7 +135,7 @@
   </feature>
 
 
-  <feature name="Confectionery">
+  <feature name="Confectionery" id="shop.confectionery">
     <category>shopping</category>
     <point/>
     <area/>
@@ -148,7 +148,7 @@
   </feature>
 
 
-  <feature name="DIY">
+  <feature name="DIY" id="shop.doityourself">
     <category>shopping</category>
     <point/>
     <area/>
@@ -161,7 +161,7 @@
   </feature>
 
 
-  <feature name="Fishmonger">
+  <feature name="Fishmonger" id="shop.fishmonger">
     <category>shopping</category>
     <point/>
     <area/>
@@ -173,7 +173,7 @@
     <inputSet ref="common"/>
   </feature>
 
-  <feature name="Florist">
+  <feature name="Florist" id="shop.florist">
     <category>shopping</category>
     <point/>
     <area/>
@@ -186,7 +186,7 @@
   </feature>
 
 
-  <feature name="Garden centre">
+  <feature name="Garden centre" id="shop.garden_centre">
     <category>shopping</category>
     <point/>
     <area/>
@@ -199,7 +199,7 @@
   </feature>
 
 
-  <feature name="Gift shop">
+  <feature name="Gift shop" id="shop.gift">
     <category>shopping</category>
     <point/>
     <area/>
@@ -212,7 +212,7 @@
   </feature>
 
 
-  <feature name="Greengrocer">
+  <feature name="Greengrocer" id="shop.greengrocer">
     <category>shopping</category>
     <point/>
     <area/>
@@ -225,7 +225,7 @@
   </feature>
 
 
-  <feature name="Hairdresser">
+  <feature name="Hairdresser" id="shop.hairdresser">
     <category>shopping</category>
     <point/>
     <area/>
@@ -238,7 +238,7 @@
   </feature>
 
 
-  <feature name="Hifi shop">
+  <feature name="Hifi shop" id="shop.hifi">
     <category>shopping</category>
     <point/>
     <area/>
@@ -251,7 +251,7 @@
   </feature>
 
 
-  <feature name="Jewellery">
+  <feature name="Jewellery" id="shop.jewelry">
     <category>shopping</category>
     <point/>
     <area/>
@@ -263,7 +263,7 @@
     <inputSet ref="common"/>
   </feature>
 
-  <feature name="Kiosk">
+  <feature name="Kiosk" id="shop.kiosk">
     <category>shopping</category>
     <point/>
     <area/>
@@ -276,7 +276,7 @@
   </feature>
 
 
-  <feature name="Laundrette">
+  <feature name="Laundrette" id="shop.laundry">
     <category>shopping</category>
     <point/>
     <area/>
@@ -289,7 +289,7 @@
   </feature>
 
 
-  <feature name="Motorbike shop">
+  <feature name="Motorbike shop" id="shop.motorcycle">
     <category>shopping</category>
     <point/>
     <area/>
@@ -302,7 +302,7 @@
   </feature>
 
 
-  <feature name="Music shop">
+  <feature name="Music shop" id="shop.music">
     <category>shopping</category>
     <point/>
     <area/>
@@ -315,7 +315,7 @@
   </feature>
 
 
-  <feature name="Pharmacy">
+  <feature name="Pharmacy" id="amenity.pharmacy">
     <category>shopping</category>
     <icon image="features/pois/health_pharmacy.n.24.png">
       ${name}
@@ -331,7 +331,7 @@
     <inputSet ref="common"/>
   </feature>
 
-  <feature name="Toy shop">
+  <feature name="Toy shop" id="shop.toys">
     <category>shopping</category>
     <icon image="features/pois/shopping_toys.n.24.png" />
     <point/>

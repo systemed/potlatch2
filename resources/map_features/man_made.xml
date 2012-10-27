@@ -1,5 +1,5 @@
 <featureGroup>
-  <feature name="Tower/mast">
+  <feature name="Tower/mast" id="man_made.tower">
     <category>manmade</category>
     <icon image="features/manmade_tower.png"/>
     <point/>
@@ -22,7 +22,7 @@
     <inputSet ref="common"/>
   </feature>
   
-  <feature name="Navigation mark">
+  <feature name="Navigation mark" id="man_made.survey_point">
     <category>manmade</category>
     <icon image="features/manmade_lighthouse.png"/>
     <point/>
@@ -39,7 +39,7 @@
   </feature>
 
 
-  <feature name="Silo/tank">
+  <feature name="Silo/tank" id="man_made.silo">
     <category>manmade</category>
     <icon image="features/manmade_silo.png"/>
     <point/>

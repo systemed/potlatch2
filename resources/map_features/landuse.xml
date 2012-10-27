@@ -1,6 +1,6 @@
 <!-- This is a bit of a dumping ground for real landuse=*, but also outdoor natural/leisure/agriculture type keys. -->
 <featureGroup>
-  <feature name="Industrial Area">
+  <feature name="Industrial Area" id="landuse.industrial">
     <category>landuse</category>
     <area/>
     <icon image="features/pois/building_generic.png">
@@ -12,7 +12,7 @@
   </feature>
 
 
-  <feature name="Offices">
+  <feature name="Offices" id="landuse.commercial">
     <category>landuse</category>
     <area/>
     <icon image="features/pois/building_generic.png">
@@ -23,7 +23,7 @@
     <inputSet ref="common"/>
   </feature>
 
-  <feature name="Residential Area">
+  <feature name="Residential Area" id="landuse.residential">
     <category>landuse</category>
     <area/>
     <icon image="features/pois/building_generic.png">
@@ -34,7 +34,7 @@
     <inputSet ref="common"/>
   </feature>
 
-  <feature name="Retail Area">
+  <feature name="Retail Area" id="landuse.retail">
     <category>landuse</category>
     <area/>
     <icon image="features/pois/building_generic.png">
@@ -45,7 +45,7 @@
     <inputSet ref="common"/>
   </feature>
 
-  <feature name="Construction Site">
+  <feature name="Construction Site" id="landuse.construction">
     <category>landuse</category>
     <area/>
     <icon image="features/pois/building_generic.png">
@@ -57,7 +57,7 @@
   </feature>
 
 
-  <feature name="Marketplace">
+  <feature name="Marketplace" id="landuse.marketplace">
     <category>shopping</category>
     <point />
     <area/>
@@ -70,7 +70,7 @@
   </feature>
 
 
-  <feature name="Cemetery">
+  <feature name="Cemetery" id="landuse.cemetery">
     <category>landuse</category>
     <point />
     <area/>
@@ -82,7 +82,7 @@
     <inputSet ref="common"/>
   </feature>
 
-  <feature name="Graveyard">
+  <feature name="Graveyard" id="landuse.grave_yard">
     <category>landuse</category>
     <point />
     <area/>
@@ -94,7 +94,7 @@
     <inputSet ref="common"/>
   </feature>
 
-  <feature name="Quarry">
+  <feature name="Quarry" id="landuse.quarry">
     <category>landuse</category>
     <icon image="features/pois/poi_mine.n.24.png"/>
     <area/>
@@ -104,7 +104,7 @@
   </feature>
 
 
-  <feature name="Military">
+  <feature name="Military" id="landuse.military">
     <category>landuse</category>
     <icon image="features/pois/poi_military_bunker.n.24.png"/>
     <area/>
@@ -114,7 +114,7 @@
   </feature>
 
 
-  <feature name="Conservation">
+  <feature name="Conservation" id="landuse.conservation">
     <category>natural</category>
     <icon image="icons/natural_blank.png"/>
     <area/>
@@ -123,7 +123,7 @@
     <inputSet ref="common"/>
   </feature>
 
-  <feature name="Beach">
+  <feature name="Beach" id="natural.beach">
     <category>natural</category>
     <icon image="features/natural__beach.png"/>
     <area/>
@@ -149,7 +149,7 @@
 
 
 
-  <feature name="Playground">
+  <feature name="Playground" id="leisure.playground">
     <category>sport</category>
     <area/>
     <point/>
@@ -162,7 +162,7 @@
   </feature>
 
 
-  <feature name="Golf course">
+  <feature name="Golf course" id="leisure.golf_course">
     <category>sport</category>
     <area/>
     <icon  image="features/pois/sport_golf.n.24.png">
@@ -174,7 +174,7 @@
   </feature>
 
 
-  <feature name="Recreation ground">
+  <feature name="Recreation ground" id="leisure.recreation_ground">
     <category>sport</category>    
     <area/>
     <icon image="features/pois/sport_leisure_centre.n.24.png">
@@ -186,7 +186,7 @@
   </feature>
 
 
-  <feature name="Sports pitch">
+  <feature name="Sports pitch" id="leisure.pitch">
     <category>sport</category>
     <area/>
     <icon image="features/pois/sport_leisure_centre.n.24.png">
@@ -198,7 +198,7 @@
     <inputSet ref="common"/>
   </feature>
 
-  <feature name="Sports track">
+  <feature name="Sports track" id="leisure.track">
     <category>sport</category>
     <area/>
     <line/>
@@ -212,7 +212,7 @@
     <inputSet ref="common"/>
   </feature>
 
-  <feature name="Sports centre">
+  <feature name="Sports centre" id="leisure.sports_centre">
     <category>sport</category>
     <icon image="features/pois/sport_leisure_centre.n.24.png">
       <b>${name} ${addr:housename}</b><br/>
@@ -231,7 +231,7 @@
 
 
   <!-- **************** Agriculture *************** -->
-  <feature name="Farm">
+  <feature name="Farm" id="landuse.farm">
     <category>agriculture</category>
     <icon image="features/pois/landuse_grass.n.24.png"/>
     <area/>
@@ -241,7 +241,7 @@
   </feature>
 
 
-  <feature name="Farmyard">
+  <feature name="Farmyard" id="landuse.farmyard">
     <category>agriculture</category>
     <icon image="features/pois/landuse_grass.n.24.png"/>
     <area/>
@@ -251,7 +251,7 @@
   </feature>
 
 
-  <feature name="Farmland">
+  <feature name="Farmland" id="landuse.farmland">
     <category>agriculture</category>
     <icon image="features/pois/landuse_grass.n.24.png"/>
     <area/>
@@ -261,7 +261,7 @@
   </feature>
 
 
-  <feature name="Field">
+  <feature name="Field" id="landuse.meadow">
     <category>agriculture</category>
     <icon image="features/pois/landuse_grass.n.24.png"/>
     <area/>
@@ -271,7 +271,7 @@
   </feature>
 
 
-  <feature name="Orchard">
+  <feature name="Orchard" id="landuse.orchard">
     <category>agriculture</category>
     <icon image="features/pois/landuse_grass.n.24.png"/>
     <area/>
@@ -281,7 +281,7 @@
   </feature>
 
 
-  <feature name="Vineyard">
+  <feature name="Vineyard" id="landuse.vineyard">
     <category>agriculture</category>
     <icon image="features/pois/landuse_grass.n.24.png"/>
     <area/>
@@ -294,7 +294,7 @@
        Natural
        ************************************************************************ -->
 
-  <feature name="Park">
+  <feature name="Park" id="landuse.park">
     <category>natural</category>
     <category>sport</category>
     <icon image="icons/natural_blank.png">
@@ -308,7 +308,7 @@
     <inputSet ref="common"/>
   </feature>
 
-  <feature name="Forest">
+  <feature name="Forest" id="landuse.forest">
     <category>natural</category>
     <icon image="features/pois/landuse_coniferous.n.24.png"/>
 
@@ -318,7 +318,7 @@
     <inputSet ref="common"/>
   </feature>
 
-  <feature name="Meadow">
+  <feature name="Meadow" id="landuse.meadow">
     <category>natural</category>
     <icon image="icons/natural_blank.png"/>
 

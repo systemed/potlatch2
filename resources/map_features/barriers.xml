@@ -1,8 +1,7 @@
 <featureGroup>
-  <feature name="Wall">
+  <feature name="Wall" id="barrier.wall">
     <category>barrier</category>
-    <icon image="features/barrier_generic.png"/>
-    <icon>
+    <icon image="features/barrier_generic.png">
     </icon>
     <help>http://wiki.openstreetmap.org/wiki/Tag:barrier%3Dwall</help>
 
@@ -11,10 +10,9 @@
     <inputSet ref="common"/>
   </feature>
 
-  <feature name="Ditch">
+  <feature name="Ditch" id="barrier.ditch">
     <category>barrier</category>
-    <icon image="features/barrier_generic.png"/>
-    <icon>
+    <icon image="features/barrier_generic.png">
     </icon>
     <help>http://wiki.openstreetmap.org/wiki/Tag:barrier%3Dditch</help>
 
@@ -23,10 +21,9 @@
     <inputSet ref="common"/>
   </feature>
 
-  <feature name="Retaining wall">
+  <feature name="Retaining wall" id="barrier.retaining_wall">
     <category>barrier</category>
-    <icon image="features/barrier_generic.png"/>
-    <icon>
+    <icon image="features/barrier_generic.png">
     </icon>
     <help>http://wiki.openstreetmap.org/wiki/Tag:barrier%3Dretaining_wall</help>
 
@@ -35,10 +32,9 @@
     <inputSet ref="common"/>
   </feature>
 
-  <feature name="City wall">
+  <feature name="City wall" id="barrier.city_wall">
     <category>barrier</category>
-    <icon image="features/barrier_generic.png"/>
-    <icon>
+    <icon image="features/barrier_generic.png">
     </icon>
     <help>http://wiki.openstreetmap.org/wiki/Tag:barrier%3Dcity_wall</help>
 
@@ -48,10 +44,9 @@
   </feature>
 
 
-  <feature name="Fence">
+  <feature name="Fence" id="barrier.fence">
     <category>barrier</category>
-    <icon image="features/barrier_generic.png"/>
-    <icon>
+    <icon image="features/barrier_generic.png">
     </icon>
     <help>http://wiki.openstreetmap.org/wiki/Tag:barrier%3Dfence</help>
 
@@ -61,10 +56,9 @@
   </feature>
 
 
-  <feature name="Hedge">
+  <feature name="Hedge" id="barrier.hedge">
     <category>barrier</category>
-    <icon image="features/barrier_generic.png"/>
-    <icon>
+    <icon image="features/barrier_generic.png">
     </icon>
     <help>http://wiki.openstreetmap.org/wiki/Tag:barrier%3Dhedge</help>
 
@@ -73,7 +67,7 @@
     <inputSet ref="common"/>
   </feature>
 
-  <feature name="Bollard">
+  <feature name="Bollard" id="barrier.bollard">
     <category>barrier</category>
     <icon image="features/pois/barrier_bollard.n.24.png">
     </icon>
@@ -85,7 +79,7 @@
   </feature>
 
 
-  <feature name="Gate">
+  <feature name="Gate" id="barrier.gate">
     <category>barrier</category>
     <icon image="features/pois/barrier_gate.n.24.png">
     </icon>
@@ -97,9 +91,10 @@
   </feature>
 
 
-  <feature name="Lift Gate">
+  <feature name="Lift Gate" id="barrier.lift_gate">
     <category>barrier</category>
-    <icon image="features/pois/barrier_lift_gate.n.24.png"/>
+    <icon image="features/pois/barrier_lift_gate.n.24.png">
+    </icon>
     <help>http://wiki.openstreetmap.org/wiki/Tag:barrier%3Dlift_gate</help>
     <point/>
     <tag k="barrier" v="lift_gate"/>
@@ -107,9 +102,10 @@
   </feature>
 
 
-  <feature name="Kissing Gate">
+  <feature name="Kissing Gate" id="barrier.kissing_gate">
     <category>barrier</category>
-    <icon image="features/pois/barrier_kissing_gate.24.png"/>
+    <icon image="features/pois/barrier_kissing_gate.24.png">
+    </icon>
     <help>http://wiki.openstreetmap.org/wiki/Tag:barrier%3Dkissing_gate</help>
     <point/>
     <tag k="barrier" v="kissing_gate"/>
@@ -118,7 +114,7 @@
 
 
 
-  <feature name="Cycle Barrier">
+  <feature name="Cycle Barrier" id="barrier.cycle_barrier">
     <category>barrier</category>
     <icon image="features/pois/barrier_cycle_barrier.24.png">
     </icon>
@@ -130,7 +126,7 @@
   </feature>
 
 
-  <feature name="Big Concrete Blocks">
+  <feature name="Big Concrete Blocks" id="barrier.block">
     <category>barrier</category>
     <icon image="features/pois/barrier_blocks.24.png">
     </icon>
@@ -142,7 +138,7 @@
   </feature>
 
 
-  <feature name="Cattle Grid">
+  <feature name="Cattle Grid" id="barrier.cattle_grid">
     <category>barrier</category>
     <icon image="features/pois/barrier_cattle_grid.24.png">
     </icon>
@@ -154,7 +150,7 @@
   </feature>
 
 
-  <feature name="Toll Booth">
+  <feature name="Toll Booth" id="barrier.toll_booth">
     <category>barrier</category>
     <icon image="features/pois/barrier_toll_booth.n.24.png">
     </icon>
@@ -168,20 +164,21 @@
   </feature>
 
 
-  <feature name="Stile">
+  <feature name="Stile" id="barrier.stile">
     <category>barrier</category>
-    <icon image="features/pois/barrier_stile.n.24.png"/>
+    <icon image="features/pois/barrier_stile.n.24.png">
+    </icon>
     <help>http://wiki.openstreetmap.org/wiki/Tag:barrier%3Dstile</help>
     <point/>
     <tag k="barrier" v="stile"/>
     <inputSet ref="common"/>
   </feature>
 
-  <feature name="Wire fence">
+  <feature name="Wire fence" id="barrier.wire_fence">
     <!-- no idea, but taginfo says 2700 uses -->
     <category>barrier</category>
-    <icon image="features/barrier_generic.png"/>
-   
+    <icon image="features/barrier_generic.png">
+    </icon>
     <help>http://wiki.openstreetmap.org/wiki/Tag:barrier%3Dwire_fence</help>
 
     <line/>

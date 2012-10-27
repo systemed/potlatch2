@@ -1,6 +1,6 @@
 <featureGroup>
 <!-- ========= Accommodation ========= -->
-  <feature name="Hotel">
+  <feature name="Hotel" id="tourism.hotel">
     <category>accommodation</category>
     <icon image="features/pois/accommodation_hotel.n.24.png"/>
     <help>http://wiki.openstreetmap.org/wiki/Tag:tourism%3Dhotel</help>
@@ -12,7 +12,7 @@
   </feature>
 
 
-  <feature name="Motel">
+  <feature name="Motel" id="tourism.motel">
     <category>accommodation</category>
     <help>http://wiki.openstreetmap.org/wiki/Tag:tourism%3Dmotel</help>
     <point/>
@@ -25,7 +25,7 @@
 
 
 
-  <feature name="Hostel">
+  <feature name="Hostel" id="tourism.hostel">
     <category>accommodation</category>
     <point/>
     <area/>
@@ -37,7 +37,7 @@
 
 
   <!-- Note that tourism=bed_and_breakfast also gets some use. -->
-  <feature name="Guesthouse (B&amp;B)">
+  <feature name="Guesthouse (B&amp;B)" id="tourism.guest_house">
     <category>accommodation</category>
     <point/>
     <area/>
@@ -48,7 +48,7 @@
   </feature>
 
 
-  <feature name="Campsite">
+  <feature name="Campsite" id="tourism.camp_site">
     <category>accommodation</category>
     <point/>
     <area/>
@@ -59,7 +59,7 @@
   </feature>
 
 
-  <feature name="Caravan park">
+  <feature name="Caravan park" id="tourism.caravan_site">
     <category>accommodation</category>
     <point/>
     <area/>
@@ -70,7 +70,7 @@
   </feature>
 
 
-  <feature name="Alpine hut">
+  <feature name="Alpine hut" id="tourism.alpine_hut">
     <category>accommodation</category>
     <point/>
     <area/>
@@ -81,7 +81,7 @@
   </feature>
 
 
-  <feature name="Chalet">
+  <feature name="Chalet" id="tourism.chalet">
     <category>accommodation</category>
     <icon image="features/pois/accommodation_chalet.n.24.png"/>
     <point/>
@@ -94,7 +94,7 @@
 
 
   <!-- ========= Tourism ========= -->
-  <feature name="Attraction">
+  <feature name="Attraction" id="tourism.attraction">
     <category>tourism</category>
     <icon image="features/pois/tourist_attraction.n.24.png">
       <b>${name} ${addr:housename}</b><br/>
@@ -108,7 +108,7 @@
     <inputSet ref="common"/>
   </feature>
 
-  <feature name="Museum">
+  <feature name="Museum" id="tourism.museum">
     <category>tourism</category>
     <icon image="features/pois/tourist_museum.n.24.png"/>
     <help>http://wiki.openstreetmap.org/wiki/Tag:tourism%3Dmuseum</help>
@@ -120,7 +120,7 @@
   </feature>
 
 
-  <feature name="Archaeological">
+  <feature name="Archaeological" id="historic.archaeological_site">
     <category>tourism</category>
     <point/>
     <area/>
@@ -131,7 +131,7 @@
   </feature>
 
 
-  <feature name="Battlefield">
+  <feature name="Battlefield" id="historic.battlefield">
     <category>tourism</category>
     <point/>
     <area/>
@@ -142,7 +142,7 @@
   </feature>
 
 
-  <feature name="Castle">
+  <feature name="Castle" id="historic.castle">
     <category>tourism</category>
     <point/>
     <area/>
@@ -153,7 +153,7 @@
   </feature>
 
 
-  <feature name="Memorial">
+  <feature name="Memorial" id="historic.memorial">
     <category>tourism</category>
     <point/>
     <inputSet ref="simpleName"/>
@@ -163,7 +163,7 @@
   </feature>
 
 
-  <feature name="Monument">
+  <feature name="Monument" id="historic.monument">
     <category>tourism</category>
     <point/>
     <inputSet ref="simpleName"/>
@@ -173,7 +173,7 @@
   </feature>
 
 
-  <feature name="Picnic site">
+  <feature name="Picnic site" id="tourism.picnic_site">
     <category>tourism</category>
     <point/>
     <inputSet ref="simpleName"/>
@@ -183,7 +183,7 @@
   </feature>
 
 
-  <feature name="Ruins">
+  <feature name="Ruins" id="historic.ruins">
     <category>tourism</category>
     <point/>
     <area/>
@@ -194,7 +194,7 @@
   </feature>
 
 
-  <feature name="Cinema">
+  <feature name="Cinema" id="amenity.cinema">
     <category>tourism</category>
     <icon image="features/pois/tourist_cinema.n.24.png"/>
     <help>http://wiki.openstreetmap.org/wiki/Tag:amenity%3Dcinema</help>
@@ -206,7 +206,7 @@
   </feature>
 
 
-  <feature name="Theatre">
+  <feature name="Theatre" id="amenity.theatre">
     <category>tourism</category>
     <point/>
     <area/>
@@ -217,7 +217,7 @@
   </feature>
 
 
-  <feature name="Viewpoint">
+  <feature name="Viewpoint" id="tourism.viewpoint">
     <category>tourism</category>
     <point/>
     <inputSet ref="simpleName"/>
@@ -227,7 +227,7 @@
   </feature>
 
 
-  <feature name="Zoo">
+  <feature name="Zoo" id="tourism.zoo">
     <category>tourism</category>
     <point/>
     <area/>
@@ -238,7 +238,7 @@
   </feature>
 
 
-  <feature name="Information">
+  <feature name="Information" id="tourism.information">
     <category>tourism</category>
     <icon image="features/pois/amenity_information.n.24.png"/>
     <point/>
@@ -248,7 +248,7 @@
   </feature>
 
 
-  <feature name="Artwork">
+  <feature name="Artwork" id="tourism.artwork">
     <category>tourism</category>
     <icon image="features/pois/tourist_art_gallery2.n.24.png"/>
     <point/>
@@ -259,7 +259,7 @@
 
 
 
-  <feature name="Theme park">
+  <feature name="Theme park" id="tourism.theme_park">
     <category>tourism</category>
     <icon image="features/pois/tourist_theme_park.n.24.png"/>
     <point/>

@@ -1,5 +1,5 @@
 <featureGroup>
-  <feature name="High-voltage line">
+  <feature name="High-voltage line" id="power.line">
     <category>power</category>
     <icon image="features/power_high.png"/>
     <line/>
@@ -9,7 +9,7 @@
   </feature>
 
 
-  <feature name="Low-voltage line">
+  <feature name="Low-voltage line" id="power.minor_line">
     <category>power</category>
     <icon image="features/power_low.png"/>
     <line/>
@@ -19,7 +19,7 @@
   </feature>
 
 
-  <feature name="High-voltage pylon">
+  <feature name="High-voltage pylon" id="power.tower">
     <category>power</category>
     <icon image="features/pois/power_tower_high2.n.24.png"/>
     <point/>
@@ -28,7 +28,7 @@
   </feature>
 
 
-  <feature name="Power pole">
+  <feature name="Power pole" id="power.pole">
     <category>power</category>
     <icon image="features/pois/power_tower_low.n.24.png"/>
     <point/>
@@ -37,7 +37,7 @@
   </feature>
 
 
-  <feature name="Plant (station)">
+  <feature name="Plant (station)" id="power.generator">
     <category>power</category>
     <icon image="features/pois/power_station.png"/>
     <area/>
@@ -61,7 +61,7 @@
   </feature>
 
 
-  <feature name="Substation">
+  <feature name="Substation" id="power.station">
     <category>power</category>
     <icon image="features/pois/power_substation.n.24.png"/>"
     <area/>
@@ -71,7 +71,7 @@
   </feature>
 
 
-  <feature name="Transformer">
+  <feature name="Transformer" id="power.sub_station">
     <category>power</category>
     <icon image="features/pois/power_transformer.n.24.png"/>
     <area/>

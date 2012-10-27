@@ -1,5 +1,5 @@
 <featureGroup>
-  <feature name="Hamlet">
+  <feature name="Hamlet" id="place.hamlet">
     <category>places</category>
     <icon image="features/pois/poi_place_hamlet.p.24.png"/>
     <point/>
@@ -10,7 +10,7 @@
     <inputSet ref="common"/>
   </feature>
 
-  <feature name="Village">
+  <feature name="Village" id="place.village">
     <category>places</category>
     <icon image="features/pois/poi_place_village.p.24.png"/>
     <point/>
@@ -21,7 +21,7 @@
     <inputSet ref="common"/>
   </feature>
 
-  <feature name="Town">
+  <feature name="Town" id="place.town">
     <category>places</category>
     <icon image="features/pois/poi_place_town.p.24.png"/>
     <point/>
@@ -32,7 +32,7 @@
     <inputSet ref="common"/>
   </feature>
 
-  <feature name="Suburb">
+  <feature name="Suburb" id="place.suburb">
     <category>places</category>
     <icon image="features/pois/poi_place_suburb.p.24.png"/>
     <point/>
@@ -43,7 +43,7 @@
     <inputSet ref="common"/>
   </feature>
 
-  <feature name="City">
+  <feature name="City" id="place.city">
     <category>places</category>
     <icon image="features/pois/poi_place_city.p.24.png"/>
     <point/>
@@ -56,7 +56,7 @@
   
 <!-- Top 10 boundaries in order of usage on taginfo.openstreetmap.de -->
 
-  <feature name="Admin Boundary">
+  <feature name="Admin Boundary" id="boundary.administrative">
     <category>places</category>
     <line/>
     <icon image="features/pois/poi_boundary_administrative.n.24.png"/>
@@ -67,7 +67,7 @@
     <inputSet ref="common"/>
   </feature>
 
-  <feature name="National Park">
+  <feature name="National Park" id="boundary.national_park">
     <category>places</category>
     <category>natural</category>
     <line/>
@@ -77,7 +77,7 @@
     <inputSet ref="common"/>
   </feature>
 
-  <feature name="Protected Area">
+  <feature name="Protected Area" id="boundary.protected_area">
     <category>places</category>
     <category>natural</category>
     <line/>
@@ -87,7 +87,7 @@
     <inputSet ref="common"/>
   </feature>
 
-  <feature name="Town boundary">
+  <feature name="Town boundary" id="boundary.town">
     <category>places</category>
     <line/>
     <help>http://wiki.openstreetmap.org/wiki/Tag:boundary=town</help>
@@ -98,7 +98,7 @@
 
   <!-- boundary=landuse goes here. no idea what it is.-->
 
-  <feature name="Census boundary">
+  <feature name="Census boundary" id="boundary.census">
     <category>places</category>
     <line/>
     <help>http://wiki.openstreetmap.org/wiki/Tag:boundary=census</help>
