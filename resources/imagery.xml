@@ -24,6 +24,11 @@
     <sourcetag>MapQuest Open Aerial</sourcetag>
   </set>
   <set>
+    <name>OSM GPS Tile Layer</name>
+    <url>http://${a|b|c}.gps-tile.openstreetmap.org/lines/$z/$x/$y.png</url>
+    <sourcetag>GPS</sourcetag>
+  </set>
+  <set>
     <name>OSM - Mapnik</name>
     <url>http://${a|b|c}.tile.openstreetmap.org/$z/$x/$y.png</url>
     <sourcetag>Mapnik</sourcetag>
