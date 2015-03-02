@@ -243,4 +243,9 @@
     <url>http://${a|b|c}.aerial.openstreetmap.org.za/ngi-aerial/$z/$x/$y.jpg</url>
     <sourcetag>ngi-aerial</sourcetag>
   </set>
-</imagery>
+  <set minlat="-34" minlon="140" maxlat="-39.2" maxlon="150">
+    <name>VicMap (Australia, CC-BY)</name>
+    <url>http://whoots.mapwarper.net/tms/$z/$x/$y/WEB_MERCATOR/http://api.maps.vic.gov.au/geowebcacheWM/service/wms?VERSION=1.1.1&TILED=true</url>
+    <sourcetag>Vicmap</sourcetag>
+  </set>
+  </imagery>
