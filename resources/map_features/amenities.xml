@@ -431,7 +431,7 @@
     <inputSet ref="common"/>
     <inputSet ref="simpleName"/>
   </feature>
-
+<!--
   <feature name="Vending machine">
     <category>amenity</category>
     <category>foodanddrink</category>
@@ -445,7 +445,7 @@
     <inputSet ref="simpleOperator" />
     <inputSet ref="payments"/>
   </feature>
-
+-->
   <!-- ========= Entertainment ========= -->
 
   <feature name="Pub">
