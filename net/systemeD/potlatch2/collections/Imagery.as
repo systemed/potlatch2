@@ -23,7 +23,7 @@ package net.systemeD.potlatch2.collections {
         private static const GLOBAL_INSTANCE:Imagery = new Imagery();
         public static function instance():Imagery { return GLOBAL_INSTANCE; }
 
-		private static const INDEX_URL:String="https://osmlab.github.io/editor-layer-index/imagery.json";
+		private static const INDEX_URL:String="https://josm.openstreetmap.de/maps?format=potlatch";
 
 		public var collection:Array=[];
 		private var _selected:Object={};
