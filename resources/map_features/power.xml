@@ -44,18 +44,18 @@
     <point/>
     <tag k="power" v="generator"/>
     <inputSet ref="names"/>
-    <input type="choice" presence="always"  name="Energy source" key="power_source" category="Details">
-      <choice value="coal" text="Coal"/>
-      <choice value="gas" text="Gas"/>
-      <choice value="oil" text="Oil"/>
-      <choice value="fossil" text="Unspecified fossil fuel"/>
-      <choice value="hydro" text="Hydroelectric"/>
-      <choice value="geothermal" text="Geothermal"/>
-      <choice value="nuclear" text="Nuclear"/>
+    <input type="choice" presence="always" name="Energy source" key="generator:source" category="Details">
+      <choice value="solar" text="Solar"/>
       <choice value="wind" text="Wind"/>
-      <choice value="photovoltaic" text="Solar PV"/>
-      <choice value="solar_thermal" text="Solar thermal"/>
-      <choice value="biofuel" text="Biofuel"/>
+      <choice value="hydro" text="Hydroelectric"/>
+      <choice value="oil" text="Oil"/>
+      <choice value="gas" text="Gas"/>
+      <choice value="coal" text="Coal"/>
+      <choice value="biomass" text="Biomass"/>
+      <choice value="biogas" text="Biogas"/>
+      <choice value="nuclear" text="Nuclear"/>
+      <choice value="fossil" text="Unspecified fossil fuel"/>
+      <choice value="geothermal" text="Geothermal"/>
     </input>
     <inputSet ref="common"/>
   </feature>
