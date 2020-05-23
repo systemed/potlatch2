@@ -193,7 +193,7 @@ package net.systemeD.halcyon {
 
 				default:
 					if (baseurl.indexOf('{x}')>-1) {
-						t=baseurl.replace('{zoom}',_map.scale).replace('{x}',tx).replace('{y}',ty).replace('{-y}',tmsy);
+						t=baseurl.replace('{zoom}',_map.scale).replace('{z}',_map.scale).replace('{x}',tx).replace('{y}',ty).replace('{-y}',tmsy);
 					} else if (baseurl.indexOf('$x')>-1) {
 						t=baseurl.replace('$z',_map.scale).replace('$x',tx).replace('$y',ty).replace('$-y',tmsy);
 					} else {
