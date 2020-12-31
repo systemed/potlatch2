@@ -2,6 +2,8 @@
 
 Potlatch 2.0 is the fourth OpenStreetMap online editor (after two Java applets and Potlatch 1, and before iD). It's written in ActionScript 3 and requires a Flash Player.
 
+Since Flash Player was retired from browsers, Potlatch has become a desktop app running on the Adobe AIR platform. Development now happens at https://github.com/systemed/potlatch3. This repository is retained for historical interest.
+
 ## What you'll need
 
 * Apache Flex SDK - download the installer at https://flex.apache.org/installer.html
