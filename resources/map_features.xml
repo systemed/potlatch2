@@ -194,6 +194,7 @@
     <inputSet ref="cycle"/>
     <inputSet ref="bicycle-lane"/>
     <inputSet ref="bus-route"/>
+    <inputSet ref="road-route"/>
     <inputSet ref="tram-route"/>
     <inputSet ref="pedestrians"/>
     <inputSet ref="roadLanes"/>
@@ -209,6 +210,7 @@
     <inputSet ref="cycle"/>
     <inputSet ref="bicycle-lane"/>
     <inputSet ref="bus-route"/>
+    <inputSet ref="road-route"/>
     <inputSet ref="tram-route"/>
     <inputSet ref="pedestrians"/>
     <inputSet ref="roadLanes"/>
@@ -455,6 +457,17 @@
       </icon>
     </input>
   </inputSet>
+
+  <inputSet id="road-route">
+    <input type="route" name="Highway Route" description="Highway route" category="Transport" priority="low" presence="onTagMatch">
+      <match k="type" v="route"/>
+      <match k="route" v="road"/>
+      <icon image="features/route__road.png">
+         <font size="12pt">Route: <b>${ref}</b> (${network})</font>
+      </icon>
+    </input>
+  </inputSet>
+
 
   <inputSet id="tram-route">
     <input type="route" name="Tram Route" description="Tram route" category="Transport" priority="low" presence="onTagMatch">
