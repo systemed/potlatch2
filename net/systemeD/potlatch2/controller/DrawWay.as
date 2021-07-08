@@ -202,6 +202,7 @@ package net.systemeD.potlatch2.controller {
 		
 		protected function keyExitDrawing():ControllerState {
 			var cs:ControllerState=stopDrawing();
+			// If they've only drawn one node, discard it and the attached way with no remorse. 
 			if (selectedWay.length==1) { 
 				return new NoSelection();
 			}

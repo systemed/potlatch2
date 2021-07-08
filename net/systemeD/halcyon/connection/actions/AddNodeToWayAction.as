@@ -34,6 +34,7 @@ package net.systemeD.halcyon.connection.actions {
             nodeList.splice(index, 0, node);
             markDirty();
 			way.expandBbox(node);
+            
             way.dispatchEvent(new WayNodeEvent(Connection.WAY_NODE_ADDED, node, way, index));
             
             return SUCCESS;
@@ -57,14 +58,10 @@ package net.systemeD.halcyon.connection.actions {
 			markClean();
             way.dispatchEvent(new WayNodeEvent(Connection.WAY_NODE_REMOVED, removed[0], way, index));
             
-			// delete way if it's now 1-length, and convert the one remaining node to a POI
+			// If it's now 1-length, we want to delete the way and convert the one remaining node to a POI.
+			// We can't do this directly, so request the MainUndoStack to do it.
 			if (autoDelete && way.length==1) {
-				way.setDeletedState(true);
-				way.dispatchEvent(new EntityEvent(Connection.WAY_DELETED, way));
-				firstNode=way.getNode(0);
-				firstNode.removeParent(way);
-				if (!firstNode.hasParentWays) firstNode.connection.registerPOI(firstNode);
-				MainUndoStack.getGlobalStack().removeLastIfAction(BeginWayAction);
+				MainUndoStack.getGlobalStack().requestUndo();
 			}
 			return SUCCESS;
         }

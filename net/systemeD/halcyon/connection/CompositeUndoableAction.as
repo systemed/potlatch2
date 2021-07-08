@@ -112,6 +112,7 @@ package net.systemeD.halcyon.connection {
             var str:String = " {" + actions.join(",") + "}";
             return name + str;
         }
+      
     }
 
 }
