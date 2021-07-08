@@ -12,8 +12,8 @@ package net.systemeD.potlatch2.controller {
 	public class DrawWay extends SelectedWay {
 		private var elastic:Elastic;
 		private var editEnd:Boolean;            // if true, we're drawing from node[n-1], else "backwards" from node[0] 
-		private var leaveNodeSelected:Boolean;
-		private var lastClick:Entity=null;
+		private var leaveNodeSelected:Boolean;  // leave the end node selected when we stop drawing?
+		private var lastClick:Entity=null;      // keep thing clicked on, and when
 		private var lastClickTime:Date;
 		private var hoverEntity:Entity;			// keep track of the currently rolled-over object, because
 												// Flash can fire a mouseDown from the map even if you
@@ -156,7 +156,7 @@ package net.systemeD.potlatch2.controller {
 			                          controller.map.coord2latp(controller.map.mouseY));
 		}
 
-        /* Fix up the elastic after a WayNode event - e.g. triggered by undo */
+        /** Fix up the elastic after a WayNode event - e.g. triggered by undo, adding/removing a node */
         private function fixElastic(event:Event):void {
             if (firstSelected == null) return;
             var node:Node;
@@ -250,11 +250,11 @@ package net.systemeD.potlatch2.controller {
 
 			if (editEnd) {
 				node=Way(firstSelected).getLastNode();
-				Way(firstSelected).removeNodeByIndex(Way(firstSelected).length-1, undo.push);
+				Way(firstSelected).removeNodeByIndex(Way(firstSelected).length-1, undo.push, true, true);
 				newDraw=Way(firstSelected).length-2;
 			} else {
 				node=Way(firstSelected).getNode(0);
-				Way(firstSelected).removeNodeByIndex(0, undo.push);
+				Way(firstSelected).removeNodeByIndex(0, undo.push, true, true);
 				newDraw=0;
 			}
 			// Only actually delete the node if it has no other tags, and is not part of other ways (or part of this way twice)

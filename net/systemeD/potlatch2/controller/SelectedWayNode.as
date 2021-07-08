@@ -198,18 +198,30 @@ package net.systemeD.potlatch2.controller {
 			return new SelectedWay(parentWay);
 		}
 		
+		/** Remove a node from this way, but don't necessarily delete it - unless it's boring and tagless. */
+		// TODO: add check for relations
+		// BUG: add check for 1-length way
 		public function removeNode():ControllerState {
 			if (firstSelected.numParentWays==1 && parentWay.hasOnceOnly(firstSelected as Node) && !(firstSelected as Node).hasInterestingTags()) {
 				return deleteNode();
 			}
 			parentWay.removeNodeByIndex(selectedIndex, MainUndoStack.getGlobalStack().addAction);
-			return new SelectedWay(parentWay);
+            layer.setHighlight((firstSelected as Node), { selectedway: false });
+			if (!parentWay.deleted)
+			     return new SelectedWay(parentWay);
+			else
+			     return new NoSelection(); // consider selecting the remaining node, if any.
 		}
 		
+		/** Delete this node (and hence remove it from this way) */
+        // BUG: add check for 1-length way
 		public function deleteNode():ControllerState {
 			layer.setPurgable(selection,true);
 			firstSelected.remove(MainUndoStack.getGlobalStack().addAction);
-			return new SelectedWay(parentWay);
+            if (!parentWay.deleted)
+                 return new SelectedWay(parentWay);
+            else
+                 return new NoSelection(); // consider selecting the remaining node, if any.
 		}
 
         public function unjoin():ControllerState {

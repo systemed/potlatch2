@@ -22,7 +22,7 @@ package net.systemeD.halcyon.connection.actions {
             for each (var way:Way in node.parentWays) {
               for (var x:uint=0; x<way.length; x++) {
                 if (way.getNode(x) == node) {
-                  way.removeNodeByIndex(x, push);
+                  way.removeNodeByIndex(x, push, true, true); // Must temporarily allow a one-length node
                   way.insertNode(x, replacement, push);
                 }
               }
